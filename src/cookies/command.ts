@@ -3,6 +3,7 @@ import { str, type Args } from '../args'
 import { createBox, killBox, openBox, resolveBox, snapshotBox } from '../box'
 import { onInterrupt } from '../cleanup'
 import { clean } from '../sanitize'
+import { defaultName } from '../saved'
 import { stopViewer } from '../services'
 import { pushCookies } from './push'
 import { findProfile, listProfiles, readCookies, type Cookie, type Profile } from './read'
@@ -93,7 +94,8 @@ async function pushToDefault(chosen: Cookie[]): Promise<void> {
   try {
     report(await pushCookies(sbx, chosen), chosen, sbx.sandboxId)
     await stopViewer(sbx)
-    console.error(`Saved as your default desktop (${await snapshotBox(sbx.sandboxId, true)}). New boxes start with these logins.`)
+    await snapshotBox(sbx.sandboxId, defaultName())
+    console.error(`Saved as your default desktop "${defaultName()}". New boxes start with these logins.`)
   } finally {
     forget()
     await cleanup()

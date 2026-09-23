@@ -28,9 +28,9 @@ A paused box costs nothing. A running 4 CPU / 8 GB box costs about $0.33 an hour
 
 The dev server keeps running and hot-reloads the changed files.
 
-## The default desktop
+## Saved desktops and the default
 
-`rig save <box>` saves a box — disk and memory — as a named E2B snapshot (`rig-default`). Each save adds a new build to that template, and every new box starts from the latest one. That is how new boxes start signed in to GitHub, Vercel and your browser accounts, with the desktop and Chrome already running.
+`rig save <box> [--as name]` saves a box — disk and memory — as a named E2B snapshot (`rig-<name>`, `rig-default` by default). Which saved desktop new boxes start from is kept in `~/.config/rig/state.json` (`rig saved use <name>`), unless `RIG_DEFAULT_DESKTOP` is set. Each save adds a new build to that template, and every new box starts from the latest one. That is how new boxes start signed in to GitHub, Vercel and your browser accounts, with the desktop and Chrome already running.
 
 Save a clean box made with `rig new`. rig refuses to save a box that ran a repo's code, because that code could have planted something that would then copy into every future box.
 
@@ -63,7 +63,8 @@ The full tool list is in [image.md](image.md).
 | `src/box.ts` | E2B calls: create, connect, list, pause, delete, snapshots |
 | `src/select.ts` | Filters, ages and bulk actions |
 | `src/commands.ts` | Per-box commands: up, sync, exec, browser, shot, port, desktop, snap, new |
-| `src/manage.ts` | Many-box commands: ls, pause, kill, prune, snaps, doctor |
+| `src/manage.ts` | Many-box commands: status, ls, pause, kill, prune, saved, doctor |
+| `src/saved.ts` | Saved-desktop names and which one is the default |
 | `src/repo.ts` | Local git, run safely, and `rig.json` |
 | `src/sync.ts` | Making the box match your working tree |
 | `src/services.ts` | Dev server, desktop and viewer inside the box |

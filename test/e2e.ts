@@ -180,13 +180,31 @@ async function main() {
     const r = await rig(['exec', '-b', 'e2e-from-default', '--', 'cat ~/default-marker'])
     must(r.out.includes('from-default'), 'new box did not start from the default desktop')
     const list = await rig(['snaps'])
-    must(list.out.includes('rig-default-e2e'), list.out)
+    must(list.out.includes('default-e2e'), list.out)
     const busy = await rig(['snaps', 'rm', 'rig-default-e2e', '--force'], { env })
     must(busy.code !== 0 && busy.err.includes('rig kill'), `in-use snapshot: ${busy.err}`)
     await rig(['kill', 'e2e-from-default'])
     const del = await rig(['snaps', 'rm', 'rig-default-e2e', '--force'], { env })
     must(del.code === 0, del.err)
     return 'new box started with the saved file'
+  })
+  await step('several saved desktops: save --as, list, start from one, switch, remove', async () => {
+    const before = (await rig(['status'])).out.match(/Default desktop:\s+(\S+)/)?.[1]
+    await rig(['exec', '-b', toolsBox, '--', 'echo alt > ~/alt-marker'])
+    must((await rig(['save', toolsBox, '--as', 'e2e-alt'])).code === 0, 'save --as failed')
+    const list = await rig(['saved'])
+    must(list.out.includes('e2e-alt'), list.out)
+    const box = await rig(['new', '--name', 'e2e-from-alt', '--from', 'e2e-alt'])
+    must(box.code === 0, box.err)
+    const marker = await rig(['exec', '-b', 'e2e-from-alt', '--', 'cat ~/alt-marker'])
+    must(marker.out.includes('alt'), 'box did not start from e2e-alt')
+    must((await rig(['saved', 'use', 'e2e-alt'])).code === 0, 'saved use failed')
+    const switched = (await rig(['status'])).out
+    if (before) await rig(['saved', 'use', before])
+    must(switched.includes('e2e-alt'), switched)
+    await rig(['kill', 'e2e-from-alt'])
+    must((await rig(['saved', 'rm', 'e2e-alt'])).code === 0, 'saved rm failed')
+    return `switched and restored the default (${before})`
   })
   await step('save refuses a box that ran repo code', async () => {
     const r = await rig(['save', repoBox], { env: { RIG_DEFAULT_DESKTOP: 'rig-default-e2e' } })

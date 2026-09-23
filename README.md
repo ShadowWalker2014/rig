@@ -18,7 +18,7 @@ Each cloud desktop is a Linux machine with your code, a running dev server, test
 - [Bring your logins from your browser](#bring-your-logins-from-your-browser)
 - [Every task](#every-task)
 - [Take over the desktop](#take-over-the-desktop)
-- [Your default desktop](#your-default-desktop)
+- [Saved desktops](#saved-desktops)
 - [Use it with your coding agent](#use-it-with-your-coding-agent)
 - [Manage and clean up](#manage-and-clean-up)
 - [What's inside a cloud desktop](#whats-inside-a-cloud-desktop)
@@ -105,8 +105,9 @@ For command-line tools, sign in inside a cloud desktop, then save it:
 
 ```bash
 rig new                      # an empty cloud desktop; prints its id
-rig desktop <id>             # open the link, run `gh auth login`, `vercel login` and so on in its terminal
+rig desktop <id>             # open the link; sign in to 1Password, Google, `gh auth login`, `vercel login`…
 rig save <id>                # every new cloud desktop now starts signed in
+rig saved                    # your saved desktops; * is the one new boxes start from
 ```
 
 **5. Teach your coding agent**
@@ -185,16 +186,23 @@ rig desktop <box>       # or just `rig desktop` inside a repo
 
 rig prints a private link. Open it in any browser tab to see and control the cloud desktop's screen: finish a login, type a 2FA code, or watch the agent work. The link works only on your machine and only while the command runs; Ctrl-C closes it.
 
-## Your default desktop
+## Saved desktops
 
-Every new cloud desktop starts as a copy of your **default desktop**: its files, its logins and its already-running Chrome.
+Set up a cloud desktop once — sign in, install what you need — and save it. Every new cloud desktop starts as a copy of your **default** saved desktop: its files, its logins and its already-running Chrome.
 
-```bash
-rig save <box>              # make this cloud desktop the default
-rig cookies push            # refresh the default desktop's browser logins
-```
+| Command | Does |
+|---|---|
+| `rig save <box>` | Save this box as your default desktop (or update it) |
+| `rig save <box> --as work` | Save it under another name; add `--use` to make it the default |
+| `rig saved` | List saved desktops; `*` marks the default |
+| `rig saved use work` | New boxes now start from `work` |
+| `rig new --from work` | Start one box from `work` without changing the default |
+| `rig saved rm work` | Delete a saved desktop |
+| `rig status` | The default, running and paused boxes, and this branch's box |
 
-Save a clean cloud desktop made with `rig new`. rig refuses to save one that ran a repo's code, because that code could have planted something that would spread to every future cloud desktop.
+rig reminds you to save: closing `rig desktop` on a clean box prints the `rig save` command, and `rig doctor` flags a missing default.
+
+Save a clean cloud desktop made with `rig new`. rig refuses to save one that ran a repo's code, because that code could have planted something that would spread to every cloud desktop started from it.
 
 ## Use it with your coding agent
 
@@ -233,7 +241,8 @@ Ubuntu 24.04 with an Xfce desktop and Google Chrome, plus:
 | JavaScript | Node 24, npm, bun, pnpm |
 | Deploy and cloud | vercel, wrangler, railway, fly, aws, gcloud, gh, stripe, e2b |
 | AI coding agents | claude, codex, opencode |
-| Browsers and testing | Chrome, Playwright with Chromium, Puppeteer, agent-browser |
+| Browsers and testing | Chrome with the 1Password extension, Playwright with Chromium, Puppeteer, agent-browser |
+| Passwords | 1Password CLI (`op`) and Chrome extension — sign in once, then `rig save` |
 | Python and media | python, pip, uv, whisper, ffmpeg, ImageMagick |
 | Databases and everyday | psql, redis-cli, sqlite3, git, git-lfs, jq, ripgrep, tmux, Homebrew |
 

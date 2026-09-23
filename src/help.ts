@@ -19,14 +19,17 @@ export const COMMAND_HELP: Record<string, string> = {
   guide: `rig guide
   Prints the full workflow for agents: the edit → sync → test → check loop, how to
   drive Chrome, and when to hand the desktop to a human.`,
-  new: `rig new [--name <name>]
-  Starts an empty box with the desktop and Chrome running, for signing in to things.
+  new: `rig new [--name <name>] [--from <saved desktop>]
+  Starts a box that is not tied to a repo, with the desktop and Chrome running —
+  for signing in to things and then saving it. It starts from your default saved
+  desktop, or from --from.
   Example:  rig new --name logins`,
-  up: `rig up [--new] [--name <name>] [--no-dev]
+  up: `rig up [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
   Run inside a git repo. Finds this repo + branch's box (or creates one from the
   default desktop), copies your working tree to it, installs packages if the
   lockfile changed, and starts the dev server. Prints the box id.
   --new     Always make a separate box (for parallel agents on one branch).
+  --from    Start a new box from that saved desktop instead of the default.
   --no-dev  Do not start the dev server.`,
   sync: `rig sync [box]
   Sends your local commits, uncommitted edits and untracked files to the box, with no
@@ -95,18 +98,28 @@ rig cookies browsers
   \`sites\` and \`browsers\` list what is there without reading any cookie value.
   rig prints only site names and counts. For Chrome-family browsers macOS asks you
   to allow access each time: click Allow, not Always Allow.`,
-  snaps: `rig snaps | rig snaps rm <snapshot id>… [--force]
-  Lists snapshots, or deletes them. Your default desktop needs --force.`,
-  save: `rig save <box> [--force]
-  Makes this box your default desktop: every new box starts as a copy of it, with
-  its files, logins and running Chrome. Use a clean box from \`rig new\`; a box that
-  ran a repo's code is refused unless you add --force. Save again any time.`,
+  save: `rig save <box> [--as <name>] [--use] [--force]
+  Saves this box as a saved desktop: its files, logins and running Chrome. New boxes
+  start as a copy of your default saved desktop.
+  rig save <box>              update your default desktop from this box
+  rig save <box> --as work    save it as "work" (becomes the default if you have none)
+  rig save <box> --as work --use    save it and make it the default
+  Save a clean box from \`rig new\`; a box that ran a repo's code is refused unless you
+  add --force. Saving the same name again replaces it with the newer version.`,
+  saved: `rig saved | rig saved use <name> | rig saved rm <name> [--force]
+  Lists your saved desktops, with * on the default one new boxes start from.
+  use   make another saved desktop the default (stored on this machine)
+  rm    delete one; the default needs --force
+  RIG_DEFAULT_DESKTOP, if set, overrides \`rig saved use\`.`,
+  status: `rig status
+  Shows your default desktop, how many boxes are running and paused, and this
+  branch's box when you are in a repo.`,
   doctor: `rig doctor
   Checks the E2B key, that E2B accepts it, the base image, the default desktop and
   your settings, and says how to fix anything missing. Prints no secrets.`,
   snap: `rig snap [box]
-  Saves a snapshot of the box and prints its id. To make a box the one every new
-  box starts from, use \`rig save\` instead.`,
+  Takes a one-off snapshot and prints its id. To keep a box as a starting point for
+  new boxes, use \`rig save\`.`,
 }
 
 export function commandHelp(cmd: string): string | undefined {

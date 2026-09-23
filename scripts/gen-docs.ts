@@ -3,9 +3,9 @@
 import { COMMAND_HELP } from '../src/help'
 
 const ORDER = [
-  ['Setup', ['login', 'logout', 'image', 'new', 'desktop', 'save', 'cookies', 'skill', 'doctor']],
+  ['Setup', ['login', 'logout', 'image', 'new', 'desktop', 'save', 'saved', 'cookies', 'skill', 'doctor']],
   ['Every task', ['up', 'sync', 'exec', 'browser', 'shot', 'port', 'logs', 'pull', 'guide']],
-  ['Managing boxes', ['ls', 'pause', 'kill', 'prune', 'snap', 'snaps']],
+  ['Managing boxes', ['status', 'ls', 'pause', 'kill', 'prune', 'snap']],
 ] as const
 
 export function commandsDoc(): string {

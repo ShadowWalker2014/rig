@@ -1,5 +1,6 @@
 import { NotFoundError, Sandbox, type SandboxInfo, type SandboxState } from 'e2b'
 import { baseTemplate, DISPLAY, defaultDesktop, idleMs, OWNER_TAG } from './config'
+import { templateOf } from './saved'
 import { connection } from './key'
 
 export type Tags = Record<string, string>
@@ -8,7 +9,9 @@ const auth = () => connection()
 
 // Private by construction: every port needs the box's traffic token, which only
 // rig holds. Idle boxes pause with RAM kept, and wake on the next request.
-export async function createBox(tags: Tags): Promise<Sandbox> {
+// Starts from the saved desktop named by `from`, else your default desktop, else
+// the base image.
+export async function createBox(tags: Tags, from?: string): Promise<Sandbox> {
   const opts = {
     ...auth(),
     metadata: { ...OWNER_TAG, ...tags },
@@ -19,15 +22,18 @@ export async function createBox(tags: Tags): Promise<Sandbox> {
     network: { allowPublicTraffic: false, maskRequestHost: 'localhost:${PORT}' },
     envs: { DISPLAY },
   }
-  if (await defaultDesktopExists()) return Sandbox.create(defaultDesktop(), opts)
-  console.error(`No default desktop saved yet, so this box starts from the base image. Save one with \`rig save <box>\`.`)
+  const template = from ? templateOf(from) : defaultDesktop()
+  if (await savedExists(template)) return Sandbox.create(template, opts)
+  if (from) throw new Error(`No saved desktop "${from}". See \`rig saved\`.`)
+  console.error('No default desktop saved yet, so this box starts from the base image. Save one with `rig save <box>`.')
   return Sandbox.create(baseTemplate(), opts)
 }
 
-export async function defaultDesktopExists(): Promise<boolean> {
-  const pages = Sandbox.listSnapshots({ ...auth(), name: defaultDesktop() })
+export async function savedExists(template = defaultDesktop()): Promise<boolean> {
+  const pages = Sandbox.listSnapshots({ ...auth(), name: template })
   return pages.hasNext && (await pages.nextItems()).length > 0
 }
+export const defaultDesktopExists = () => savedExists()
 
 // Connecting resumes a paused box and pushes its idle deadline out again.
 export async function openBox(id: string, busyMs = 0): Promise<Sandbox> {
@@ -83,8 +89,9 @@ export async function pauseBox(id: string): Promise<void> {
 
 // Naming the snapshot adds a new build to the default-desktop template, so it becomes
 // what every later `rig up` starts from.
-export async function snapshotBox(id: string, asDefault: boolean): Promise<string> {
-  const info = await Sandbox.createSnapshot(id, { ...auth(), ...(asDefault ? { name: defaultDesktop() } : {}) })
+// With a name, the snapshot becomes (a new version of) that saved desktop.
+export async function snapshotBox(id: string, name?: string): Promise<string> {
+  const info = await Sandbox.createSnapshot(id, { ...auth(), ...(name ? { name: templateOf(name) } : {}) })
   return info.names[0] ?? info.snapshotId
 }
 

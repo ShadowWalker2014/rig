@@ -68,10 +68,22 @@ For anything else only a person can do (a CAPTCHA, a 2FA code, a consent screen)
 run `rig desktop` in the background and give the user the printed link. It shows
 the same Chrome you drive. Wait for them to say they're done.
 
-If every future box should have a new login, tell the user to sign in on a clean
-box (`rig new`, then `rig desktop <id>`) and save that one with `rig save <id>`.
-Never save a box that has run a repo's code, and only run `rig save` when the user
-asks, because it copies every login in the box into every future box.
+## Saving a setup
+
+When the user has finished setting up a clean box (signed in on `rig desktop`, pushed
+cookies, installed tools), ask them: "Save this as your default desktop, so every new
+box starts this way?" If they say yes, run `rig save <box>`. Never save without asking,
+and never save a box that ran a repo's code — it copies everything in the box into
+every future box.
+
+Saved desktops work like contexts:
+- `rig saved` lists them (`*` is the default); `rig status` shows the default and boxes.
+- `rig save <box> --as <name>` keeps another setup; `rig saved use <name>` switches the default.
+- `rig new --from <name>` / `rig up --from <name>` starts one box from a specific setup.
+
+1Password (the Chrome extension and the `op` CLI) is installed in every box. If the
+user needs a password filled, ask them to use the 1Password extension on `rig desktop`;
+never ask for passwords yourself.
 
 ## Rules
 

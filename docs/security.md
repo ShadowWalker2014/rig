@@ -40,6 +40,8 @@ Once in a cloud desktop, cookies live in its Chrome profile on its disk (with a 
 
 ## The default desktop
 
+- If you sign in to 1Password in the desktop you save, every box started from it has your unlocked vault while 1Password stays unlocked — and so does any agent or repo code running there. Consider a separate vault or account with only the logins your cloud desktops need.
+
 - It copies every login in it into every new box. Sign in only to what you are comfortable having everywhere. Keep bank, payment and production-write accounts out; use scoped tokens where you can.
 - `rig save` refuses a box that ran a repo's code unless you add `--force`, and stops the desktop viewer first so no password or open session is copied.
 

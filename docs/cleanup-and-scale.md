@@ -55,11 +55,11 @@ rig ls --ids --older-than 30d | xargs rig kill   # scripts: ids on stdout, one p
 - Bulk actions run 8 at a time. Rate-limit answers from E2B are retried with backoff. A box that fails never stops the rest, and rig reports how many failed.
 - E2B limits how many boxes can run at once (100 on Pro). Paused boxes do not count.
 
-## Snapshots
+## Saved desktops
 
 ```bash
-rig snaps                 # list snapshots, including your default desktop
-rig snaps rm <id>         # delete one (your default desktop needs --force)
+rig saved                 # list saved desktops; * is the default
+rig saved rm <name>       # delete one (the default needs --force)
 ```
 
 ## Everything at once

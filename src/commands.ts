@@ -3,7 +3,8 @@ import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { CommandExitError, type Sandbox, type SandboxInfo } from 'e2b'
 import { str, type Args } from './args'
-import { createBox, listBoxes, openBox, resolveBox, snapshotBox, type Tags } from './box'
+import { createBox, listBoxes, openBox, resolveBox, savedExists, snapshotBox, type Tags } from './box'
+import { defaultName, isValidName, setDefaultName } from './saved'
 import { DEV_LOG, HOME, idleMs, NOVNC_PORT } from './config'
 import { forward } from './proxy'
 import { currentRepo, projectConfig, type Repo } from './repo'
@@ -34,7 +35,7 @@ export async function up(a: Args): Promise<void> {
   const repo = currentRepo()
   const cfg = projectConfig(repo.root)
   const existing = a.flags.new ? undefined : (await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } }))[0]
-  const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a))
+  const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a), str(a.flags.from))
   console.error(`${existing ? 'Reusing' : 'Created'} box ${sbx.sandboxId}`)
   await sbx.setTimeout(idleMs() + 1_800_000)
   const { installed } = await syncRepo(sbx, repo)
@@ -153,7 +154,11 @@ export async function desktop(a: Args): Promise<void> {
   // The password rides in the #fragment, which browsers never send to a server.
   console.log(`http://127.0.0.1:${server.port}/vnc.html?autoconnect=true&resize=scale#&password=${password}`)
   console.error('Open that link to see and control the box. Press Ctrl-C to close it.')
-  await holdOpen(sbx, () => server.stop(true))
+  await holdOpen(sbx, () => {
+    server.stop(true)
+    // A clean box someone just signed in to is exactly what should be saved.
+    if (!box.metadata.repo) console.error(`\nDone setting it up? Save it so every new box starts this way: rig save ${box.metadata.name ?? box.sandboxId}`)
+  })
 }
 
 export async function port(a: Args): Promise<void> {
@@ -168,31 +173,40 @@ export async function port(a: Args): Promise<void> {
   await holdOpen(sbx, () => server.stop(true))
 }
 
-// `rig save <box>`: make this box the default desktop every new box starts from.
-export const save = (a: Args) => snap({ ...a, flags: { ...a.flags, default: true } })
-
-export async function snap(a: Args): Promise<void> {
+// `rig save <box> [--as name] [--use]`: keep this box as a saved desktop that new
+// boxes start from. Without --as it updates your default desktop.
+export async function save(a: Args): Promise<void> {
+  const name = str(a.flags.as) ?? defaultName()
+  if (!isValidName(name)) throw new Error(`"${name}" cannot be a desktop name. Use lowercase letters, digits and dashes.`)
   const box = await target(a)
-  const sbx = await openBox(box.sandboxId, 900_000)
-  if (a.flags.default) {
-    // A box that ran a repo's install and dev scripts may carry changes that code
-    // planted; saving it would copy them into every future box.
-    if (box.metadata.repo && !a.flags.force) {
-      throw new Error(`This box ran code from ${box.metadata.repo}. Save a box made with \`rig new\`, or add --force if you trust that repo.`)
-    }
-    await stopDev(sbx)
-    await stopViewer(sbx)
-    console.error('Saving this box as your default desktop. Every new box will start with its logins and files.')
-    console.error(`Any open desktop view of this box is now closed; reopen it with: rig desktop ${box.metadata.name ?? box.sandboxId}`)
+  // A box that ran a repo's install and dev scripts may carry changes that code
+  // planted; saving it would copy them into every box started from it.
+  if (box.metadata.repo && !a.flags.force) {
+    throw new Error(`This box ran code from ${box.metadata.repo}. Save a box made with \`rig new\`, or add --force if you trust that repo.`)
   }
-  console.log(await snapshotBox(box.sandboxId, Boolean(a.flags.default)))
+  const sbx = await openBox(box.sandboxId, 900_000)
+  await stopDev(sbx)
+  await stopViewer(sbx)
+  const hadDefault = await savedExists()
+  await snapshotBox(box.sandboxId, name)
+  const makeDefault = Boolean(a.flags.use) || name === defaultName() || !hadDefault
+  if (makeDefault && name !== defaultName()) setDefaultName(name)
+  console.error(`Saved "${name}"${makeDefault ? ', your default desktop: every new box starts from it' : `. Start a box from it with \`rig new --from ${name}\`, or make it the default with \`rig saved use ${name}\``}.`)
+  console.error(`The desktop view of this box was closed; reopen it with: rig desktop ${box.metadata.name ?? box.sandboxId}`)
+}
+
+// `rig snap <box>`: a one-off snapshot, printed by id. `--default` is the old spelling of `rig save`.
+export async function snap(a: Args): Promise<void> {
+  if (a.flags.default) return save(a)
+  const box = await target(a)
+  console.log(await snapshotBox(box.sandboxId))
 }
 
 export async function newBox(a: Args): Promise<void> {
-  const sbx = await createBox({ name: str(a.flags.name) ?? `rig-${shortId()}` })
+  const sbx = await createBox({ name: str(a.flags.name) ?? `rig-${shortId()}` }, str(a.flags.from))
   await ensureDesktop(sbx)
   console.log(sbx.sandboxId)
-  console.error(`Empty box ready. Sign in to things with: rig desktop ${sbx.sandboxId}\nThen make it your default desktop, so every new box starts signed in: rig save ${sbx.sandboxId}`)
+  console.error(`Box ready. Sign in to things with: rig desktop ${sbx.sandboxId}\nThen save it, so every new box starts signed in: rig save ${sbx.sandboxId}`)
 }
 
 export function installSkill(): void {

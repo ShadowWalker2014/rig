@@ -1,10 +1,11 @@
 import { Template, type SandboxInfo } from 'e2b'
 import { str, type Args } from './args'
-import { deleteSnapshot, defaultDesktopExists, killBox, listBoxes, listSnapshots, pauseBox, resolveBox } from './box'
+import { deleteSnapshot, defaultDesktopExists, killBox, listBoxes, listSnapshots, pauseBox, resolveBox, savedExists } from './box'
 import { target } from './commands'
 import { baseTemplate, boxCpu, boxMemoryMb, defaultDesktop, idleMs } from './config'
 import { connection, setting } from './key'
 import { currentRepo, git } from './repo'
+import { defaultName, nameOf, pinnedBySetting, setDefaultName, templateOf } from './saved'
 import { forEachBox, hasSelection, lastUsed, parseAge, selectBoxes } from './select'
 
 function age(d: Date): string {
@@ -90,23 +91,51 @@ async function boxesForDeletedBranches(): Promise<SandboxInfo[]> {
   return boxes.filter((b) => b.metadata.branch && !live.has(b.metadata.branch))
 }
 
-export async function snaps(a: Args): Promise<void> {
-  if (a.sub[0] === 'rm') return removeSnapshots(a.sub.slice(1), Boolean(a.flags.force))
-  const rows = await listSnapshots()
-  if (rows.length === 0) return void console.log('No snapshots.')
-  printTable([['SNAPSHOT', 'NAMES'], ...rows.map((r) => [r.snapshotId, r.names.join(', ')])])
+// `rig saved`: your saved desktops, like `docker context ls`. `use` switches which
+// one new boxes start from; `rm` deletes one.
+export async function saved(a: Args): Promise<void> {
+  const [action, name] = [a.sub[0], a.sub[1]]
+  if (action === 'use') return useSaved(name)
+  if (action === 'rm') return removeSaved(name, Boolean(a.flags.force))
+  if (action) throw new Error('Usage: rig saved | rig saved use <name> | rig saved rm <name>')
+  const templates = (await listSnapshots()).flatMap((r) => r.names).map((n) => n.split('/').pop()!.split(':')[0]!)
+  const desktops = [...new Set(templates.filter((t) => t.startsWith('rig-')).map(nameOf))].sort()
+  if (desktops.length === 0) return void console.log('No saved desktops yet. Set one up: rig new → rig desktop <id> → rig save <id>')
+  const current = defaultName()
+  printTable([['', 'NAME', 'START A BOX FROM IT'], ...desktops.map((n) => [n === current ? '*' : '', n, n === current ? 'rig new (default)' : `rig new --from ${n}`])])
+  if (!desktops.includes(current)) console.log(`\nYour default "${current}" is not saved yet; new boxes start from the base image.`)
+  if (pinnedBySetting()) console.log('\nRIG_DEFAULT_DESKTOP is set, so it decides the default, not `rig saved use`.')
 }
 
-async function removeSnapshots(ids: string[], force: boolean): Promise<void> {
-  if (ids.length === 0) throw new Error('Usage: rig snaps rm <snapshot id>…')
-  for (const id of ids) {
-    if (id.split(':')[0]!.endsWith(defaultDesktop()) && !force) throw new Error(`${id} is your default desktop. Add --force to delete it.`)
-    const deleted = await deleteSnapshot(id).catch((err: Error) => {
-      if (!/running sandboxes/.test(err.message)) throw err
-      throw new Error(`${id} is still in use by running boxes. Delete them first (rig ls, then rig kill <id>), then retry.`)
-    })
-    console.error(`${deleted ? 'Deleted' : 'Not found:'} ${id}`)
-  }
+async function useSaved(name: string | undefined): Promise<void> {
+  if (!name) throw new Error('Usage: rig saved use <name>   (see `rig saved`)')
+  if (!(await savedExists(templateOf(name)))) throw new Error(`No saved desktop "${name}". See \`rig saved\`.`)
+  setDefaultName(nameOf(name))
+  console.error(`New boxes now start from "${nameOf(name)}".`)
+  if (pinnedBySetting()) console.error('Note: RIG_DEFAULT_DESKTOP is set in your shell or ~/.config/rig/.env and still wins. Remove it to use this.')
+}
+
+async function removeSaved(name: string | undefined, force: boolean): Promise<void> {
+  if (!name) throw new Error('Usage: rig saved rm <name>')
+  if (nameOf(name) === defaultName() && !force) throw new Error(`"${nameOf(name)}" is your default desktop. Switch first with \`rig saved use <other>\`, or add --force.`)
+  const deleted = await deleteSnapshot(templateOf(name)).catch((err: Error) => {
+    if (!/running sandboxes/.test(err.message)) throw err
+    throw new Error(`"${nameOf(name)}" is still in use by running boxes. Delete them first (rig ls, then rig kill <id>), then retry.`)
+  })
+  console.error(deleted ? `Deleted saved desktop "${nameOf(name)}".` : `No saved desktop "${nameOf(name)}".`)
+}
+
+// `rig status`: what new boxes start from, what is running, and this repo's box.
+export async function status(): Promise<void> {
+  const boxes = await listBoxes()
+  const current = defaultName()
+  const exists = await savedExists()
+  console.log(`Default desktop:  ${current}${exists ? '' : '  (not saved yet: new boxes start from the base image)'}`)
+  console.log(`Boxes:            ${summary(boxes)}`)
+  const repo = safely(() => currentRepo())
+  if (!repo) return
+  const mine = boxes.filter((b) => b.metadata.repo === repo.slug && b.metadata.branch === repo.branch)
+  console.log(`This branch:      ${mine.length ? mine.map((b) => `${b.metadata.name ?? b.sandboxId} (${b.state})`).join(', ') : 'no box yet — rig up'}`)
 }
 
 // One screen that answers "is rig set up right?" without printing any secret.
@@ -121,7 +150,7 @@ export async function doctor(): Promise<void> {
   if (boxes instanceof Error) return
   console.log(`  ${summary(boxes)}`)
   check(await Template.exists(baseTemplate(), conn), `base image "${baseTemplate()}" built`, 'rig image build')
-  check(await defaultDesktopExists(), 'default desktop saved', 'rig new → rig desktop <id> → rig save <id> (see docs/setup.md)')
+  check(await defaultDesktopExists(), `default desktop "${defaultName()}" saved`, 'rig new → rig desktop <id> → rig save <id> (see docs/setup.md)')
   console.log(`  Boxes pause after ${idleMs() / 60_000} idle minutes. New images get ${boxCpu()} CPUs and ${boxMemoryMb() / 1024} GB.`)
   console.log(`  Bun ${Bun.version}. Settings file: ${setting('RIG_E2B_API_KEY') ? 'key from shell or ~/.config/rig/.env' : 'key from the macOS Keychain'}.`)
 }

@@ -11,6 +11,7 @@
 | AI coding agents | claude (Claude Code), codex, opencode |
 | Email | resend |
 | Browsers and testing | Google Chrome, Playwright with its Chromium, Puppeteer (uses the system Chrome), agent-browser |
+| Passwords | 1Password CLI (`op`) from 1Password's signed apt repo, and the 1Password Chrome extension, installed by Chrome policy from the Chrome Web Store |
 | Python and media | python / py, pip, pipx, uv, whisper (CPU), ffmpeg, ImageMagick, Pillow, fontTools |
 | Databases | psql, redis-cli, sqlite3 |
 | Everyday | git, git-lfs, jq, ripgrep, fd, tmux, vim, htop, curl, wget, zip, rsync |

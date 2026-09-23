@@ -52,6 +52,8 @@ You now see the cloud desktop's screen. Sign in to the things every task will ne
 
 **In its Chrome:** GitHub, Vercel, Google, and your app's test accounts.
 
+**1Password** is already installed — sign in to its Chrome extension (the key icon in the toolbar) and it fills everything else. The `op` CLI is there too.
+
 **In its terminal** (Applications → Terminal), run the ones you use:
 
 ```bash
@@ -73,6 +75,8 @@ A CLI login that needs a browser opens a Chrome window on the same screen; finis
 
 ## 5. Save it as your default desktop
 
+When you close the desktop link, rig reminds you with the exact command.
+
 Close the desktop link (Ctrl-C in the terminal running `rig desktop`), then:
 
 ```bash
@@ -80,6 +84,8 @@ rig save <id>
 ```
 
 Every new cloud desktop now starts from this one, already signed in. To add a login later, repeat steps 4 and 5 on a fresh `rig new`.
+
+Keep several setups — for example one per client — with `rig save <id> --as client-a`. `rig saved` lists them, `rig saved use client-a` switches the default, and `rig new --from client-a` starts one box from it.
 
 ## 6. Teach your coding agent
 

@@ -73,7 +73,9 @@ function image(context: string, withExtras: boolean) {
     .runCmd('PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright playwright install --with-deps chromium && chmod -R a+rX /opt/ms-playwright')
     // Whisper for captions, with CPU-only torch so the image stays small.
     .runCmd('UV_TOOL_DIR=/opt/uv-tools UV_TOOL_BIN_DIR=/usr/local/bin uv tool install openai-whisper --index https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match')
-    .copy(['rig-desktop', 'rig-vnc', 'rig-ab'], '/usr/local/bin/', { mode: 0o755 })
+    .copy(['rig-desktop', 'rig-vnc', 'rig-ab', 'rig-1password'], '/usr/local/bin/', { mode: 0o755 })
+    // 1Password: the CLI from its signed apt repo, and the Chrome extension via Chrome policy.
+    .runCmd('/usr/local/bin/rig-1password && rm -rf /var/lib/apt/lists/*')
     .copy('rig-profile.sh', '/etc/profile.d/rig.sh', { mode: 0o644 })
     .runCmd(['git lfs install --system', 'rm -rf /var/lib/apt/lists/* /root/.npm /root/.cache'])
     // Homebrew installs as a normal user into /home/linuxbrew.

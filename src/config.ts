@@ -1,9 +1,10 @@
 import { setting } from './key'
+import { defaultName, templateOf } from './saved'
 
 // Names on the E2B side. The default desktop is a named snapshot: every
 // `rig save` adds a new build to it, and new boxes start from the latest.
 export const baseTemplate = () => setting('RIG_BASE_TEMPLATE') ?? 'rig-base'
-export const defaultDesktop = () => setting('RIG_DEFAULT_DESKTOP') ?? setting('RIG_GOLDEN') ?? 'rig-default'
+export const defaultDesktop = () => templateOf(defaultName())
 
 // A box pauses after this long without a rig command, keeping its RAM.
 export const idleMs = () => Number(setting('RIG_IDLE_MIN') ?? 15) * 60_000
