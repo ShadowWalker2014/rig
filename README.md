@@ -1,62 +1,57 @@
-# rig — cloud dev boxes for AI coding agents
+# rig — run more coding agents without freezing your laptop
+
+**Your laptop runs the agents. The cloud runs everything else.**
+
+rig moves the heavy part of AI coding — dev servers, test runs and a real browser — into cloud boxes that sleep when you're not using them. Claude Code, Cursor or Codex keeps editing code on your laptop, and you can run many tasks side by side.
 
 [![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <p align="center"><img src="assets/hero.svg" alt="rig: coding agents on your laptop, dev servers and a signed-in Chrome in pause-when-idle E2B cloud boxes, one per git branch" width="100%"></p>
 
-**rig is an open-source command-line tool that runs your dev servers, tests and a logged-in Chrome in cloud sandboxes, while Claude Code, Cursor, Codex or any coding agent keeps editing code on your laptop.** Each git branch gets its own Linux box on [E2B](https://e2b.dev). A box pauses itself after 15 idle minutes, keeps its memory, and wakes in about a second. You can run many agents in parallel without your laptop running out of memory.
+## Why it matters
 
-> Status: early preview (v0.1). Feedback and issues are welcome.
+One coding agent barely uses your laptop. What freezes it is everything around the agent: a dev server per branch, a Chrome for checking the UI, and test runs. Two or three tasks in, a 16–24 GB laptop starts swapping.
 
-## Why rig exists
+rig gives every branch its own Linux box in the cloud for that work:
 
-A coding agent is cheap to run locally. What freezes a laptop is everything around it: each worktree's dev server (a large Next.js app can take several GB once compiled), a Chrome for browser tests, and test runners. On a 16–24 GB laptop that caps you at two or three parallel tasks.
-
-rig moves exactly that heavy work to the cloud and leaves the agent and your editor where they are.
+- **Sleeps when idle, wakes in a second.** A box pauses after 15 quiet minutes with everything still running inside, and costs nothing while paused.
+- **Starts signed in.** Sign in to GitHub, Vercel and your test accounts once; every new box starts with those logins.
+- **You can take over.** Open the box's screen in any browser tab to finish a login or a 2FA code.
+- **Private by default.** Box ports are never public, and your API key never touches the repo you work in.
 
 <p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, dev server, Chrome and tests for every task and runs out of memory. With rig, the laptop runs only the agents and each branch's dev server, Chrome and tests run in its own cloud box." width="100%"></p>
-
-| Stays on your laptop | Moves to the rig box |
-|---|---|
-| The coding agent (Claude Code, Cursor, Codex, Aider…) | The dev server (`bun run dev`, `next dev`, `vite`) |
-| Your editor and git | Test suites, type-checks and builds |
-| Your code (the source of truth) | A real, headful Chrome that is signed in to your accounts |
 
 ## How it works
 
 <p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig snap --promote" width="100%"></p>
 
-1. `rig up` creates a box for this repo and branch (or reuses it), copies your working tree into it, installs packages and starts the dev server.
-2. The agent edits files locally, then runs `rig sync`. Committed, uncommitted and untracked changes all reach the box, with no `git push`.
-3. The agent tests in the box with `rig exec -- bun test` and checks the UI with `rig browser -- open http://localhost:3000`.
-4. When a page needs a human (a login, a 2FA code), `rig desktop` gives you a link to the box's screen. You take over in any browser tab.
-5. `rig snap --promote` saves a box's logins as the **golden snapshot**, so every future box starts signed in to GitHub, Vercel and your test accounts.
+1. **`rig up`** gives this branch a box: your code is copied in, packages are installed and the dev server starts.
+2. **`rig sync`** sends your local edits to the box — committed or not, no `git push` needed.
+3. **`rig exec`** runs tests in the box; **`rig browser`** drives its signed-in Chrome.
+4. **`rig desktop`** lets you take over the box's screen.
+5. **`rig snap --promote`** saves a clean box's logins so every new box starts with them.
 
 ## Quick start
 
-Requires [Bun](https://bun.sh) 1.2+ and an [E2B account](https://e2b.dev) (the free Hobby plan works for trying rig with `RIG_BOX_CPU=2` and `RIG_BOX_MEMORY_MB=4096`; bigger boxes need Pro).
+You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account.
 
 ```bash
-bun add -g github:ShadowWalker2014/rig    # npm release coming: npm install -g @shadowwalker2014/rig
-rig login                                # macOS: stores your E2B API key in the Keychain
-rig image build                          # once: Ubuntu 24.04, desktop, Chrome, bun, node, gh, vercel
-rig skill install                        # once: teaches Claude Code to use rig
+bun add -g github:ShadowWalker2014/rig   # npm release coming: npm install -g @shadowwalker2014/rig
+rig login           # stores your E2B API key in the macOS Keychain
+rig image build     # once, about 10 minutes: desktop, Chrome and the usual dev CLIs
+rig skill install   # once: teaches Claude Code to use rig
+rig doctor          # checks everything is set up
 ```
 
-Not on macOS? Put your key in a private settings file instead of `rig login`:
-
-```bash
-mkdir -p ~/.config/rig && cp .env.example ~/.config/rig/.env && chmod 600 ~/.config/rig/.env
-# then set RIG_E2B_API_KEY=... in ~/.config/rig/.env
-```
+Not on a Mac? Copy [.env.example](.env.example) to `~/.config/rig/.env`, run `chmod 600` on it, and put your key in it.
 
 ### Sign in to your tools once
 
 ```bash
-rig new                         # an empty box; prints its id
-rig desktop <id>                # open the link; sign in to sites in Chrome, run `gh auth login` in the terminal
-rig snap <id> --promote         # every new box now starts from this one
+rig new                      # an empty box; prints its id
+rig desktop <id>             # open the link, sign in to sites in Chrome, run `gh auth login` in the terminal
+rig snap <id> --promote      # every new box now starts signed in
 ```
 
 ### Every task
@@ -65,82 +60,45 @@ rig snap <id> --promote         # every new box now starts from this one
 
 ```bash
 cd my-repo
-rig up                          # box for this repo + branch: sync, install, start the dev server
-rig sync                        # after editing locally
-rig exec -- bun test            # any command, in the box's copy of the repo
-rig browser -- open http://localhost:3000
-rig shot                        # screenshot of the box's Chrome, saved locally
-rig port 3000                   # open the box's dev server at http://localhost:3000 on your laptop
-rig desktop                     # watch or take over the box's screen
+rig up                                       # this branch's box, with the dev server running
+rig sync                                     # after editing
+rig exec -- bun test                         # any command, in the box's copy of the repo
+rig browser -- open http://localhost:3000    # the agent drives the box's Chrome
+rig shot                                     # screenshot to a local file
+rig port 3000                                # open the box's app at http://localhost:3000
 ```
 
-Every command has built-in help: `rig help <command>`. `rig guide` prints the full workflow for coding agents.
+### Clean up
 
-## Commands
+```bash
+rig ls                       # every box, with state and when it was last used
+rig prune --merged --yes     # delete idle boxes and boxes whose branch is gone
+```
 
-| Command | What it does |
+Filters and bulk actions scale to thousands of boxes: see [cleanup and scale](docs/cleanup-and-scale.md).
+
+## Docs
+
+| Read | For |
 |---|---|
-| `rig up [--new]` | Create or reuse this branch's box, sync code, install, start the dev server |
-| `rig sync` | Send local changes (committed or not) to the box |
-| `rig exec -- <cmd>` | Run a command in the box's repo folder; output streams, exit code is kept |
-| `rig browser -- <args>` | Drive the box's signed-in Chrome with [agent-browser](https://github.com/vercel-labs/agent-browser) |
-| `rig shot [file]` | Screenshot the box's Chrome to a local PNG |
-| `rig port <port>` | Serve a box port on your laptop's `localhost` |
-| `rig desktop` | Private link to watch or control the box's desktop |
-| `rig logs` | Last lines of the dev server output |
-| `rig snap [--promote]` | Snapshot a box; `--promote` makes it the starting point for new boxes |
-| `rig new` | Empty box for signing in to things |
-| `rig ls` · `rig pause` · `rig kill` | List, pause or delete boxes |
+| [Command reference](docs/commands.md) | Every command, flag and example (also `rig help <command>`) |
+| [How it works](docs/how-it-works.md) | Box lifecycle, syncing, the golden snapshot, the proxy, the code map |
+| [Cleanup and scale](docs/cleanup-and-scale.md) | Costs, auto-pause, `prune`, bulk actions, thousands of boxes |
+| [The box image](docs/image.md) | Installed tools, adding your own, box size |
+| [Security](docs/security.md) | How your key, logins and laptop are protected |
+| [Contributing](AGENTS.md) | Code map, tests and safety rules |
 
 ## Per-repo settings
 
-Optional `rig.json` at the repo root. Everything has a default based on your lockfile and `package.json`:
+An optional `rig.json` at the repo root. Everything has a default based on your lockfile and `package.json`:
 
 ```json
 { "setup": "bun install", "dev": "bun run dev", "port": 3000, "copy": [".env.local"], "submodules": true }
 ```
 
-`copy` lists gitignored files (like `.env.local`) to send on every sync. rig only ever uploads files inside the repo.
+`copy` lists gitignored files (like `.env.local`) to send on every sync.
 
-## Security
-
-- **Your E2B key never touches the repo you work in.** rig reads it from your shell, `~/.config/rig/.env` (must be `chmod 600`) or the macOS Keychain. It starts Bun with its own empty config, so a repo's `.env` files and `bunfig.toml` are never loaded, and it ignores `E2B_*` variables so it cannot be pointed at another account.
-- **Box ports are never public.** Every box is created with `allowPublicTraffic: false`. `rig port` and `rig desktop` run a proxy on `127.0.0.1` that adds the box's access token. It refuses other hostnames (DNS rebinding) and requests started by other websites; `rig port` still lets plain links and redirects in, exactly like a local dev server. The desktop also asks for a one-time password.
-- **Box output is cleaned before it reaches your terminal.** Escape sequences that could write your clipboard or control your terminal are removed; colours stay.
-- **Uploads stay inside the repo.** rig resolves every symlink before uploading, so no path, `rig.json` entry or committed symlink can send a file from outside the repo. Git runs with the repo's fsmonitor and hooks switched off.
-- **A repo's code runs next to your logins.** `rig up` runs the repo's install and dev scripts in a box that starts from your golden snapshot, which holds your GitHub, Vercel and browser sessions. Only run `rig up` on repos you would trust to run `npm install` on your laptop.
-- **The golden snapshot copies every login in it into every new box.** Sign in only to what you are comfortable having in every box. Keep money-moving accounts and production write credentials out, and use scoped tokens (for example a GitHub token limited to specific repos). `rig snap --promote` refuses a box that has run a repo's code unless you add `--force`; promote a clean box made with `rig new`.
-- **Your E2B API key and each box's access token are as powerful as your logins.** Anyone holding them can control your boxes and their signed-in browser. rig keeps the access token in memory only. Revoke the API key in the E2B dashboard if it leaks.
-
-Found a vulnerability? Please open a private [security advisory](https://github.com/ShadowWalker2014/rig/security/advisories/new) rather than a public issue.
-
-## FAQ
-
-### What is rig?
-rig is a CLI that gives each git branch its own cloud Linux box for running dev servers, tests and a browser, so AI coding agents can work in parallel without overloading your laptop. The agent still runs locally; rig moves only the heavy processes.
-
-### Does rig work with Claude Code, Cursor, Codex and other agents?
-Yes. Any agent that can run shell commands can use rig. `rig skill install` adds a Claude Code skill that tells the agent when to use it; other agents can read `rig guide`.
-
-### How is rig different from Claude Code on the web, GitHub Codespaces or Daytona?
-Claude Code on the web runs the whole agent in the cloud and starts every session without your logins. Codespaces loses running processes when it stops. rig keeps the agent on your laptop, keeps each box's memory while paused, starts every box already signed in through the golden snapshot, and gives you a desktop to take over the browser.
-
-### How much does rig cost?
-rig is free and MIT licensed. You pay E2B for running boxes: at E2B's [published rates](https://e2b.dev/pricing), a 4 vCPU / 8 GB box costs about $0.33 per running hour. Paused boxes cost nothing.
-
-### Can I sign in to websites in the cloud browser?
-Yes. `rig desktop` opens the box's screen in a browser tab. The Chrome you see is the same one the agent drives, so a login you finish there is immediately available to the agent.
-
-### Does the dev server think it is running on localhost?
-Yes. Requests reach the box's dev server with `Host: localhost:<port>`, so dev-origin checks and OAuth redirect callbacks behave as they do on a laptop. Providers that POST back to your app from their own site (for example Sign in with Apple's `form_post`) are blocked by rig's cross-site protection; finish those in the box's Chrome through `rig desktop`.
-
-### Does rig work on Linux or Windows?
-The CLI runs anywhere Bun runs. Use `~/.config/rig/.env` for your key on Linux; Windows is untested.
-
-### Why E2B?
-E2B is the sandbox provider that combines pausing with memory kept, auto-resume on traffic, snapshots of a running box that can start many new boxes, private ports, and a large enough box for a real dev server.
-
-## Configuration
+## Settings
 
 Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.example)):
 
@@ -149,10 +107,43 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 | `RIG_E2B_API_KEY` | Keychain, after `rig login` | Your E2B API key |
 | `RIG_E2B_DOMAIN` | `e2b.app` | Only for self-hosted E2B |
 | `RIG_IDLE_MIN` | `15` | Minutes without a rig command before a box pauses |
-| `RIG_GOLDEN` | `rig-golden` | Name of the golden snapshot in your E2B team |
-| `RIG_BASE_TEMPLATE` | `rig-base` | Name of the base image built by `rig image build` |
-| `RIG_BOX_CPU` | `4` | CPUs per box, set when the image is built |
-| `RIG_BOX_MEMORY_MB` | `8192` | Memory per box in MB, set when the image is built |
+| `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `8192` | Box size, set when the image is built |
+| `RIG_GOLDEN` / `RIG_BASE_TEMPLATE` | `rig-golden` / `rig-base` | Names of your snapshot and image in E2B |
+
+## Security in one minute
+
+- Your E2B key is read from your shell, a private settings file or the Keychain — never from the repo you are in.
+- Box ports are private; `rig port` and `rig desktop` serve them on your laptop's `127.0.0.1` only.
+- A hostile repo cannot run code on your laptop or upload your files through rig.
+- The golden snapshot copies its logins into every box, so keep money-moving and production-write accounts out of it.
+
+Details in [docs/security.md](docs/security.md).
+
+## FAQ
+
+### What is rig?
+rig is an open-source CLI that gives each git branch its own cloud Linux box for dev servers, tests and a browser, so AI coding agents can work in parallel without overloading your laptop. The agent still runs locally; rig moves only the heavy processes.
+
+### Does rig work with Claude Code, Cursor, Codex and other agents?
+Yes. Any agent that can run shell commands can use rig. `rig skill install` adds a Claude Code skill; other agents can read `rig guide`.
+
+### How is rig different from Claude Code on the web, GitHub Codespaces or Daytona?
+Claude Code on the web runs the whole agent in the cloud and starts every session without your logins. Codespaces loses running processes when it stops. rig keeps the agent on your laptop, keeps each box's memory while paused, starts every box already signed in, and lets you take over the browser.
+
+### How much does it cost?
+rig is free and MIT licensed. You pay E2B for running boxes: about $0.33 an hour for a 4 CPU / 8 GB box at E2B's [published rates](https://e2b.dev/pricing). Paused boxes cost nothing.
+
+### Can I sign in to websites in the cloud browser?
+Yes. `rig desktop` opens the box's screen in a browser tab. It is the same Chrome the agent drives, so a login you finish there is ready for the agent at once.
+
+### Does the dev server think it is running on localhost?
+Yes. It sees `Host: localhost:<port>`, so dev-origin checks and OAuth redirect callbacks behave as on a laptop. Providers that POST back from their own site (like Sign in with Apple's `form_post`) are blocked by rig's cross-site protection; finish those through `rig desktop`.
+
+### Does rig work on Linux or Windows?
+The CLI runs anywhere Bun runs. Use `~/.config/rig/.env` for your key on Linux; Windows is untested.
+
+### Why E2B?
+E2B combines what rig needs: pausing with memory kept, waking on traffic, snapshots of a running box that start many new boxes, private ports, and boxes big enough for a real dev server.
 
 ## License
 

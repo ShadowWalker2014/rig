@@ -56,13 +56,34 @@ export const COMMAND_HELP: Record<string, string> = {
   Shows the last lines of the dev server's output (default 80).`,
   pull: `rig pull <path in box> [local path] [-b box]
   Copies one file out of the box.`,
-  ls: `rig ls [--json]
-  Lists your boxes: id, name, running or paused, branch, size, age.`,
-  pause: `rig pause [box]
-  Pauses a box now. It keeps its memory and costs nothing; any rig command wakes it.
-  Boxes also pause by themselves after 15 idle minutes.`,
-  kill: `rig kill [box]   |   rig kill --all --yes
-  Deletes a box, or every rig box. Cannot be undone.`,
+  ls: `rig ls [filters] [--limit 50] [--ids | --json]
+  Lists your boxes, newest first, with state, repo, branch and when each was last used.
+  Filters run on E2B's side, so thousands of boxes list quickly.
+  Filters:  --state running|paused   --older-than 7d   --repo owner/name   --branch b
+            --here (this repo)   --all
+  Examples: rig ls --here
+            rig ls --state paused --older-than 3d
+            rig ls --ids --repo acme/web | xargs rig kill`,
+  pause: `rig pause [box…] | rig pause <filters>
+  Pauses boxes now. A paused box keeps its memory and costs nothing; any rig command
+  wakes it in about a second. Boxes also pause by themselves after RIG_IDLE_MIN
+  (default 15) minutes without a rig command.
+  Example:  rig pause --all`,
+  kill: `rig kill [box…] | rig kill <filters> [--yes]
+  Deletes boxes. Cannot be undone. Naming boxes deletes them at once; a filter shows
+  what it matches first and only deletes with --yes. Runs 8 at a time with retries.
+  Examples: rig kill fix-cart-box
+            rig kill --repo acme/web --state paused --yes`,
+  prune: `rig prune [--older-than 7d] [--merged] [--yes]
+  The cleanup command. Finds paused boxes not used for 7 days (or --older-than), and
+  with --merged, boxes of this repo whose branch no longer exists on origin. Shows
+  the list first; --yes deletes. Running boxes are only pruned by --merged.
+  Example:  rig prune --merged --yes`,
+  snaps: `rig snaps | rig snaps rm <snapshot id>… [--force]
+  Lists snapshots, or deletes them. The golden snapshot needs --force.`,
+  doctor: `rig doctor
+  Checks the E2B key, that E2B accepts it, the base image, the golden snapshot and
+  your settings, and says how to fix anything missing. Prints no secrets.`,
   snap: `rig snap [box] [--promote [--force]]
   Saves a snapshot of the box. With --promote it becomes the golden snapshot: every
   new box starts with its files and logins. Promote a clean box made with \`rig new\`;

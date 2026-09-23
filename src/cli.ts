@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { parseArgs, type Args } from './args'
 import * as c from './commands'
+import * as m from './manage'
 import { commandHelp, guide } from './help'
 import { buildImage } from './image'
 import { login, logout } from './key'
@@ -28,10 +29,16 @@ Every task (run inside a git repo)
   rig logs [-n 80]               Tail the dev server log
   rig pull <path> [local]        Copy a file out of the box
 
-Boxes
-  rig ls [--json]                List your boxes
-  rig pause | kill [box]         Pause (keeps RAM, costs nothing) or delete a box
-  rig kill --all --yes           Delete every rig box
+Boxes (any number of them)
+  rig ls [filters] [--limit 50]  List boxes, newest first; --ids or --json for scripts
+  rig pause [box…|filters]       Pause now (keeps memory, costs nothing); boxes also pause after 15 idle min
+  rig kill [box…|filters]        Delete boxes; with filters it previews first, --yes deletes
+  rig prune [--older-than 7d] [--merged] [--yes]
+                                 Clean up: paused boxes unused for 7 days, and boxes whose branch is gone
+  rig snaps [rm <id>…]           List or delete snapshots
+  rig doctor                     Check your key, image, golden snapshot and settings
+
+Filters: --state running|paused  --older-than 7d  --repo owner/name  --branch b  --here  --all
 
 Commands act on this repo + branch's box unless you name one with -b <id|name>.
 
@@ -57,9 +64,12 @@ const COMMANDS: Record<string, Handler> = {
   desktop: c.desktop,
   logs: c.logs,
   pull: c.pull,
-  ls: c.ls,
-  pause: c.pause,
-  kill: c.kill,
+  ls: m.ls,
+  pause: m.pause,
+  kill: m.kill,
+  prune: m.prune,
+  snaps: m.snaps,
+  doctor: () => m.doctor(),
   snap: c.snap,
 }
 

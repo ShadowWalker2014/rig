@@ -19,19 +19,40 @@
     "bun"
   ],
   "homepage": "https://github.com/ShadowWalker2014/rig#readme",
-  "repository": { "type": "git", "url": "git+https://github.com/ShadowWalker2014/rig.git" },
-  "bugs": { "url": "https://github.com/ShadowWalker2014/rig/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShadowWalker2014/rig.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ShadowWalker2014/rig/issues"
+  },
   "license": "MIT",
   "author": "ShadowWalker2014",
   "type": "module",
-  "bin": { "rig": "bin/rig" },
-  "files": ["bin", "config", "image", "skills", "src", ".env.example", "README.md", "LICENSE"],
-  "engines": { "bun": ">=1.2" },
-  "publishConfig": { "access": "public" },
+  "bin": {
+    "rig": "bin/rig"
+  },
+  "files": [
+    "bin",
+    "config",
+    "image",
+    "skills",
+    "src",
+    ".env.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "bun": ">=1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "bun test && tsc --noEmit"
+    "prepublishOnly": "bun test && tsc --noEmit",
+    "docs": "bun scripts/gen-docs.ts"
   },
   "dependencies": {
     "e2b": "2.51.0"

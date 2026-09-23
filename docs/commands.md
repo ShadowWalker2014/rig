@@ -1,0 +1,204 @@
+# Command reference
+
+Generated from `rig help <command>` by `bun run docs`. Every command also prints this with `--help`.
+
+## Setup
+
+### rig login
+
+```
+rig login
+  Stores your E2B API key in the macOS Keychain. It prompts for the key, so the key
+  never appears in your shell history. Elsewhere, put RIG_E2B_API_KEY in
+  ~/.config/rig/.env (chmod 600).
+```
+
+### rig logout
+
+```
+rig logout
+  Removes the E2B key from the Keychain.
+```
+
+### rig image
+
+```
+rig image build
+  Builds the base box image once: Ubuntu 24.04, an Xfce desktop, Google Chrome, bun,
+  node 22, gh, vercel, pnpm and agent-browser. Takes a few minutes. Box size comes
+  from RIG_BOX_CPU / RIG_BOX_MEMORY_MB (default 4 CPUs, 8 GB; the free E2B plan allows 2 / 4096).
+```
+
+### rig new
+
+```
+rig new [--name <name>]
+  Starts an empty box with the desktop and Chrome running, for signing in to things.
+  Example:  rig new --name logins
+```
+
+### rig desktop
+
+```
+rig desktop [box] [--local <port>]
+  Prints a link to watch and control the box's desktop in any browser tab. Use it to
+  sign in to sites, or to finish a login or 2FA step for the agent. Ctrl-C closes it.
+```
+
+### rig snap
+
+```
+rig snap [box] [--promote [--force]]
+  Saves a snapshot of the box. With --promote it becomes the golden snapshot: every
+  new box starts with its files and logins. Promote a clean box made with `rig new`;
+  a box that ran a repo's code is refused unless you add --force.
+```
+
+### rig skill
+
+```
+rig skill install
+  Links rig's Claude Code skill into ~/.claude/skills/rig, so agents use rig for dev
+  servers, tests and browser checks instead of running them on your laptop.
+```
+
+### rig doctor
+
+```
+rig doctor
+  Checks the E2B key, that E2B accepts it, the base image, the golden snapshot and
+  your settings, and says how to fix anything missing. Prints no secrets.
+```
+
+## Every task
+
+### rig up
+
+```
+rig up [--new] [--name <name>] [--no-dev]
+  Run inside a git repo. Finds this repo + branch's box (or creates one from the
+  golden snapshot), copies your working tree to it, installs packages if the
+  lockfile changed, and starts the dev server. Prints the box id.
+  --new     Always make a separate box (for parallel agents on one branch).
+  --no-dev  Do not start the dev server.
+```
+
+### rig sync
+
+```
+rig sync [box]
+  Sends your local commits, uncommitted edits and untracked files to the box, with no
+  push needed. Reinstalls and restarts the dev server only if the lockfile changed.
+```
+
+### rig exec
+
+```
+rig exec [box] [--timeout <sec>] [--cwd <dir>] -- <command>
+  Runs a command in the box's repo folder. Output streams live; rig exits with the
+  command's exit code. Default timeout 600s.
+  Examples:  rig exec -- bun test src/foo.test.ts
+             rig exec -- 'bunx tsc --noEmit && bun run lint'   (one quoted arg = shell line)
+```
+
+### rig browser
+
+```
+rig browser [box] -- <agent-browser args>
+  Drives the box's Chrome, the same one you sign in to on the desktop.
+  Examples:  rig browser -- open http://localhost:3000
+             rig browser -- snapshot -i
+             rig browser -- click @e3
+             rig browser -- skills get core --full   (full agent-browser guide)
+```
+
+### rig shot
+
+```
+rig shot [out.png] [--url <url>] [-b box]
+  Screenshots the box's Chrome to a local PNG and prints its path.
+  Example:  rig shot --url http://localhost:3000/pricing
+```
+
+### rig port
+
+```
+rig port <port> [--local <port>] [-b box]
+  Serves a box port on this machine at http://localhost:<port> (127.0.0.1 only).
+  Stays open until Ctrl-C.
+  Example:  rig port 3000
+```
+
+### rig logs
+
+```
+rig logs [box] [-n <lines>]
+  Shows the last lines of the dev server's output (default 80).
+```
+
+### rig pull
+
+```
+rig pull <path in box> [local path] [-b box]
+  Copies one file out of the box.
+```
+
+### rig guide
+
+```
+rig guide
+  Prints the full workflow for agents: the edit → sync → test → check loop, how to
+  drive Chrome, and when to hand the desktop to a human.
+```
+
+## Managing boxes
+
+### rig ls
+
+```
+rig ls [filters] [--limit 50] [--ids | --json]
+  Lists your boxes, newest first, with state, repo, branch and when each was last used.
+  Filters run on E2B's side, so thousands of boxes list quickly.
+  Filters:  --state running|paused   --older-than 7d   --repo owner/name   --branch b
+            --here (this repo)   --all
+  Examples: rig ls --here
+            rig ls --state paused --older-than 3d
+            rig ls --ids --repo acme/web | xargs rig kill
+```
+
+### rig pause
+
+```
+rig pause [box…] | rig pause <filters>
+  Pauses boxes now. A paused box keeps its memory and costs nothing; any rig command
+  wakes it in about a second. Boxes also pause by themselves after RIG_IDLE_MIN
+  (default 15) minutes without a rig command.
+  Example:  rig pause --all
+```
+
+### rig kill
+
+```
+rig kill [box…] | rig kill <filters> [--yes]
+  Deletes boxes. Cannot be undone. Naming boxes deletes them at once; a filter shows
+  what it matches first and only deletes with --yes. Runs 8 at a time with retries.
+  Examples: rig kill fix-cart-box
+            rig kill --repo acme/web --state paused --yes
+```
+
+### rig prune
+
+```
+rig prune [--older-than 7d] [--merged] [--yes]
+  The cleanup command. Finds paused boxes not used for 7 days (or --older-than), and
+  with --merged, boxes of this repo whose branch no longer exists on origin. Shows
+  the list first; --yes deletes. Running boxes are only pruned by --merged.
+  Example:  rig prune --merged --yes
+```
+
+### rig snaps
+
+```
+rig snaps | rig snaps rm <snapshot id>… [--force]
+  Lists snapshots, or deletes them. The golden snapshot needs --force.
+```

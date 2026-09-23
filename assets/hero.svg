@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="rig: cloud dev boxes for AI coding agents">
-<title>rig: cloud dev boxes for AI coding agents</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="rig: run more coding agents at once. Your laptop runs the agents; dev servers, tests and a signed-in Chrome run in the cloud.">
+<title>rig: run more coding agents at once. Your laptop runs the agents; dev servers, tests and a signed-in Chrome run in the cloud.</title>
 <style>
   :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
   @media (prefers-color-scheme: dark) {
@@ -19,8 +19,8 @@
 
 <rect class="bg" width="1280" height="400" rx="16"/>
 <text x="64" y="150" class="t" font-size="84" font-weight="800" text-anchor="start" >rig</text>
-<text x="64" y="208" class="t" font-size="32" font-weight="700" text-anchor="start" >Cloud dev boxes for AI coding agents</text>
-<text x="64" y="252" class="m" font-size="20" font-weight="400" text-anchor="start" >Your agent edits code on your laptop.</text>
+<text x="64" y="208" class="t" font-size="32" font-weight="700" text-anchor="start" >Run more coding agents at once.</text>
+<text x="64" y="252" class="m" font-size="20" font-weight="400" text-anchor="start" >Your laptop runs the agents.</text>
 <text x="64" y="282" class="m" font-size="20" font-weight="400" text-anchor="start" >Dev servers, tests and a signed-in Chrome run in the cloud.</text>
 <rect x="64" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="150.8" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Pauses when idle</text>
 <rect x="249.6" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="336.4" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Starts signed in</text>

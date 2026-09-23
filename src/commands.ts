@@ -3,7 +3,7 @@ import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { CommandExitError, type Sandbox, type SandboxInfo } from 'e2b'
 import { str, type Args } from './args'
-import { createBox, killBox, listBoxes, openBox, pauseBox, resolveBox, snapshotBox, type Tags } from './box'
+import { createBox, listBoxes, openBox, resolveBox, snapshotBox, type Tags } from './box'
 import { DEV_LOG, HOME, idleMs, NOVNC_PORT } from './config'
 import { forward } from './proxy'
 import { currentRepo, projectConfig, type Repo } from './repo'
@@ -13,11 +13,11 @@ import { q, sh } from './shell'
 import { syncRepo } from './sync'
 
 // The box named by `-b`/positional, or else the one for this repo and branch.
-async function target(a: Args, positionalIsBox = true): Promise<SandboxInfo> {
+export async function target(a: Args, positionalIsBox = true): Promise<SandboxInfo> {
   const ref = str(a.flags.box) ?? (positionalIsBox ? a.sub[0] : undefined)
   if (ref) return resolveBox(ref)
   const repo = currentRepo()
-  const [box] = await listBoxes({ repo: repo.slug, branch: repo.branch })
+  const [box] = await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } })
   if (!box) throw new Error(`No box for ${repo.slug} on ${repo.branch}. Run \`rig up\` first.`)
   return box
 }
@@ -33,7 +33,7 @@ function repoTags(repo: Repo, a: Args): Tags {
 export async function up(a: Args): Promise<void> {
   const repo = currentRepo()
   const cfg = projectConfig(repo.root)
-  const existing = a.flags.new ? undefined : (await listBoxes({ repo: repo.slug, branch: repo.branch }))[0]
+  const existing = a.flags.new ? undefined : (await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } }))[0]
   const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a))
   console.error(`${existing ? 'Reusing' : 'Created'} box ${sbx.sandboxId}`)
   await sbx.setTimeout(idleMs() + 1_800_000)
@@ -166,41 +166,6 @@ export async function port(a: Args): Promise<void> {
   console.log(`http://localhost:${server.port}`)
   console.error(`Box port ${remote} is on this Mac at localhost:${server.port}. Press Ctrl-C to close it.`)
   await holdOpen(sbx, () => server.stop(true))
-}
-
-export async function ls(a: Args): Promise<void> {
-  const boxes = await listBoxes()
-  if (a.flags.json) return void console.log(JSON.stringify(boxes, null, 2))
-  if (boxes.length === 0) return void console.log('No boxes. Run `rig up` in a repo, or `rig new`.')
-  const rows = boxes.map((b) => [b.sandboxId, b.metadata.name ?? '', b.state, b.metadata.branch ?? '', `${b.cpuCount}cpu/${b.memoryMB / 1024}GB`, age(b.startedAt)])
-  printTable([['ID', 'NAME', 'STATE', 'BRANCH', 'SIZE', 'STARTED'], ...rows])
-}
-
-function age(d: Date): string {
-  const min = Math.round((Date.now() - d.getTime()) / 60_000)
-  return min < 60 ? `${min}m ago` : min < 2880 ? `${Math.round(min / 60)}h ago` : `${Math.round(min / 1440)}d ago`
-}
-
-function printTable(rows: string[][]): void {
-  const widths = rows[0]!.map((_, i) => Math.max(...rows.map((r) => r[i]!.length)))
-  for (const r of rows) console.log(r.map((c, i) => c.padEnd(widths[i]!)).join('  '))
-}
-
-export async function pause(a: Args): Promise<void> {
-  const box = await target(a)
-  await pauseBox(box.sandboxId)
-  console.error(`Paused ${box.sandboxId}. It wakes on the next rig command.`)
-}
-
-export async function kill(a: Args): Promise<void> {
-  if (a.flags.all) {
-    if (!a.flags.yes) throw new Error('`rig kill --all` deletes every rig box. Add --yes to confirm.')
-    for (const b of await listBoxes()) await killBox(b.sandboxId)
-    return void console.error('Deleted every rig box.')
-  }
-  const box = await target(a)
-  await killBox(box.sandboxId)
-  console.error(`Deleted ${box.sandboxId}.`)
 }
 
 export async function snap(a: Args): Promise<void> {

@@ -6,7 +6,7 @@ export type Args = {
 }
 
 const SHORT: Record<string, string> = { b: 'box', t: 'timeout', n: 'lines', h: 'help' }
-const BOOLEAN = new Set(['promote', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help'])
+const BOOLEAN = new Set(['promote', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help', 'ids', 'merged', 'here'])
 
 // `rig <cmd> [positionals] [--flags] [-- command to run in the box]`
 export function parseArgs(argv: string[]): Args {
