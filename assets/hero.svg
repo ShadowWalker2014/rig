@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="rig: cloud dev boxes for AI coding agents">
+<title>rig: cloud dev boxes for AI coding agents</title>
+<style>
+  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
+  }
+  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
+  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
+  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
+  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
+  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
+</style>
+
+<rect class="bg" width="1280" height="400" rx="16"/>
+<text x="64" y="150" class="t" font-size="84" font-weight="800" text-anchor="start" >rig</text>
+<text x="64" y="208" class="t" font-size="32" font-weight="700" text-anchor="start" >Cloud dev boxes for AI coding agents</text>
+<text x="64" y="252" class="m" font-size="20" font-weight="400" text-anchor="start" >Your agent edits code on your laptop.</text>
+<text x="64" y="282" class="m" font-size="20" font-weight="400" text-anchor="start" >Dev servers, tests and a signed-in Chrome run in the cloud.</text>
+<rect x="64" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="150.8" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Pauses when idle</text>
+<rect x="249.6" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="336.4" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Starts signed in</text>
+<rect x="435.2" y="316" width="190.79999999999998" height="36" rx="18.0" class="acc-bg"/><text x="530.6" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Private by default</text>
+<rect x="730" y="92" width="180" height="250" rx="14" class="panel"/>
+<text x="820" y="124" class="t" font-size="16" font-weight="700" text-anchor="middle" >Your laptop</text>
+<rect x="752" y="146" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="172.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
+<rect x="752" y="208" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="234.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
+<rect x="752" y="270" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="296.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
+<text x="1110" y="76" class="m" font-size="15" font-weight="600" text-anchor="middle" >E2B cloud</text>
+<rect x="990" y="92" width="240" height="70" rx="12" class="panel"/>
+<text x="1008" y="120" class="t mono" font-size="14" font-weight="600" text-anchor="start" >feat/login</text>
+<text x="1008" y="144" class="m" font-size="13" font-weight="400" text-anchor="start" >dev server · Chrome · tests</text>
+<line x1="912" y1="168" x2="984" y2="127" class="arrow"/><path d="M975,121 L984,127 L975,133" class="arrow"/>
+<rect x="1148" y="104" width="72" height="22" rx="11.0" class="ok-bg"/><text x="1184.0" y="118.85" class="t" font-size="11" font-weight="600" text-anchor="middle" >running</text>
+<rect x="990" y="180" width="240" height="70" rx="12" class="panel"/>
+<text x="1008" y="208" class="t mono" font-size="14" font-weight="600" text-anchor="start" >fix/cart</text>
+<text x="1008" y="232" class="m" font-size="13" font-weight="400" text-anchor="start" >dev server · Chrome · tests</text>
+<line x1="912" y1="230" x2="984" y2="215" class="arrow"/><path d="M975,209 L984,215 L975,221" class="arrow"/>
+<rect x="1148" y="192" width="72" height="22" rx="11.0" class="idle-bg"/><text x="1184.0" y="206.85" class="t" font-size="11" font-weight="600" text-anchor="middle" >paused</text>
+<rect x="990" y="268" width="240" height="70" rx="12" class="panel"/>
+<text x="1008" y="296" class="t mono" font-size="14" font-weight="600" text-anchor="start" >main</text>
+<text x="1008" y="320" class="m" font-size="13" font-weight="400" text-anchor="start" >dev server · Chrome · tests</text>
+<line x1="912" y1="292" x2="984" y2="303" class="arrow"/><path d="M975,297 L984,303 L975,309" class="arrow"/>
+<rect x="1148" y="280" width="72" height="22" rx="11.0" class="idle-bg"/><text x="1184.0" y="294.85" class="t" font-size="11" font-weight="600" text-anchor="middle" >paused</text>
+</svg>

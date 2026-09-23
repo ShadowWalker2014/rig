@@ -3,6 +3,8 @@
 [![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+<p align="center"><img src="assets/hero.svg" alt="rig: coding agents on your laptop, dev servers and a signed-in Chrome in pause-when-idle E2B cloud boxes, one per git branch" width="100%"></p>
+
 **rig is an open-source command-line tool that runs your dev servers, tests and a logged-in Chrome in cloud sandboxes, while Claude Code, Cursor, Codex or any coding agent keeps editing code on your laptop.** Each git branch gets its own Linux box on [E2B](https://e2b.dev). A box pauses itself after 15 idle minutes, keeps its memory, and wakes in about a second. You can run many agents in parallel without your laptop running out of memory.
 
 > Status: early preview (v0.1). Feedback and issues are welcome.
@@ -13,6 +15,8 @@ A coding agent is cheap to run locally. What freezes a laptop is everything arou
 
 rig moves exactly that heavy work to the cloud and leaves the agent and your editor where they are.
 
+<p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, dev server, Chrome and tests for every task and runs out of memory. With rig, the laptop runs only the agents and each branch's dev server, Chrome and tests run in its own cloud box." width="100%"></p>
+
 | Stays on your laptop | Moves to the rig box |
 |---|---|
 | The coding agent (Claude Code, Cursor, Codex, Aider…) | The dev server (`bun run dev`, `next dev`, `vite`) |
@@ -21,13 +25,7 @@ rig moves exactly that heavy work to the cloud and leaves the agent and your edi
 
 ## How it works
 
-```
- YOUR LAPTOP                                  E2B CLOUD
- coding agent                                 box: repo + dev server + Chrome   running
-   edits code, runs `rig …`  ── API key ───►  box: …                            paused ($0)
- you ── private desktop link ─────────────┘       every box starts from your
-                                                  golden snapshot: tools + logins
-```
+<p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig snap --promote" width="100%"></p>
 
 1. `rig up` creates a box for this repo and branch (or reuses it), copies your working tree into it, installs packages and starts the dev server.
 2. The agent edits files locally, then runs `rig sync`. Committed, uncommitted and untracked changes all reach the box, with no `git push`.
@@ -62,6 +60,8 @@ rig snap <id> --promote         # every new box now starts from this one
 ```
 
 ### Every task
+
+<p align="center"><img src="assets/terminal.svg" alt="Example terminal session running rig up, rig exec and rig ls" width="100%"></p>
 
 ```bash
 cd my-repo

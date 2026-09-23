@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" width="1280" height="620" role="img" aria-label="Example terminal session: rig up, rig exec, rig ls">
+<title>Example terminal session: rig up, rig exec, rig ls</title>
+<style>
+  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
+  }
+  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
+  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
+  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
+  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
+  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
+</style>
+
+<rect class="bg" width="1280" height="620" rx="16"/>
+<rect x="40" y="30" width="1200" height="560" rx="14" class="panel"/>
+<line x1="40" y1="74" x2="1240" y2="74" class="line" stroke-width="1.5"/>
+<circle cx="70" cy="52" r="7" fill="#ff5f57"/>
+<circle cx="92" cy="52" r="7" fill="#febc2e"/>
+<circle cx="114" cy="52" r="7" fill="#28c840"/>
+<text x="640" y="57" class="m" font-size="14" font-weight="600" text-anchor="middle" >my-app — zsh</text>
+<text x="72" y="112" class="t mono acc" font-size="17" font-weight="700" text-anchor="start" >$</text>
+<text x="96" y="112" class="t mono" font-size="17" font-weight="600" text-anchor="start" >rig up</text>
+<text x="96" y="143" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">Created box i7k2p9q4x1</text>
+<text x="96" y="174" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">Running setup: bun install</text>
+<text x="96" y="205" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">Dev server starting: bun run dev (port 3000)</text>
+<text x="96" y="236" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">i7k2p9q4x1</text>
+<text x="96" y="267" class="t mono ok" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">Box is ready.</text>
+<text x="96" y="298" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">  See the dev server on this Mac:  rig port 3000   (then open http://localhost:3000)</text>
+<text x="96" y="329" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">  Drive the box&#x27;s Chrome:          rig browser -- open http://localhost:3000</text>
+<text x="96" y="360" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">  Take over the desktop:           rig desktop</text>
+<text x="72" y="391" class="t mono acc" font-size="17" font-weight="700" text-anchor="start" >$</text>
+<text x="96" y="391" class="t mono" font-size="17" font-weight="600" text-anchor="start" >rig exec -- whoami</text>
+<text x="96" y="422" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">user</text>
+<text x="72" y="453" class="t mono acc" font-size="17" font-weight="700" text-anchor="start" >$</text>
+<text x="96" y="453" class="t mono" font-size="17" font-weight="600" text-anchor="start" >rig ls</text>
+<text x="96" y="484" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">ID          NAME               STATE    BRANCH        SIZE      STARTED</text>
+<text x="96" y="515" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">i7k2p9q4x1  my-app-feat-login  running  feat/login    4cpu/8GB  2m ago</text>
+<text x="96" y="546" class="m mono" font-size="16" font-weight="400" text-anchor="start" xml:space="preserve">k3n8v5w2m6  my-app-main        paused   main          4cpu/8GB  3h ago</text>
+</svg>

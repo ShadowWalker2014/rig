@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560" role="img" aria-label="Without rig the laptop runs every dev server and browser; with rig they run in cloud boxes">
+<title>Without rig the laptop runs every dev server and browser; with rig they run in cloud boxes</title>
+<style>
+  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
+  }
+  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
+  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
+  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
+  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
+  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
+</style>
+
+<rect class="bg" width="1280" height="560" rx="16"/>
+<text x="330" y="52" class="t warn" font-size="24" font-weight="700" text-anchor="middle" >Without rig</text>
+<text x="950" y="52" class="t ok" font-size="24" font-weight="700" text-anchor="middle" >With rig</text>
+<rect x="40" y="72" width="580" height="450" rx="14" class="panel"/>
+<text x="64" y="108" class="t" font-size="17" font-weight="700" text-anchor="start" >Your laptop runs everything, for every task</text>
+<rect x="64" y="132" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<rect x="196" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="332" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="468" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<rect x="64" y="196" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<rect x="196" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="332" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="468" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<rect x="64" y="260" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<rect x="196" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="332" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="468" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<text x="64" y="360" class="m" font-size="15" font-weight="600" text-anchor="start" >Laptop memory</text>
+<rect x="64" y="374" width="532" height="26" rx="13" class="idle-bg"/>
+<rect x="64" y="374" width="532" height="26" rx="13" class="warn"/>
+<text x="64" y="432" class="t" font-size="17" font-weight="600" text-anchor="start" >Full after two or three tasks.</text>
+<text x="64" y="460" class="m" font-size="16" font-weight="400" text-anchor="start" >The Mac swaps, then freezes.</text>
+<rect x="660" y="72" width="580" height="450" rx="14" class="panel"/>
+<text x="684" y="108" class="t" font-size="17" font-weight="700" text-anchor="start" >Your laptop runs only the agents</text>
+<rect x="684" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="744.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<rect x="816" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="876.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<rect x="948" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="1008.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
+<text x="684" y="196" class="m" font-size="15" font-weight="600" text-anchor="start" >Laptop memory</text>
+<rect x="684" y="208" width="532" height="18" rx="9" class="idle-bg"/>
+<rect x="684" y="208" width="90" height="18" rx="9" class="ok"/>
+<text x="684" y="262" class="t" font-size="17" font-weight="700" text-anchor="start" >The heavy work runs in one cloud box per branch</text>
+<rect x="684" y="276" width="168" height="190" rx="12" class="panel"/>
+<text x="768" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >feat/login</text>
+<rect x="698" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="698" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="698" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<rect x="864" y="276" width="168" height="190" rx="12" class="panel"/>
+<text x="948" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >fix/cart</text>
+<rect x="878" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="878" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="878" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<rect x="1044" y="276" width="168" height="190" rx="12" class="panel"/>
+<text x="1128" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >main</text>
+<rect x="1058" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
+<rect x="1058" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
+<rect x="1058" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
+<text x="684" y="500" class="m" font-size="16" font-weight="400" text-anchor="start" >Idle boxes pause with their memory kept and cost nothing.</text>
+</svg>

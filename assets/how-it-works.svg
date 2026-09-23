@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 350" width="1280" height="350" role="img" aria-label="How rig works: up, sync, exec and browser, desktop, snap --promote">
+<title>How rig works: up, sync, exec and browser, desktop, snap --promote</title>
+<style>
+  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
+  }
+  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
+  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
+  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
+  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
+  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
+</style>
+
+<rect class="bg" width="1280" height="350" rx="16"/>
+<text x="640" y="50" class="t" font-size="26" font-weight="700" text-anchor="middle" >One loop, five commands</text>
+<rect x="40" y="80" width="220" height="240" rx="14" class="panel"/>
+<circle cx="74" cy="116" r="18" class="acc"/>
+<text x="74" y="122" class="t" font-size="17" font-weight="700" text-anchor="middle" style="fill: var(--bg)">1</text>
+<rect x="56" y="150" width="188" height="34" rx="17.0" class="acc-bg"/><text x="150.0" y="171.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig up</text>
+<text x="60" y="216" class="m" font-size="15" font-weight="400" text-anchor="start" >A box for this branch:</text>
+<text x="60" y="240" class="m" font-size="15" font-weight="400" text-anchor="start" >code copied, packages</text>
+<text x="60" y="264" class="m" font-size="15" font-weight="400" text-anchor="start" >installed, dev server</text>
+<text x="60" y="288" class="m" font-size="15" font-weight="400" text-anchor="start" >running.</text>
+<line x1="262" y1="200" x2="282" y2="200" class="arrow"/><path d="M273,194 L282,200 L273,206" class="arrow"/>
+<rect x="284" y="80" width="220" height="240" rx="14" class="panel"/>
+<circle cx="318" cy="116" r="18" class="acc"/>
+<text x="318" y="122" class="t" font-size="17" font-weight="700" text-anchor="middle" style="fill: var(--bg)">2</text>
+<rect x="300" y="150" width="188" height="34" rx="17.0" class="acc-bg"/><text x="394.0" y="171.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig sync</text>
+<text x="304" y="216" class="m" font-size="15" font-weight="400" text-anchor="start" >Your local edits reach</text>
+<text x="304" y="240" class="m" font-size="15" font-weight="400" text-anchor="start" >the box, committed or</text>
+<text x="304" y="264" class="m" font-size="15" font-weight="400" text-anchor="start" >not. No git push.</text>
+<line x1="506" y1="200" x2="526" y2="200" class="arrow"/><path d="M517,194 L526,200 L517,206" class="arrow"/>
+<rect x="528" y="80" width="220" height="240" rx="14" class="panel"/>
+<circle cx="562" cy="116" r="18" class="acc"/>
+<text x="562" y="122" class="t" font-size="17" font-weight="700" text-anchor="middle" style="fill: var(--bg)">3</text>
+<rect x="544" y="150" width="188" height="34" rx="17.0" class="acc-bg"/><text x="638.0" y="171.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig exec · browser</text>
+<text x="548" y="216" class="m" font-size="15" font-weight="400" text-anchor="start" >Tests run in the box.</text>
+<text x="548" y="240" class="m" font-size="15" font-weight="400" text-anchor="start" >The agent drives its</text>
+<text x="548" y="264" class="m" font-size="15" font-weight="400" text-anchor="start" >signed-in Chrome.</text>
+<line x1="750" y1="200" x2="770" y2="200" class="arrow"/><path d="M761,194 L770,200 L761,206" class="arrow"/>
+<rect x="772" y="80" width="220" height="240" rx="14" class="panel"/>
+<circle cx="806" cy="116" r="18" class="acc"/>
+<text x="806" y="122" class="t" font-size="17" font-weight="700" text-anchor="middle" style="fill: var(--bg)">4</text>
+<rect x="788" y="150" width="188" height="34" rx="17.0" class="acc-bg"/><text x="882.0" y="171.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig desktop</text>
+<text x="792" y="216" class="m" font-size="15" font-weight="400" text-anchor="start" >You take over the</text>
+<text x="792" y="240" class="m" font-size="15" font-weight="400" text-anchor="start" >screen for a login</text>
+<text x="792" y="264" class="m" font-size="15" font-weight="400" text-anchor="start" >or a 2FA code.</text>
+<line x1="994" y1="200" x2="1014" y2="200" class="arrow"/><path d="M1005,194 L1014,200 L1005,206" class="arrow"/>
+<rect x="1016" y="80" width="220" height="240" rx="14" class="panel"/>
+<circle cx="1050" cy="116" r="18" class="gold"/>
+<text x="1050" y="122" class="t" font-size="17" font-weight="700" text-anchor="middle" style="fill: var(--bg)">5</text>
+<rect x="1032" y="150" width="188" height="34" rx="17.0" class="gold-bg"/><text x="1126.0" y="171.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig snap --promote</text>
+<text x="1036" y="216" class="m" font-size="15" font-weight="400" text-anchor="start" >A clean box’s logins</text>
+<text x="1036" y="240" class="m" font-size="15" font-weight="400" text-anchor="start" >become the start of</text>
+<text x="1036" y="264" class="m" font-size="15" font-weight="400" text-anchor="start" >every new box.</text>
+</svg>
