@@ -34,7 +34,7 @@ rig gives every branch its own cloud desktop for that work:
 
 ## Quick start
 
-You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account.
+You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account. The step-by-step version is in the [setup guide](docs/setup.md).
 
 ```bash
 bun add -g github:ShadowWalker2014/rig   # npm release coming: npm install -g @shadowwalker2014/rig
@@ -81,6 +81,7 @@ Filters and bulk actions scale to thousands of boxes: see [cleanup and scale](do
 
 | Read | For |
 |---|---|
+| [Setup guide](docs/setup.md) | First-time setup, step by step, including signing in to your tools |
 | [Command reference](docs/commands.md) | Every command, flag and example (also `rig help <command>`) |
 | [How it works](docs/how-it-works.md) | Box lifecycle, syncing, the golden snapshot, the proxy, the code map |
 | [Cleanup and scale](docs/cleanup-and-scale.md) | Costs, auto-pause, `prune`, bulk actions, thousands of boxes |

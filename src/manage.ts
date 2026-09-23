@@ -121,7 +121,7 @@ export async function doctor(): Promise<void> {
   if (boxes instanceof Error) return
   console.log(`  ${summary(boxes)}`)
   check(await Template.exists(baseTemplate(), conn), `base image "${baseTemplate()}" built`, 'rig image build')
-  check(await goldenExists(), `golden snapshot "${golden()}"`, 'rig new → rig desktop <id> → rig snap <id> --promote')
+  check(await goldenExists(), `golden snapshot "${golden()}"`, 'rig new → rig desktop <id> → rig snap <id> --promote (see docs/setup.md)')
   console.log(`  Boxes pause after ${idleMs() / 60_000} idle minutes. New images get ${boxCpu()} CPUs and ${boxMemoryMb() / 1024} GB.`)
   console.log(`  Bun ${Bun.version}. Settings file: ${setting('RIG_E2B_API_KEY') ? 'key from shell or ~/.config/rig/.env' : 'key from the macOS Keychain'}.`)
 }
