@@ -35,6 +35,15 @@ Only **banking and payments**: banks, brokers, crypto exchanges and payment comp
 
 Add `--all` to include banking and payments too, or name one with `--site`. Leave out anything else — such as your company's own sign-in page — with `--skip`.
 
+## When a copied login doesn't work
+
+Some sites refuse a session copied from another computer. **Google accounts do**: the account list appears, but each account shows "Signed out". For those, sign in once inside the cloud desktop and save it:
+
+```bash
+rig desktop <box>     # open the link and sign in to Google in that Chrome
+rig save <box>        # every new cloud desktop now starts signed in
+```
+
 ## Supported browsers
 
 Google Chrome, Microsoft Edge, Brave, Arc, Comet, Chromium, Vivaldi, Opera, Firefox and Safari on macOS. Safari needs your terminal to have Full Disk Access (System Settings → Privacy & Security).

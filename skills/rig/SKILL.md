@@ -30,23 +30,43 @@ branch. Every `rig` command below, run from inside the repo, targets that box.
 6. When the task is done, leave the box: it pauses by itself after 15 idle minutes
    and costs nothing paused. `rig kill` only if the branch is finished for good.
 
-## Signing in to a site
+## When a site needs a login
 
-If a page in the box needs a login the user already has in their own browser, bring just that site:
+Any time a page in the box asks for a login, shows a sign-in wall, loops back to a
+login page, or an API returns 401/403 because the session is missing or expired,
+follow these steps in order. Do not try to type passwords, and do not guess.
 
-```bash
-rig cookies push --site linear.app -b <box> --force   # --force: the box ran the repo's code
-```
+1. **Ask the user to sign in on their own computer.** Say which site, for example:
+   "linear.app needs a login in the cloud desktop. Please sign in to linear.app in
+   your Chrome on this Mac, then tell me when you're done."
+2. **Copy that login over, securely.** When they say they're done:
 
-Use `--force` only for the user's own repos. macOS asks the user to approve access to their browser's cookies; tell them to click **Allow**. You only ever see a count — never try to read cookie values in the box. Never name banking or payment sites unless the user asks for exactly that; `--all` is for the user to run themselves.
+   ```bash
+   rig cookies push --site linear.app -b <box> --force   # --force: this box ran the repo's code
+   ```
 
-To refresh the logins every new box starts with, the user runs `rig cookies push` (it goes into their default desktop).
+   Tell them first: "macOS will ask for access to Chrome Safe Storage — please click
+   **Allow**." You only ever see a count, never a cookie value; never try to read
+   cookie values in the box. Use `--force` only for the user's own repos. Add
+   `--from arc` (or their browser) if they don't use Chrome.
+3. **Reload and check.** `rig browser -- reload`, then `rig shot` or `snapshot -i`
+   to confirm you are signed in.
+4. **If the site still refuses** — Google accounts do this, because they will not
+   accept a session copied from another computer — hand over the screen: run
+   `rig desktop` in the background and give the user the printed
+   `http://127.0.0.1:…/vnc.html…` link so they can sign in inside the box
+   themselves. Wait for them to say they're done.
+5. **Offer to keep it for next time.** Tell the user they can run
+   `rig cookies push` to refresh the logins every new box starts with.
+
+Never name banking or payment sites unless the user asks for exactly that;
+`rig cookies push --all` is for the user to run themselves.
 
 ## Handing over to the user
 
-If a page needs a human (a login, a CAPTCHA, a 2FA prompt), run `rig desktop` in the
-background and give the user the printed `http://127.0.0.1:…/vnc.html…` link. It
-shows the same Chrome you drive. Wait for them to say they're done.
+For anything else only a person can do (a CAPTCHA, a 2FA code, a consent screen),
+run `rig desktop` in the background and give the user the printed link. It shows
+the same Chrome you drive. Wait for them to say they're done.
 
 If every future box should have a new login, tell the user to sign in on a clean
 box (`rig new`, then `rig desktop <id>`) and save that one with `rig save <id>`.

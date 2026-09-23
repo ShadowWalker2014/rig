@@ -146,7 +146,9 @@ rig cookies sites --from chrome  # each site's cookie count, and which ones stay
 
 **How it stays safe:** rig prints only site names and counts, never a value. Cookies are decrypted in memory and sent over E2B's encrypted connection straight into the cloud desktop's Chrome. For Chrome-family browsers, macOS asks you to approve access each time — click **Allow**, not Always Allow. `--all` refuses to run from an agent or script. Banking and payment sessions stay on your laptop unless you ask for them.
 
-Details, including what "sensitive" covers: [docs/cookies.md](docs/cookies.md).
+Some sites refuse a login copied from another computer — Google accounts do. For those, sign in once inside the cloud desktop with `rig desktop`, then `rig save`.
+
+Details: [docs/cookies.md](docs/cookies.md).
 
 ## Every task
 
