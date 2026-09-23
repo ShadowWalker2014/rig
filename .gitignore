@@ -1,0 +1,8 @@
+node_modules
+*.log
+.env
+.env.*
+!.env.example
+*.png
+.DS_Store
+.cursor/

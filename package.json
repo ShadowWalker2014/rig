@@ -1,0 +1,43 @@
+{
+  "name": "@shadowwalker2014/rig",
+  "version": "0.1.0",
+  "description": "Cloud dev boxes for AI coding agents. Run dev servers, tests and a logged-in Chrome in pause-when-idle E2B sandboxes while Claude Code or any agent keeps editing locally.",
+  "keywords": [
+    "claude-code",
+    "ai-coding-agent",
+    "cloud-dev-environment",
+    "remote-development",
+    "e2b",
+    "sandbox",
+    "remote-browser",
+    "headful-chrome",
+    "agent-browser",
+    "dev-server",
+    "localhost",
+    "vnc",
+    "cli",
+    "bun"
+  ],
+  "homepage": "https://github.com/ShadowWalker2014/rig#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/ShadowWalker2014/rig.git" },
+  "bugs": { "url": "https://github.com/ShadowWalker2014/rig/issues" },
+  "license": "MIT",
+  "author": "ShadowWalker2014",
+  "type": "module",
+  "bin": { "rig": "bin/rig" },
+  "files": ["bin", "config", "image", "skills", "src", ".env.example", "README.md", "LICENSE"],
+  "engines": { "bun": ">=1.2" },
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun test && tsc --noEmit"
+  },
+  "dependencies": {
+    "e2b": "2.51.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}

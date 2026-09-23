@@ -1,0 +1,12 @@
+#!/bin/sh
+# Starts rig with its own empty Bun config and env file. Bun otherwise loads the
+# current folder's bunfig.toml (which can preload code) and .env files, so running
+# rig inside an untrusted repo would run that repo's code and read its settings.
+SELF="$0"
+while [ -L "$SELF" ]; do
+  LINK=$(readlink "$SELF")
+  case "$LINK" in /*) SELF="$LINK" ;; *) SELF="$(dirname "$SELF")/$LINK" ;; esac
+done
+DIR=$(cd "$(dirname "$SELF")/.." && pwd)
+command -v bun >/dev/null 2>&1 || { echo "rig needs Bun: https://bun.sh" >&2; exit 1; }
+exec bun --config="$DIR/config/bunfig.toml" --env-file="$DIR/config/empty.env" "$DIR/src/cli.ts" "$@"

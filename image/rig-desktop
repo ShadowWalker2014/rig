@@ -1,0 +1,19 @@
+#!/bin/bash
+# Starts the desktop and the shared, logged-in Chrome (CDP on localhost:9222)
+# if they are not already running. Safe to run any number of times.
+export DISPLAY=:0
+if ! xdpyinfo >/dev/null 2>&1; then
+  setsid Xvfb :0 -ac -screen 0 1440x900x24 -nolisten tcp >/tmp/xvfb.log 2>&1 </dev/null &
+  for _ in $(seq 100); do xdpyinfo >/dev/null 2>&1 && break; sleep 0.1; done
+fi
+if ! pgrep -x xfce4-session >/dev/null; then
+  setsid dbus-launch startxfce4 >/tmp/xfce.log 2>&1 </dev/null &
+fi
+if ! curl -sf localhost:9222/json/version >/dev/null; then
+  setsid google-chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/rig-chrome" \
+    --no-first-run --no-default-browser-check --password-store=basic --start-maximized \
+    >/tmp/chrome.log 2>&1 </dev/null &
+  for _ in $(seq 150); do curl -sf localhost:9222/json/version >/dev/null && exit 0; sleep 0.2; done
+  echo "Chrome did not open its debugging port. See /tmp/chrome.log" >&2
+  exit 1
+fi

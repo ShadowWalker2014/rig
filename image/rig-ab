@@ -1,0 +1,4 @@
+#!/bin/bash
+# agent-browser, attached to the desktop's logged-in Chrome instead of a fresh one.
+rig-desktop >/dev/null || exit 1
+exec agent-browser --cdp 9222 "$@"

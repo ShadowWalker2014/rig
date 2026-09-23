@@ -1,0 +1,13 @@
+#!/bin/bash
+# Serves the desktop through noVNC on :6080. x11vnc listens on localhost only and
+# reads the one-time password from /tmp/rig-vnc-pass, which it deletes on reading
+# ("rm:"), so the password never sits on a command line or on disk.
+set -e
+pkill -x x11vnc || true
+x11vnc -display :0 -forever -shared -localhost -rfbport 5900 -passwdfile rm:/tmp/rig-vnc-pass -bg -o /tmp/x11vnc.log >/dev/null 2>&1
+if ! ss -ltn | grep -q ':6080 '; then
+  setsid websockify --web /usr/share/novnc 6080 localhost:5900 >/tmp/novnc.log 2>&1 </dev/null &
+fi
+for _ in $(seq 100); do ss -ltn | grep -q ':6080 ' && exit 0; sleep 0.1; done
+echo "noVNC did not start. See /tmp/novnc.log" >&2
+exit 1
