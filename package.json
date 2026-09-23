@@ -1,8 +1,11 @@
 {
   "name": "@shadowwalker2014/rig",
   "version": "0.1.0",
-  "description": "Cloud dev boxes for AI coding agents. Run dev servers, tests and a logged-in Chrome in pause-when-idle E2B sandboxes while Claude Code or any agent keeps editing locally.",
+  "description": "Open-source cloud desktops for AI agents. Each agent gets a Linux desktop with a dev server, tests and a signed-in Chrome that pauses when idle, so your laptop stays fast.",
   "keywords": [
+    "computer-use",
+    "ai-agents",
+    "cloud-desktop",
     "claude-code",
     "ai-coding-agent",
     "cloud-dev-environment",
@@ -52,7 +55,8 @@
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "bun test && tsc --noEmit",
-    "docs": "bun scripts/gen-docs.ts"
+    "docs": "bun scripts/gen-docs.ts",
+    "e2e": "bun test/e2e.ts"
   },
   "dependencies": {
     "e2b": "2.51.0"

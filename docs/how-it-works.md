@@ -1,6 +1,6 @@
 # How rig works
 
-rig is a small Bun CLI on your laptop. It talks to E2B's API with your key. It never runs a server of its own.
+rig gives AI agents cloud desktops. Each one is an E2B sandbox with a Linux desktop, called a **box** in the CLI. rig itself is a small Bun CLI on your laptop that talks to E2B's API with your key; it never runs a server of its own.
 
 ## A box's life
 

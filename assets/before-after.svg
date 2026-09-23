@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560" role="img" aria-label="Without rig the laptop runs every dev server and browser; with rig they run in cloud boxes">
-<title>Without rig the laptop runs every dev server and browser; with rig they run in cloud boxes</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560" role="img" aria-label="Without rig the laptop runs every dev server and browser; with rig they run in cloud desktops">
+<title>Without rig the laptop runs every dev server and browser; with rig they run in cloud desktops</title>
 <style>
   :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
   @media (prefers-color-scheme: dark) {
@@ -47,7 +47,7 @@
 <text x="684" y="196" class="m" font-size="15" font-weight="600" text-anchor="start" >Laptop memory</text>
 <rect x="684" y="208" width="532" height="18" rx="9" class="idle-bg"/>
 <rect x="684" y="208" width="90" height="18" rx="9" class="ok"/>
-<text x="684" y="262" class="t" font-size="17" font-weight="700" text-anchor="start" >The heavy work runs in one cloud box per branch</text>
+<text x="684" y="262" class="t" font-size="17" font-weight="700" text-anchor="start" >The heavy work runs in one cloud desktop per branch</text>
 <rect x="684" y="276" width="168" height="190" rx="12" class="panel"/>
 <text x="768" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >feat/login</text>
 <rect x="698" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="rig: run more coding agents at once. Your laptop runs the agents; dev servers, tests and a signed-in Chrome run in the cloud.">
-<title>rig: run more coding agents at once. Your laptop runs the agents; dev servers, tests and a signed-in Chrome run in the cloud.</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="rig: open-source cloud desktops for AI agents">
+<title>rig: open-source cloud desktops for AI agents</title>
 <style>
   :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
   @media (prefers-color-scheme: dark) {
@@ -19,9 +19,9 @@
 
 <rect class="bg" width="1280" height="400" rx="16"/>
 <text x="64" y="150" class="t" font-size="84" font-weight="800" text-anchor="start" >rig</text>
-<text x="64" y="208" class="t" font-size="32" font-weight="700" text-anchor="start" >Run more coding agents at once.</text>
-<text x="64" y="252" class="m" font-size="20" font-weight="400" text-anchor="start" >Your laptop runs the agents.</text>
-<text x="64" y="282" class="m" font-size="20" font-weight="400" text-anchor="start" >Dev servers, tests and a signed-in Chrome run in the cloud.</text>
+<text x="64" y="208" class="t" font-size="32" font-weight="700" text-anchor="start" >Open-source cloud desktops for AI agents</text>
+<text x="64" y="252" class="m" font-size="20" font-weight="400" text-anchor="start" >Each agent gets a Linux desktop with a signed-in Chrome.</text>
+<text x="64" y="282" class="m" font-size="20" font-weight="400" text-anchor="start" >Your laptop stays fast, so you can run many at once.</text>
 <rect x="64" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="150.8" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Pauses when idle</text>
 <rect x="249.6" y="316" width="173.6" height="36" rx="18.0" class="acc-bg"/><text x="336.4" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Starts signed in</text>
 <rect x="435.2" y="316" width="190.79999999999998" height="36" rx="18.0" class="acc-bg"/><text x="530.6" y="339.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Private by default</text>
@@ -30,7 +30,7 @@
 <rect x="752" y="146" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="172.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
 <rect x="752" y="208" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="234.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
 <rect x="752" y="270" width="136" height="44" rx="8" class="idle-bg"/><text x="820.0" y="296.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >coding agent</text>
-<text x="1110" y="76" class="m" font-size="15" font-weight="600" text-anchor="middle" >E2B cloud</text>
+<text x="1110" y="76" class="m" font-size="15" font-weight="600" text-anchor="middle" >Cloud desktops</text>
 <rect x="990" y="92" width="240" height="70" rx="12" class="panel"/>
 <text x="1008" y="120" class="t mono" font-size="14" font-weight="600" text-anchor="start" >feat/login</text>
 <text x="1008" y="144" class="m" font-size="13" font-weight="400" text-anchor="start" >dev server · Chrome · tests</text>

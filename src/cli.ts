@@ -7,8 +7,8 @@ import { buildImage } from './image'
 import { login, logout } from './key'
 import { clean } from './sanitize'
 
-const HELP = `rig — cloud dev boxes your local agent drives. Dev servers, tests and Chrome
-run in a paused-when-idle E2B box instead of on your laptop.
+const HELP = `rig — open-source cloud desktops for AI agents. Dev servers, tests and a
+signed-in Chrome run in a cloud desktop (a "box") that pauses when idle, not on your laptop.
 
 Setup (once)
   rig login                      Store your E2B API key in the macOS Keychain

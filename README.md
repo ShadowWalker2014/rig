@@ -1,32 +1,32 @@
-# rig — run more coding agents without freezing your laptop
+# rig — open-source cloud desktops for AI agents
 
-**Your laptop runs the agents. The cloud runs everything else.**
+**Give every AI agent its own cloud desktop. Your laptop stays fast, so you can run many agents at once.**
 
-rig moves the heavy part of AI coding — dev servers, test runs and a real browser — into cloud boxes that sleep when you're not using them. Claude Code, Cursor or Codex keeps editing code on your laptop, and you can run many tasks side by side.
+Each cloud desktop is a Linux machine with your code, a running dev server, tests and a signed-in Chrome. It sleeps when nobody uses it and wakes in a second. Claude Code, Cursor or Codex keeps editing code on your laptop and does the heavy work in its cloud desktop. In the CLI, a cloud desktop is called a **box**.
 
 [![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-<p align="center"><img src="assets/hero.svg" alt="rig: coding agents on your laptop, dev servers and a signed-in Chrome in pause-when-idle E2B cloud boxes, one per git branch" width="100%"></p>
+<p align="center"><img src="assets/hero.svg" alt="rig: open-source cloud desktops for AI agents. Agents run on your laptop; each git branch gets a cloud desktop with a dev server and a signed-in Chrome that pauses when idle." width="100%"></p>
 
 ## Why it matters
 
 One coding agent barely uses your laptop. What freezes it is everything around the agent: a dev server per branch, a Chrome for checking the UI, and test runs. Two or three tasks in, a 16–24 GB laptop starts swapping.
 
-rig gives every branch its own Linux box in the cloud for that work:
+rig gives every branch its own cloud desktop for that work:
 
-- **Sleeps when idle, wakes in a second.** A box pauses after 15 quiet minutes with everything still running inside, and costs nothing while paused.
-- **Starts signed in.** Sign in to GitHub, Vercel and your test accounts once; every new box starts with those logins.
-- **You can take over.** Open the box's screen in any browser tab to finish a login or a 2FA code.
+- **Sleeps when idle, wakes in a second.** A cloud desktop pauses after 15 quiet minutes with everything still running inside, and costs nothing while paused.
+- **Starts signed in.** Sign in to GitHub, Vercel and your test accounts once; every new cloud desktop starts with those logins.
+- **You can take over.** Open its screen in any browser tab to finish a login or a 2FA code.
 - **Private by default.** Box ports are never public, and your API key never touches the repo you work in.
 
-<p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, dev server, Chrome and tests for every task and runs out of memory. With rig, the laptop runs only the agents and each branch's dev server, Chrome and tests run in its own cloud box." width="100%"></p>
+<p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, dev server, Chrome and tests for every task and runs out of memory. With rig, the laptop runs only the agents and each branch's dev server, Chrome and tests run in its own cloud desktop." width="100%"></p>
 
 ## How it works
 
 <p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig snap --promote" width="100%"></p>
 
-1. **`rig up`** gives this branch a box: your code is copied in, packages are installed and the dev server starts.
+1. **`rig up`** gives this branch a cloud desktop: your code is copied in, packages are installed and the dev server starts.
 2. **`rig sync`** sends your local edits to the box — committed or not, no `git push` needed.
 3. **`rig exec`** runs tests in the box; **`rig browser`** drives its signed-in Chrome.
 4. **`rig desktop`** lets you take over the box's screen.
@@ -122,7 +122,7 @@ Details in [docs/security.md](docs/security.md).
 ## FAQ
 
 ### What is rig?
-rig is an open-source CLI that gives each git branch its own cloud Linux box for dev servers, tests and a browser, so AI coding agents can work in parallel without overloading your laptop. The agent still runs locally; rig moves only the heavy processes.
+rig is open-source cloud desktops for AI agents. Each git branch gets a Linux desktop in the cloud with a dev server, tests and a signed-in Chrome, so AI agents can work in parallel without overloading your laptop. The agent still runs locally; rig moves only the heavy processes.
 
 ### Does rig work with Claude Code, Cursor, Codex and other agents?
 Yes. Any agent that can run shell commands can use rig. `rig skill install` adds a Claude Code skill; other agents can read `rig guide`.

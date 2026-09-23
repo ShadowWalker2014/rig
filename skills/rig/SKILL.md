@@ -1,9 +1,9 @@
 ---
 name: rig
-description: Run dev servers, tests, builds and browser checks in a cloud box instead of on the user's laptop. Use whenever you would start a dev server (`bun run dev`, `next dev`, `vite`), run a heavy test suite or build, or drive a browser against the app — the `rig` CLI moves that work to a pause-when-idle E2B box with a logged-in Chrome, so the laptop keeps its memory.
+description: Run dev servers, tests, builds and browser checks in a cloud desktop instead of on the user's laptop. Use whenever you would start a dev server (`bun run dev`, `next dev`, `vite`), run a heavy test suite or build, or drive a browser against the app — the `rig` CLI moves that work to a pause-when-idle E2B box with a logged-in Chrome, so the laptop keeps its memory.
 ---
 
-# rig — do the heavy work in a cloud box
+# rig — do the heavy work in a cloud desktop
 
 You still read and edit code locally. Anything that runs the app — the dev server,
 tests, type-checks, builds, and the browser — runs in the box for this repo and
