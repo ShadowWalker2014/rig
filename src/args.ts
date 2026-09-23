@@ -6,7 +6,9 @@ export type Args = {
 }
 
 const SHORT: Record<string, string> = { b: 'box', t: 'timeout', n: 'lines', h: 'help' }
-const BOOLEAN = new Set(['promote', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help', 'ids', 'merged', 'here'])
+const BOOLEAN = new Set(['promote', 'default', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help', 'ids', 'merged', 'here', 'golden', 'include-sensitive'])
+// Older names that still work.
+const ALIASES: Record<string, string> = { golden: 'default', promote: 'default' }
 
 // `rig <cmd> [positionals] [--flags] [-- command to run in the box]`
 export function parseArgs(argv: string[]): Args {
@@ -19,7 +21,7 @@ export function parseArgs(argv: string[]): Args {
     const a = head[i]!
     const key = a.startsWith('--') ? a.slice(2) : a.startsWith('-') && a.length === 2 ? SHORT[a[1]!] : undefined
     if (!key) positional.push(a)
-    else if (BOOLEAN.has(key)) flags[key] = true
+    else if (BOOLEAN.has(key)) flags[ALIASES[key] ?? key] = true
     else flags[key] = head[++i] ?? ''
   }
   return { cmd: positional[0] ?? 'help', sub: positional.slice(1), flags, rest }

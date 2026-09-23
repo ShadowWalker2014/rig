@@ -58,8 +58,8 @@ rig ls --ids --older-than 30d | xargs rig kill   # scripts: ids on stdout, one p
 ## Snapshots
 
 ```bash
-rig snaps                 # list snapshots, including the golden one
-rig snaps rm <id>         # delete one (the golden snapshot needs --force)
+rig snaps                 # list snapshots, including your default desktop
+rig snaps rm <id>         # delete one (your default desktop needs --force)
 ```
 
 ## Everything at once

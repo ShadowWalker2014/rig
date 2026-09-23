@@ -6,7 +6,7 @@ rig gives AI agents cloud desktops. Each one is an E2B sandbox with a Linux desk
 
 | Moment | What happens |
 |---|---|
-| `rig up` in a repo | rig looks for a box tagged with this repo and branch. If there is none, it creates one from the golden snapshot (or from the base image if you have no snapshot yet). |
+| `rig up` in a repo | rig looks for a box tagged with this repo and branch. If there is none, it creates one from your default desktop (or from the base image if you have not saved one yet). |
 | Every rig command | Connecting wakes a paused box and pushes its idle deadline 15 minutes out (`RIG_IDLE_MIN`). A long command gets its own deadline plus 15 minutes. |
 | 15 minutes without a rig command | E2B pauses the box with its memory kept. The dev server, Chrome and your open tabs are frozen, not stopped. |
 | A request to a paused box | E2B wakes it (auto-resume), in about a second. |
@@ -28,11 +28,11 @@ A paused box costs nothing. A running 4 CPU / 8 GB box costs about $0.33 an hour
 
 The dev server keeps running and hot-reloads the changed files.
 
-## The golden snapshot
+## The default desktop
 
-`rig snap <box> --promote` saves a box — disk and memory — as a named E2B template (`rig-golden`). Each promote adds a new build to that template, and every new box starts from the latest one. That is how new boxes start signed in to GitHub, Vercel and your browser accounts, with the desktop and Chrome already running.
+`rig save <box>` saves a box — disk and memory — as a named E2B snapshot (`rig-default`). Each save adds a new build to that template, and every new box starts from the latest one. That is how new boxes start signed in to GitHub, Vercel and your browser accounts, with the desktop and Chrome already running.
 
-Promote a clean box made with `rig new`. rig refuses to promote a box that ran a repo's code, because that code could have planted something that would then copy into every future box.
+Save a clean box made with `rig new`. rig refuses to save a box that ran a repo's code, because that code could have planted something that would then copy into every future box.
 
 ## Reaching a box
 
@@ -69,6 +69,7 @@ The full tool list is in [image.md](image.md).
 | `src/services.ts` | Dev server, desktop and viewer inside the box |
 | `src/proxy.ts` | The local port proxy |
 | `src/sanitize.ts` | Cleaning box output before it reaches your terminal |
+| `src/cookies/` | Reading browser cookies on your laptop and handing them to the box's Chrome |
 | `src/image.ts` | The box image definition |
 | `image/` | Scripts copied into the image |
 | `skills/rig/SKILL.md` | The Claude Code skill; `rig guide` prints it |

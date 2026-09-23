@@ -59,7 +59,8 @@
     "e2e": "bun test/e2e.ts"
   },
   "dependencies": {
-    "e2b": "2.51.0"
+    "e2b": "2.51.0",
+    "tldts": "7.4.15"
   },
   "devDependencies": {
     "@types/bun": "latest",

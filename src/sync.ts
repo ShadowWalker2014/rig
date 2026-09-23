@@ -26,7 +26,7 @@ async function ensureClone(sbx: Sandbox, repo: Repo): Promise<void> {
   console.error(`Cloning ${repo.slug} into the box…`)
   await sh(sbx, `mkdir -p "$(dirname ${q(repo.boxDir)})" && git clone --quiet ${q(repo.origin)} ${q(repo.boxDir)}`, { timeoutMs: 900_000 }).catch(
     (err) => {
-      throw new Error(`${err.message}\n\nThe box could not clone ${repo.slug}. Sign in to GitHub inside it: \`rig desktop\`, run \`gh auth login\`, then \`rig snap --promote\`.`)
+      throw new Error(`${err.message}\n\nThe box could not clone ${repo.slug}. Sign in to GitHub inside it: \`rig desktop\`, run \`gh auth login\`, then \`rig save <box>\`.`)
     },
   )
 }

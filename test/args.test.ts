@@ -12,7 +12,7 @@ test('splits flags, positionals and the box command after --', () => {
 test('boolean flags take no value', () => {
   const a = parseArgs(['snap', 'box1', '--promote'])
   expect(a.sub).toEqual(['box1'])
-  expect(a.flags.promote).toBe(true)
+  expect(a.flags.default).toBe(true) // --promote is the old name for --default
 })
 
 test('no command shows help', () => {

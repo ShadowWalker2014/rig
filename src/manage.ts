@@ -1,8 +1,8 @@
 import { Template, type SandboxInfo } from 'e2b'
 import { str, type Args } from './args'
-import { deleteSnapshot, goldenExists, killBox, listBoxes, listSnapshots, pauseBox, resolveBox } from './box'
+import { deleteSnapshot, defaultDesktopExists, killBox, listBoxes, listSnapshots, pauseBox, resolveBox } from './box'
 import { target } from './commands'
-import { baseTemplate, boxCpu, boxMemoryMb, golden, idleMs } from './config'
+import { baseTemplate, boxCpu, boxMemoryMb, defaultDesktop, idleMs } from './config'
 import { connection, setting } from './key'
 import { currentRepo, git } from './repo'
 import { forEachBox, hasSelection, lastUsed, parseAge, selectBoxes } from './select'
@@ -100,7 +100,7 @@ export async function snaps(a: Args): Promise<void> {
 async function removeSnapshots(ids: string[], force: boolean): Promise<void> {
   if (ids.length === 0) throw new Error('Usage: rig snaps rm <snapshot id>…')
   for (const id of ids) {
-    if (id.split(':')[0]!.endsWith(golden()) && !force) throw new Error(`${id} is the golden snapshot. Add --force to delete it.`)
+    if (id.split(':')[0]!.endsWith(defaultDesktop()) && !force) throw new Error(`${id} is your default desktop. Add --force to delete it.`)
     const deleted = await deleteSnapshot(id).catch((err: Error) => {
       if (!/running sandboxes/.test(err.message)) throw err
       throw new Error(`${id} is still in use by running boxes. Delete them first (rig ls, then rig kill <id>), then retry.`)
@@ -121,7 +121,7 @@ export async function doctor(): Promise<void> {
   if (boxes instanceof Error) return
   console.log(`  ${summary(boxes)}`)
   check(await Template.exists(baseTemplate(), conn), `base image "${baseTemplate()}" built`, 'rig image build')
-  check(await goldenExists(), `golden snapshot "${golden()}"`, 'rig new → rig desktop <id> → rig snap <id> --promote (see docs/setup.md)')
+  check(await defaultDesktopExists(), 'default desktop saved', 'rig new → rig desktop <id> → rig save <id> (see docs/setup.md)')
   console.log(`  Boxes pause after ${idleMs() / 60_000} idle minutes. New images get ${boxCpu()} CPUs and ${boxMemoryMb() / 1024} GB.`)
   console.log(`  Bun ${Bun.version}. Settings file: ${setting('RIG_E2B_API_KEY') ? 'key from shell or ~/.config/rig/.env' : 'key from the macOS Keychain'}.`)
 }

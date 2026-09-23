@@ -168,27 +168,30 @@ export async function port(a: Args): Promise<void> {
   await holdOpen(sbx, () => server.stop(true))
 }
 
+// `rig save <box>`: make this box the default desktop every new box starts from.
+export const save = (a: Args) => snap({ ...a, flags: { ...a.flags, default: true } })
+
 export async function snap(a: Args): Promise<void> {
   const box = await target(a)
   const sbx = await openBox(box.sandboxId, 900_000)
-  if (a.flags.promote) {
+  if (a.flags.default) {
     // A box that ran a repo's install and dev scripts may carry changes that code
-    // planted; promoting it would copy them into every future box.
+    // planted; saving it would copy them into every future box.
     if (box.metadata.repo && !a.flags.force) {
-      throw new Error(`This box ran code from ${box.metadata.repo}. Promote a box made with \`rig new\`, or add --force if you trust that repo.`)
+      throw new Error(`This box ran code from ${box.metadata.repo}. Save a box made with \`rig new\`, or add --force if you trust that repo.`)
     }
     await stopDev(sbx)
     await stopViewer(sbx)
-    console.error('Saving this box as the golden snapshot. Every new box will start with its logins and files.')
+    console.error('Saving this box as your default desktop. Every new box will start with its logins and files.')
   }
-  console.log(await snapshotBox(box.sandboxId, Boolean(a.flags.promote)))
+  console.log(await snapshotBox(box.sandboxId, Boolean(a.flags.default)))
 }
 
 export async function newBox(a: Args): Promise<void> {
   const sbx = await createBox({ name: str(a.flags.name) ?? `rig-${shortId()}` })
   await ensureDesktop(sbx)
   console.log(sbx.sandboxId)
-  console.error(`Empty box ready. Sign in to things with: rig desktop ${sbx.sandboxId}\nThen save the logins for every future box: rig snap ${sbx.sandboxId} --promote`)
+  console.error(`Empty box ready. Sign in to things with: rig desktop ${sbx.sandboxId}\nThen make it your default desktop, so every new box starts signed in: rig save ${sbx.sandboxId}`)
 }
 
 export function installSkill(): void {

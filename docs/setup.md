@@ -30,6 +30,19 @@ This builds the Linux image every cloud desktop starts from: a desktop, Chrome, 
 
 ## 4. Sign in to your tools, once
 
+There are two ways, and you can use both.
+
+**The fast way: bring the logins you already have.** Sign in to sites in your normal browser, then copy them over ([details](cookies.md)):
+
+```bash
+rig cookies sites --from chrome                                     # see what is there
+rig cookies push                                    # every site except banking, email and sign-in
+```
+
+macOS asks you to allow access to Chrome's cookie key: click **Allow**, not Always Allow. The cookies go into your default desktop, so every new box starts with them. Run it again whenever you sign in to something new. Add `--all` to include banking, email and sign-in sites, or `--site a.com,b.com` for just some.
+
+**The hands-on way: sign in inside the cloud desktop.** Needed for command-line tools, whose logins live in files rather than browser cookies.
+
 ```bash
 rig new                  # starts an empty cloud desktop and prints its id
 rig desktop <id>         # prints a private link; open it in any browser tab
@@ -58,12 +71,12 @@ A CLI login that needs a browser opens a Chrome window on the same screen; finis
 
 **Keep these out:** your bank and card accounts, live payment dashboards, and production database write access. Every future cloud desktop gets a copy of whatever you sign in to here. Use scoped tokens where you can, like a GitHub token limited to specific repos.
 
-## 5. Save it as your golden snapshot
+## 5. Save it as your default desktop
 
 Close the desktop link (Ctrl-C in the terminal running `rig desktop`), then:
 
 ```bash
-rig snap <id> --promote
+rig save <id>
 ```
 
 Every new cloud desktop now starts from this one, already signed in. To add a login later, repeat steps 4 and 5 on a fresh `rig new`.

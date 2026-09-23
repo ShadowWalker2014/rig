@@ -23,7 +23,7 @@ rig runs on your laptop inside whatever repo you are in. A hostile repo cannot u
 | A token inside the remote URL | Stripped before the URL reaches the box |
 | Box output with terminal escape codes | Everything but colours is removed before printing |
 
-What a hostile repo **can** do is run its own install and dev scripts inside its box, next to your golden logins. Only run `rig up` on repos you would trust to run `npm install` on your laptop.
+What a hostile repo **can** do is run its own install and dev scripts inside its box, next to the logins in your default desktop. Only run `rig up` on repos you would trust to run `npm install` on your laptop.
 
 ## Box ports
 
@@ -32,10 +32,16 @@ What a hostile repo **can** do is run its own install and dev scripts inside its
 - The desktop also asks for a one-time password. It is written to the box as a file that x11vnc deletes on reading, and it sits in the link's `#fragment`, which browsers never send to a server.
 - The access token reaches every port on the box, including Chrome's debugging port. It is as powerful as the logins in the box. rig keeps it in memory only.
 
-## The golden snapshot
+## Copying cookies from your browser
+
+`rig cookies push` decrypts cookies in memory on your laptop and sends them over E2B's encrypted connection straight into a cloud desktop's Chrome. rig never prints, logs or writes a value on your laptop. By default it leaves out banking and payments, email, and sign-in and password managers; `--all` includes them only after you confirm at a terminal. For Chrome-family browsers macOS asks you to approve access each time; click Allow, not Always Allow.
+
+Once in a cloud desktop, cookies live in its Chrome profile on its disk (with a fixed, publicly known key, as Chrome uses on Linux without a keyring). Anything that can run commands there — a coding agent, a repo's install scripts — can read them. Details in [cookies.md](cookies.md).
+
+## The default desktop
 
 - It copies every login in it into every new box. Sign in only to what you are comfortable having everywhere. Keep bank, payment and production-write accounts out; use scoped tokens where you can.
-- `rig snap --promote` refuses a box that ran a repo's code unless you add `--force`, and stops the desktop viewer first so no password or open session is copied.
+- `rig save` refuses a box that ran a repo's code unless you add `--force`, and stops the desktop viewer first so no password or open session is copied.
 
 ## The image
 

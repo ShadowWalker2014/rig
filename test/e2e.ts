@@ -80,6 +80,21 @@ async function main() {
     must(s.code === 0 && s.out.endsWith('.png'), s.err)
     return s.out
   })
+  await step('cookies reach the box Chrome; values never appear in output', async () => {
+    const { openBox } = await import('../src/box')
+    const { pushCookies } = await import('../src/cookies/push')
+    const secret = `e2e-${crypto.randomUUID()}`
+    const r = await pushCookies(await openBox(toolsBox), [
+      { host: '.rig-e2e.example', name: 'rig_e2e', value: secret, path: '/', secure: true, httpOnly: true },
+      { host: 'app.rig-e2e.example', name: 'rig_e2e_host', value: secret, path: '/', secure: true, httpOnly: false },
+    ])
+    must(r.imported === 2 && !JSON.stringify(r).includes(secret), JSON.stringify(r))
+    const hash = new Bun.CryptoHasher('sha256').update(secret).digest('hex')
+    const check = `const v=await (await fetch('http://127.0.0.1:9222/json/version')).json();const ws=new WebSocket(v.webSocketDebuggerUrl);await new Promise(r=>ws.onopen=r);ws.send(JSON.stringify({id:1,method:'Storage.getCookies'}));const m=await new Promise(r=>ws.onmessage=e=>r(JSON.parse(e.data)));const h=await import('node:crypto');console.log(m.result.cookies.filter(c=>c.name.startsWith('rig_e2e')&&h.createHash('sha256').update(c.value).digest('hex')==='${hash}').length);ws.close()`
+    const out = await rig(['exec', '-b', toolsBox, '--', 'node', '--input-type=module', '-e', check])
+    must(out.out.trim() === '2', `matching cookies in box: ${out.out} ${out.err}`)
+    return '2 cookies verified by hash'
+  })
   await step('rig desktop: private link works, rebinding refused', async () => {
     const d = await background(['desktop', toolsBox])
     try {
@@ -155,26 +170,26 @@ async function main() {
     must(!names.some((n) => left.out.includes(n)), 'boxes still listed')
     return `${names.length} boxes created, paused and deleted`
   })
-  await step('snapshot, list, delete; promote to a test golden', async () => {
-    const env = { RIG_GOLDEN: 'rig-golden-e2e' }
-    await rig(['exec', '-b', toolsBox, '--', 'echo from-golden > ~/golden-marker'])
-    const s = await rig(['snap', toolsBox, '--promote'], { env })
+  await step('rig save makes a default desktop that new boxes start from', async () => {
+    const env = { RIG_DEFAULT_DESKTOP: 'rig-default-e2e' }
+    await rig(['exec', '-b', toolsBox, '--', 'echo from-default > ~/default-marker'])
+    const s = await rig(['save', toolsBox], { env })
     must(s.code === 0, s.err)
-    const child = await rig(['new', '--name', 'e2e-from-golden'], { env })
+    const child = await rig(['new', '--name', 'e2e-from-default'], { env })
     must(child.code === 0, child.err)
-    const r = await rig(['exec', '-b', 'e2e-from-golden', '--', 'cat ~/golden-marker'])
-    must(r.out.includes('from-golden'), 'new box did not start from the golden snapshot')
+    const r = await rig(['exec', '-b', 'e2e-from-default', '--', 'cat ~/default-marker'])
+    must(r.out.includes('from-default'), 'new box did not start from the default desktop')
     const list = await rig(['snaps'])
-    must(list.out.includes('rig-golden-e2e'), list.out)
-    const busy = await rig(['snaps', 'rm', 'rig-golden-e2e', '--force'], { env })
+    must(list.out.includes('rig-default-e2e'), list.out)
+    const busy = await rig(['snaps', 'rm', 'rig-default-e2e', '--force'], { env })
     must(busy.code !== 0 && busy.err.includes('rig kill'), `in-use snapshot: ${busy.err}`)
-    await rig(['kill', 'e2e-from-golden'])
-    const del = await rig(['snaps', 'rm', 'rig-golden-e2e', '--force'], { env })
+    await rig(['kill', 'e2e-from-default'])
+    const del = await rig(['snaps', 'rm', 'rig-default-e2e', '--force'], { env })
     must(del.code === 0, del.err)
-    return 'new box started with the promoted file'
+    return 'new box started with the saved file'
   })
-  await step('promote refuses a box that ran repo code', async () => {
-    const r = await rig(['snap', repoBox, '--promote'], { env: { RIG_GOLDEN: 'rig-golden-e2e' } })
+  await step('save refuses a box that ran repo code', async () => {
+    const r = await rig(['save', repoBox], { env: { RIG_DEFAULT_DESKTOP: 'rig-default-e2e' } })
     must(r.code !== 0 && r.err.includes('--force'), r.err)
   })
   await step('prune previews without deleting', async () => {

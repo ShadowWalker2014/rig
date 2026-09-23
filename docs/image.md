@@ -1,6 +1,6 @@
 # The box image
 
-`rig image build` builds one Ubuntu 24.04 image that every box starts from. It has no logins; those come from your golden snapshot.
+`rig image build` builds one Ubuntu 24.04 image that every box starts from. It has no logins; those come from your default desktop.
 
 ## What is installed
 
@@ -45,4 +45,4 @@ E2B's free plan allows 2 CPUs and 4 GB; Pro allows 8 and 8 GB by default, and mo
 
 ## After rebuilding
 
-New boxes from the golden snapshot keep using the image the snapshot was taken from. To move your logins onto a new image: `rig new`, sign in again with `rig desktop`, then `rig snap <id> --promote`.
+New boxes from your default desktop keep using the image the snapshot was taken from. To move your logins onto a new image: `rig new`, sign in again with `rig desktop`, then `rig save <id>`.

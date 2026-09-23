@@ -1,9 +1,9 @@
 import { setting } from './key'
 
-// Names on the E2B side. The golden snapshot is a named template: every
-// `rig snap --promote` adds a new build to it, and new boxes start from the latest.
+// Names on the E2B side. The default desktop is a named snapshot: every
+// `rig save` adds a new build to it, and new boxes start from the latest.
 export const baseTemplate = () => setting('RIG_BASE_TEMPLATE') ?? 'rig-base'
-export const golden = () => setting('RIG_GOLDEN') ?? 'rig-golden'
+export const defaultDesktop = () => setting('RIG_DEFAULT_DESKTOP') ?? setting('RIG_GOLDEN') ?? 'rig-default'
 
 // A box pauses after this long without a rig command, keeping its RAM.
 export const idleMs = () => Number(setting('RIG_IDLE_MIN') ?? 15) * 60_000

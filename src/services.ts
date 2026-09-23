@@ -44,7 +44,7 @@ export async function startViewer(sbx: Sandbox): Promise<string> {
   return password
 }
 
-// A promoted snapshot must not carry a live viewer or its password into every box.
+// A saved default desktop must not carry a live viewer or its password into every box.
 export async function stopViewer(sbx: Sandbox): Promise<void> {
   await sh(sbx, 'pkill -x x11vnc; pkill -f "[w]ebsockify.*6080"; rm -f /tmp/rig-vnc-pass; true')
 }

@@ -16,7 +16,7 @@ One coding agent barely uses your laptop. What freezes it is everything around t
 rig gives every branch its own cloud desktop for that work:
 
 - **Sleeps when idle, wakes in a second.** A cloud desktop pauses after 15 quiet minutes with everything still running inside, and costs nothing while paused.
-- **Starts signed in.** Sign in to GitHub, Vercel and your test accounts once; every new cloud desktop starts with those logins.
+- **Starts signed in.** Bring the logins from your own Chrome, Arc, Safari or Firefox with one command, or sign in once inside a cloud desktop; every new one starts with those logins.
 - **You can take over.** Open its screen in any browser tab to finish a login or a 2FA code.
 - **Private by default.** Box ports are never public, and your API key never touches the repo you work in.
 
@@ -24,13 +24,13 @@ rig gives every branch its own cloud desktop for that work:
 
 ## How it works
 
-<p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig snap --promote" width="100%"></p>
+<p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig save" width="100%"></p>
 
 1. **`rig up`** gives this branch a cloud desktop: your code is copied in, packages are installed and the dev server starts.
 2. **`rig sync`** sends your local edits to the box — committed or not, no `git push` needed.
 3. **`rig exec`** runs tests in the box; **`rig browser`** drives its signed-in Chrome.
 4. **`rig desktop`** lets you take over the box's screen.
-5. **`rig snap --promote`** saves a clean box's logins so every new box starts with them.
+5. **`rig save`** makes a signed-in box your default desktop, so every new box starts as a copy of it.
 
 ## Getting started
 
@@ -58,10 +58,20 @@ Agents without skills can read the same instructions with `rig guide`; paste its
 
 ### Sign in to your tools once
 
+Bring the sign-ins you already have in your own browser ([how it stays safe](docs/cookies.md)):
+
+```bash
+rig cookies push            # every site except banking, email and sign-in, into your default desktop
+```
+
+Add `--all` to include those too, `--site a.com,b.com` for only some sites, or `--from arc` for another browser. Run it again any time to bring the latest.
+
+For command-line tools, sign in inside a cloud desktop:
+
 ```bash
 rig new                      # an empty box; prints its id
 rig desktop <id>             # open the link, sign in to sites in Chrome, run `gh auth login` in the terminal
-rig snap <id> --promote      # every new box now starts signed in
+rig save <id>                # make it your default desktop: every new box starts signed in
 ```
 
 ### Every task
@@ -92,8 +102,9 @@ Filters and bulk actions scale to thousands of boxes: see [cleanup and scale](do
 | Read | For |
 |---|---|
 | [Setup guide](docs/setup.md) | First-time setup, step by step, including signing in to your tools |
+| [Bring your logins](docs/cookies.md) | Copy sign-ins from Chrome, Arc, Edge, Brave, Firefox or Safari, safely |
 | [Command reference](docs/commands.md) | Every command, flag and example (also `rig help <command>`) |
-| [How it works](docs/how-it-works.md) | Box lifecycle, syncing, the golden snapshot, the proxy, the code map |
+| [How it works](docs/how-it-works.md) | Box lifecycle, syncing, the default desktop, the proxy, the code map |
 | [Cleanup and scale](docs/cleanup-and-scale.md) | Costs, auto-pause, `prune`, bulk actions, thousands of boxes |
 | [The box image](docs/image.md) | Installed tools, adding your own, box size |
 | [Security](docs/security.md) | How your key, logins and laptop are protected |
@@ -119,14 +130,14 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 | `RIG_E2B_DOMAIN` | `e2b.app` | Only for self-hosted E2B |
 | `RIG_IDLE_MIN` | `15` | Minutes without a rig command before a box pauses |
 | `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `8192` | Box size, set when the image is built |
-| `RIG_GOLDEN` / `RIG_BASE_TEMPLATE` | `rig-golden` / `rig-base` | Names of your snapshot and image in E2B |
+| `RIG_DEFAULT_DESKTOP` / `RIG_BASE_TEMPLATE` | `rig-default` / `rig-base` | Names of your default desktop and image in E2B |
 
 ## Security in one minute
 
 - Your E2B key is read from your shell, a private settings file or the Keychain — never from the repo you are in.
 - Box ports are private; `rig port` and `rig desktop` serve them on your laptop's `127.0.0.1` only.
 - A hostile repo cannot run code on your laptop or upload your files through rig.
-- The golden snapshot copies its logins into every box, so keep money-moving and production-write accounts out of it.
+- Your default desktop copies its logins into every box, so banking, payments and production-write accounts stay out of it unless you choose otherwise.
 
 Details in [docs/security.md](docs/security.md).
 

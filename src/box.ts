@@ -1,5 +1,5 @@
 import { NotFoundError, Sandbox, type SandboxInfo, type SandboxState } from 'e2b'
-import { baseTemplate, DISPLAY, golden, idleMs, OWNER_TAG } from './config'
+import { baseTemplate, DISPLAY, defaultDesktop, idleMs, OWNER_TAG } from './config'
 import { connection } from './key'
 
 export type Tags = Record<string, string>
@@ -19,13 +19,13 @@ export async function createBox(tags: Tags): Promise<Sandbox> {
     network: { allowPublicTraffic: false, maskRequestHost: 'localhost:${PORT}' },
     envs: { DISPLAY },
   }
-  if (await goldenExists()) return Sandbox.create(golden(), opts)
-  console.error(`No golden snapshot "${golden()}" yet — starting from "${baseTemplate()}".`)
+  if (await defaultDesktopExists()) return Sandbox.create(defaultDesktop(), opts)
+  console.error(`No default desktop saved yet, so this box starts from the base image. Save one with \`rig save <box>\`.`)
   return Sandbox.create(baseTemplate(), opts)
 }
 
-export async function goldenExists(): Promise<boolean> {
-  const pages = Sandbox.listSnapshots({ ...auth(), name: golden() })
+export async function defaultDesktopExists(): Promise<boolean> {
+  const pages = Sandbox.listSnapshots({ ...auth(), name: defaultDesktop() })
   return pages.hasNext && (await pages.nextItems()).length > 0
 }
 
@@ -81,10 +81,10 @@ export async function pauseBox(id: string): Promise<void> {
   await Sandbox.pause(id, auth())
 }
 
-// Naming the snapshot adds a new build to the golden template, so it becomes
+// Naming the snapshot adds a new build to the default-desktop template, so it becomes
 // what every later `rig up` starts from.
-export async function snapshotBox(id: string, promote: boolean): Promise<string> {
-  const info = await Sandbox.createSnapshot(id, { ...auth(), ...(promote ? { name: golden() } : {}) })
+export async function snapshotBox(id: string, asDefault: boolean): Promise<string> {
+  const info = await Sandbox.createSnapshot(id, { ...auth(), ...(asDefault ? { name: defaultDesktop() } : {}) })
   return info.names[0] ?? info.snapshotId
 }
 

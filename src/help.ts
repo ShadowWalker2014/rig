@@ -24,7 +24,7 @@ export const COMMAND_HELP: Record<string, string> = {
   Example:  rig new --name logins`,
   up: `rig up [--new] [--name <name>] [--no-dev]
   Run inside a git repo. Finds this repo + branch's box (or creates one from the
-  golden snapshot), copies your working tree to it, installs packages if the
+  default desktop), copies your working tree to it, installs packages if the
   lockfile changed, and starts the dev server. Prints the box id.
   --new     Always make a separate box (for parallel agents on one branch).
   --no-dev  Do not start the dev server.`,
@@ -79,15 +79,34 @@ export const COMMAND_HELP: Record<string, string> = {
   with --merged, boxes of this repo whose branch no longer exists on origin. Shows
   the list first; --yes deletes. Running boxes are only pruned by --merged.
   Example:  rig prune --merged --yes`,
+  cookies: `rig cookies push [--site a.com,b.com | --all] [--skip c.com] [--from chrome] [-b box]
+rig cookies sites [--from chrome]
+rig cookies browsers
+  Copies your sign-ins from a browser on this machine into cloud desktops, so they
+  are signed in wherever you are. Run it again any time to bring the latest.
+  rig cookies push            every site EXCEPT banking and payments, email, and
+                              sign-in and password managers, into your default desktop
+  rig cookies push --all      every site, the sensitive ones too (asks you to confirm)
+  rig cookies push --site github.com,linear.app    only those sites
+  --skip a.com,b.com   leave more sites out      --from arc:Work   another browser or profile
+  -b <box>             one box instead of your default desktop (a box that ran a
+                       repo's code needs --force: that code could read the cookies)
+  Browsers: Chrome, Edge, Brave, Arc, Comet, Chromium, Vivaldi, Opera, Firefox, Safari.
+  \`sites\` and \`browsers\` list what is there without reading any cookie value.
+  rig prints only site names and counts. For Chrome-family browsers macOS asks you
+  to allow access each time: click Allow, not Always Allow.`,
   snaps: `rig snaps | rig snaps rm <snapshot id>… [--force]
-  Lists snapshots, or deletes them. The golden snapshot needs --force.`,
+  Lists snapshots, or deletes them. Your default desktop needs --force.`,
+  save: `rig save <box> [--force]
+  Makes this box your default desktop: every new box starts as a copy of it, with
+  its files, logins and running Chrome. Use a clean box from \`rig new\`; a box that
+  ran a repo's code is refused unless you add --force. Save again any time.`,
   doctor: `rig doctor
-  Checks the E2B key, that E2B accepts it, the base image, the golden snapshot and
+  Checks the E2B key, that E2B accepts it, the base image, the default desktop and
   your settings, and says how to fix anything missing. Prints no secrets.`,
-  snap: `rig snap [box] [--promote [--force]]
-  Saves a snapshot of the box. With --promote it becomes the golden snapshot: every
-  new box starts with its files and logins. Promote a clean box made with \`rig new\`;
-  a box that ran a repo's code is refused unless you add --force.`,
+  snap: `rig snap [box]
+  Saves a snapshot of the box and prints its id. To make a box the one every new
+  box starts from, use \`rig save\` instead.`,
 }
 
 export function commandHelp(cmd: string): string | undefined {

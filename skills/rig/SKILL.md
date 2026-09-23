@@ -30,6 +30,18 @@ branch. Every `rig` command below, run from inside the repo, targets that box.
 6. When the task is done, leave the box: it pauses by itself after 15 idle minutes
    and costs nothing paused. `rig kill` only if the branch is finished for good.
 
+## Signing in to a site
+
+If a page in the box needs a login the user already has in their own browser, bring just that site:
+
+```bash
+rig cookies push --site linear.app -b <box> --force   # --force: the box ran the repo's code
+```
+
+Use `--force` only for the user's own repos. macOS asks the user to approve access to their browser's cookies; tell them to click **Allow**. You only ever see a count — never try to read cookie values in the box. Never name banking, payments, email or sign-in sites unless the user asks for exactly that; `--all` is for the user to run themselves.
+
+To refresh the logins every new box starts with, the user runs `rig cookies push` (it goes into their default desktop).
+
 ## Handing over to the user
 
 If a page needs a human (a login, a CAPTCHA, a 2FA prompt), run `rig desktop` in the
@@ -37,10 +49,9 @@ background and give the user the printed `http://127.0.0.1:…/vnc.html…` link
 shows the same Chrome you drive. Wait for them to say they're done.
 
 If every future box should have a new login, tell the user to sign in on a clean
-box (`rig new`, then `rig desktop <id>`) and promote that one with
-`rig snap <id> --promote`. Never promote a box that has run a repo's code, and only
-run `--promote` when the user asks, because it copies every login in the box into
-every future box.
+box (`rig new`, then `rig desktop <id>`) and save that one with `rig save <id>`.
+Never save a box that has run a repo's code, and only run `rig save` when the user
+asks, because it copies every login in the box into every future box.
 
 ## Rules
 
