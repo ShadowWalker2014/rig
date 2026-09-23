@@ -101,7 +101,11 @@ async function removeSnapshots(ids: string[], force: boolean): Promise<void> {
   if (ids.length === 0) throw new Error('Usage: rig snaps rm <snapshot id>…')
   for (const id of ids) {
     if (id.split(':')[0]!.endsWith(golden()) && !force) throw new Error(`${id} is the golden snapshot. Add --force to delete it.`)
-    console.error(`${(await deleteSnapshot(id)) ? 'Deleted' : 'Not found:'} ${id}`)
+    const deleted = await deleteSnapshot(id).catch((err: Error) => {
+      if (!/running sandboxes/.test(err.message)) throw err
+      throw new Error(`${id} is still in use by running boxes. Delete them first (rig ls, then rig kill <id>), then retry.`)
+    })
+    console.error(`${deleted ? 'Deleted' : 'Not found:'} ${id}`)
   }
 }
 

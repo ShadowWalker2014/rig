@@ -62,12 +62,14 @@ async function main() {
     return v.out.replace(/\n/g, ' · ')
   })
   await step('Playwright and Puppeteer launch a browser', async () => {
-    const js = `const { chromium } = require('playwright'); const puppeteer = require('puppeteer');
-      (async () => { const b = await chromium.launch(); const p = await b.newPage(); await p.goto('https://example.com');
-      console.log('playwright:', await p.title()); await b.close();
-      const c = await puppeteer.launch({ headless: true }); const q = await c.newPage(); await q.goto('https://example.com');
-      console.log('puppeteer:', await q.title()); await c.close(); })().catch(e => { console.error(e); process.exit(1) })`
-    const r = await rig(['exec', '-b', toolsBox, '--', `cd /tmp && NODE_PATH=$(npm root -g) node -e ${JSON.stringify(js)}`])
+    const js = [
+      "const { chromium } = require('playwright'); const puppeteer = require('puppeteer');",
+      "(async () => { const b = await chromium.launch(); const p = await b.newPage(); await p.goto('https://example.com');",
+      "console.log('playwright:', await p.title()); await b.close();",
+      "const c = await puppeteer.launch({ headless: true }); const q = await c.newPage(); await q.goto('https://example.com');",
+      "console.log('puppeteer:', await q.title()); await c.close(); })().catch(e => { console.error(e); process.exit(1) })",
+    ].join(' ')
+    const r = await rig(['exec', '-b', toolsBox, '--', 'bash', '-lc', `cd /tmp && NODE_PATH=$(npm root -g) node -e "$0"`, js])
     must(r.out.includes('playwright: Example Domain') && r.out.includes('puppeteer: Example Domain'), r.out + r.err)
     return r.out.replace(/\n/g, ' · ')
   })
@@ -164,6 +166,9 @@ async function main() {
     must(r.out.includes('from-golden'), 'new box did not start from the golden snapshot')
     const list = await rig(['snaps'])
     must(list.out.includes('rig-golden-e2e'), list.out)
+    const busy = await rig(['snaps', 'rm', 'rig-golden-e2e', '--force'], { env })
+    must(busy.code !== 0 && busy.err.includes('rig kill'), `in-use snapshot: ${busy.err}`)
+    await rig(['kill', 'e2e-from-golden'])
     const del = await rig(['snaps', 'rm', 'rig-golden-e2e', '--force'], { env })
     must(del.code === 0, del.err)
     return 'new box started with the promoted file'
