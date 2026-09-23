@@ -34,7 +34,7 @@ What a hostile repo **can** do is run its own install and dev scripts inside its
 
 ## Copying cookies from your browser
 
-`rig cookies push` decrypts cookies in memory on your laptop and sends them over E2B's encrypted connection straight into a cloud desktop's Chrome. rig never prints, logs or writes a value on your laptop. By default it leaves out banking and payments, email, and sign-in and password managers; `--all` includes them only after you confirm at a terminal. For Chrome-family browsers macOS asks you to approve access each time; click Allow, not Always Allow.
+`rig cookies push` decrypts cookies in memory on your laptop and sends them over E2B's encrypted connection straight into a cloud desktop's Chrome. rig never prints, logs or writes a value on your laptop. By default it leaves out banking and payment sites; `--all` includes them only after you confirm at a terminal. Email and sign-in sessions, such as your Google account, go by default. For Chrome-family browsers macOS asks you to approve access each time; click Allow, not Always Allow.
 
 Once in a cloud desktop, cookies live in its Chrome profile on its disk (with a fixed, publicly known key, as Chrome uses on Linux without a keyring). Anything that can run commands there — a coding agent, a repo's install scripts — can read them. Details in [cookies.md](cookies.md).
 

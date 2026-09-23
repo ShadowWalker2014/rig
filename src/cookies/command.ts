@@ -40,9 +40,9 @@ const csv = (v: string | true | undefined) => (str(v) ?? '').split(',').map((s) 
 // authenticated connection, into the box's Chrome. rig prints only site names and counts.
 async function push(a: Args): Promise<void> {
   const choice: Choice = { sites: csv(a.flags.site), skip: csv(a.flags.skip), all: Boolean(a.flags.all || a.flags['include-sensitive']) }
-  // Banking, email and sign-in sessions only move with a person at the terminal.
+  // Banking and payment sessions only move with a person at the terminal.
   if (choice.all && !process.stdin.isTTY) {
-    throw new Error('--all includes banking, email and sign-in sessions, so it needs a person at a terminal to confirm. Name sites with --site instead.')
+    throw new Error('--all includes banking and payment sessions, so it needs a person at a terminal to confirm. Name sites with --site instead.')
   }
   const box = (str(a.flags.box) ?? a.sub[1]) ? await pickBox(a) : undefined
   const profile = findProfile(str(a.flags.from) ?? 'chrome')
@@ -76,7 +76,7 @@ async function confirm(profile: Profile, choice: Choice, a: Args): Promise<boole
   console.error(`  ${going.slice(0, 12).map((r) => clean(r.site)).join(', ')}${going.length > 12 ? `, and ${going.length - 12} more` : ''}`)
   const risky = going.filter((r) => r.sensitive)
   if (risky.length) console.error(`  Including sensitive: ${risky.map((r) => `${clean(r.site)} (${r.sensitive})`).join(', ')}`)
-  if (held.length) console.error(`  Left out: ${held.slice(0, 8).map((r) => clean(r.site)).join(', ')}${held.length > 8 ? ` and ${held.length - 8} more` : ''} (banking, email, sign-in). Add --all to include them.`)
+  if (held.length) console.error(`  Left out: ${held.slice(0, 8).map((r) => clean(r.site)).join(', ')}${held.length > 8 ? ` and ${held.length - 8} more` : ''} (banking and payments). Add --all to include them.`)
   // Only a sensitive push waits for a typed yes; the everyday default just goes.
   if (!choice.all || a.flags.yes) return true
   process.stderr.write('Send them? [y/N] ')

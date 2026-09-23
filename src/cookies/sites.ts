@@ -2,25 +2,15 @@ import { getDomain } from 'tldts'
 import { withCopy, type Cookie, type Profile } from './read'
 import { readSafariCookies } from './safari'
 
-// Left out unless you add --all or name them with --site, as in blink-code's
-// importer. rig cannot recognise your company's own sign-in or mail domains;
-// leave those out with --skip.
+// Banking and payment sites are left out unless you add --all or name them with
+// --site. Everything else, including email and sign-in pages, goes by default.
 const TLD = '\\.[a-z]{2,6}(\\.[a-z]{2})?$'
 const names = (list: string) => new RegExp(`(^|\\.)(${list})${TLD}`, 'i')
-const hosts = (list: string) => new RegExp(`^(${list})$`, 'i')
 
 const SENSITIVE: { test: RegExp; category: string }[] = [
   {
     category: 'banking and payments',
     test: names('chase|wellsfargo|bankofamerica|citi|citibank|capitalone|americanexpress|amex|jpmorgan|hsbc|barclays|schwab|fidelity|vanguard|coinbase|robinhood|stripe|paypal|venmo|wise|revolut|mercury|brex|ramp|square|squareup|plaid|monzo|n26|santander|lloyds|natwest|rbc|td|bmo|scotiabank|ing|bnpparibas|ubs|kraken|binance|gemini|klarna|affirm|cash|zelle|wealthfront|betterment|etrade|interactivebrokers|sofi|chime|ally|discover|usbank|pnc|truist'),
-  },
-  {
-    category: 'email',
-    test: hosts('mail\\.google\\.com|gmail\\.com|outlook\\.live\\.com|outlook\\.office(365)?\\.com|mail\\.yahoo\\.com|mail\\.proton\\.me|(www\\.)?fastmail\\.com|mail\\.zoho\\.com|mail\\.aol\\.com|(www\\.)?icloud\\.com|app\\.hey\\.com'),
-  },
-  {
-    category: 'sign-in and passwords',
-    test: hosts('accounts\\.google\\.com|myaccount\\.google\\.com|login\\.microsoftonline\\.com|login\\.live\\.com|account\\.microsoft\\.com|appleid\\.apple\\.com|idmsa\\.apple\\.com|.*\\.okta\\.com|.*\\.auth0\\.com|.*\\.onelogin\\.com|.*\\.duosecurity\\.com|(my\\.|start\\.)?1password\\.(com|ca|eu)|vault\\.bitwarden\\.com|lastpass\\.com|app\\.dashlane\\.com'),
   },
 ]
 
@@ -34,12 +24,9 @@ export function registrable(host: string): string {
   return getDomain(bare(host), { allowPrivateDomains: true }) ?? bare(host)
 }
 
-// How a cookie's host is shown and chosen. A sensitive host like mail.google.com
-// stays its own site, so leaving it out never drops the rest of google.com.
-export function siteOf(host: string): string {
-  const category = sensitiveCategory(host)
-  return category && category !== 'banking and payments' ? bare(host) : registrable(host)
-}
+// How a cookie's host is shown and chosen: by site, so accounts.google.com and
+// mail.google.com both belong to google.com.
+export const siteOf = (host: string): string => registrable(host)
 
 export type Choice = { sites: string[]; skip: string[]; all: boolean }
 

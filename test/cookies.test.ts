@@ -33,20 +33,19 @@ const cookie = (host: string, extra: Partial<Cookie> = {}): Cookie => ({
   host, name: 'n', value: 'v', path: '/', secure: true, httpOnly: true, ...extra,
 })
 
-test('by default every site goes except banking, email and sign-in', () => {
+test('by default every site goes except banking and payments', () => {
   const all = [cookie('.linear.app'), cookie('.github.com'), cookie('.chase.com'), cookie('.chase.co.uk'), cookie('.stripe.com'),
     cookie('.brex.com'), cookie('mail.google.com'), cookie('accounts.google.com'), cookie('.google.com')]
   const pick = (choice: Partial<{ sites: string[]; skip: string[]; all: boolean }>) =>
     chooseCookies(all, { sites: [], skip: [], all: false, ...choice }).map((c) => c.host)
-  expect(pick({})).toEqual(['.linear.app', '.github.com', '.google.com'])
-  expect(pick({ skip: ['github.com'] })).toEqual(['.linear.app', '.google.com'])
+  expect(pick({})).toEqual(['.linear.app', '.github.com', 'mail.google.com', 'accounts.google.com', '.google.com'])
+  expect(pick({ skip: ['github.com', 'google.com'] })).toEqual(['.linear.app'])
   expect(pick({ all: true })).toHaveLength(all.length)
   // naming a site is consent, even for a sensitive one
   expect(pick({ sites: ['stripe.com'] })).toEqual(['.stripe.com'])
-  expect(pick({ sites: ['mail.google.com'] })).toEqual(['mail.google.com'])
+  expect(pick({ sites: ['google.com'] })).toEqual(['mail.google.com', 'accounts.google.com', '.google.com'])
   expect(sensitiveCategory('.chase.co.uk')).toBe('banking and payments')
-  expect(sensitiveCategory('mail.google.com')).toBe('email')
-  expect(sensitiveCategory('accounts.google.com')).toBe('sign-in and passwords')
+  expect(sensitiveCategory('accounts.google.com')).toBeUndefined()
 })
 
 test('expired and empty cookies are never sent', () => {

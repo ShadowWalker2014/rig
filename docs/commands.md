@@ -62,9 +62,9 @@ rig cookies sites [--from chrome]
 rig cookies browsers
   Copies your sign-ins from a browser on this machine into cloud desktops, so they
   are signed in wherever you are. Run it again any time to bring the latest.
-  rig cookies push            every site EXCEPT banking and payments, email, and
-                              sign-in and password managers, into your default desktop
-  rig cookies push --all      every site, the sensitive ones too (asks you to confirm)
+  rig cookies push            every site EXCEPT banking and payments (Google, GitHub,
+                              email and the rest all go), into your default desktop
+  rig cookies push --all      banking and payments too (asks you to confirm)
   rig cookies push --site github.com,linear.app    only those sites
   --skip a.com,b.com   leave more sites out      --from arc:Work   another browser or profile
   -b <box>             one box instead of your default desktop (a box that ran a

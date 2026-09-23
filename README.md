@@ -98,7 +98,7 @@ rig image build
 **4. Sign in to your tools**
 
 ```bash
-rig cookies push             # your browser's logins, except banking, email and sign-in
+rig cookies push             # your browser's logins, except banking and payments
 ```
 
 For command-line tools, sign in inside a cloud desktop, then save it:
@@ -127,8 +127,8 @@ Sign in to anything in the browser you already use, then copy those logins into 
 
 | Command | What it copies |
 |---|---|
-| `rig cookies push` | Every site **except** banking and payments, email, and sign-in and password managers |
-| `rig cookies push --all` | Every site, the sensitive ones too. You confirm at the terminal first. |
+| `rig cookies push` | Every site **except** banking and payments — Google, GitHub, email and everything else go |
+| `rig cookies push --all` | Every site, banking and payments too. You confirm at the terminal first. |
 | `rig cookies push --site github.com,linear.app` | Only those sites |
 | `rig cookies push --skip notion.so` | The default set, minus the sites you list |
 
@@ -144,7 +144,7 @@ rig cookies browsers             # Chrome, Edge, Brave, Arc, Comet, Chromium, Vi
 rig cookies sites --from chrome  # each site's cookie count, and which ones stay out by default
 ```
 
-**How it stays safe:** rig prints only site names and counts, never a value. Cookies are decrypted in memory and sent over E2B's encrypted connection straight into the cloud desktop's Chrome. For Chrome-family browsers, macOS asks you to approve access each time — click **Allow**, not Always Allow. `--all` refuses to run from an agent or script. Banking, payments, email and sign-in sessions stay on your laptop unless you ask for them.
+**How it stays safe:** rig prints only site names and counts, never a value. Cookies are decrypted in memory and sent over E2B's encrypted connection straight into the cloud desktop's Chrome. For Chrome-family browsers, macOS asks you to approve access each time — click **Allow**, not Always Allow. `--all` refuses to run from an agent or script. Banking and payment sessions stay on your laptop unless you ask for them.
 
 Details, including what "sensitive" covers: [docs/cookies.md](docs/cookies.md).
 
@@ -254,7 +254,7 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 - **Your E2B key never touches the repo you work in.** rig reads it from your shell, a private settings file or the Keychain, and starts with its own empty settings, so a repo's `.env` or `bunfig.toml` never loads.
 - **A hostile repo cannot reach your laptop through rig.** Its git settings cannot run programs, and no path, symlink or `rig.json` entry can upload a file from outside the repo.
 - **Ports are private.** `rig port` and `rig desktop` serve them on your laptop's `127.0.0.1` only and refuse requests started by other websites. The desktop also has a one-time password.
-- **Cookie values are never printed,** and banking, email and sign-in sessions stay out unless you ask.
+- **Cookie values are never printed,** and banking and payment sessions stay out unless you ask.
 - **Your default desktop is shared by every new cloud desktop.** Keep money-moving and production-write accounts out of it.
 
 Full details: [docs/security.md](docs/security.md). Found a vulnerability? Please open a private [security advisory](https://github.com/ShadowWalker2014/rig/security/advisories/new).
@@ -268,7 +268,7 @@ rig is open-source cloud desktops for AI agents. Each git branch gets a Linux de
 Yes. Any agent that can run shell commands can use rig. `rig skill install` adds a Claude Code skill, `npx skills add ShadowWalker2014/rig` installs it for other agents, and `rig guide` prints the instructions for anything else.
 
 ### How do I get my existing logins into a cloud desktop?
-Run `rig cookies push`. It copies your browser's logins — except banking, email and sign-in sites — into your default desktop, so every new cloud desktop starts signed in. Use `--site` to pick sites or `--all` to include everything.
+Run `rig cookies push`. It copies your browser's logins — except banking and payment sites — into your default desktop, so every new cloud desktop starts signed in. Use `--site` to pick sites or `--all` to include everything.
 
 ### How is rig different from Claude Code on the web, GitHub Codespaces or Daytona?
 Claude Code on the web runs the whole agent in the cloud and starts every session without your logins. Codespaces loses running processes when it stops. rig keeps the agent on your laptop, keeps each cloud desktop's memory while paused, starts every one already signed in, and lets you take over the browser.

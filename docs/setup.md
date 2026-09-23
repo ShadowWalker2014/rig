@@ -36,10 +36,10 @@ There are two ways, and you can use both.
 
 ```bash
 rig cookies sites --from chrome                                     # see what is there
-rig cookies push                                    # every site except banking, email and sign-in
+rig cookies push                                    # every site except banking and payments
 ```
 
-macOS asks you to allow access to Chrome's cookie key: click **Allow**, not Always Allow. The cookies go into your default desktop, so every new box starts with them. Run it again whenever you sign in to something new. Add `--all` to include banking, email and sign-in sites, or `--site a.com,b.com` for just some.
+macOS asks you to allow access to Chrome's cookie key: click **Allow**, not Always Allow. The cookies go into your default desktop, so every new box starts with them. Run it again whenever you sign in to something new. Add `--all` to include banking and payment sites too, or `--site a.com,b.com` for just some.
 
 **The hands-on way: sign in inside the cloud desktop.** Needed for command-line tools, whose logins live in files rather than browser cookies.
 
