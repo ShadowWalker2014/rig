@@ -40,7 +40,7 @@ rig moves exactly that heavy work to the cloud and leaves the agent and your edi
 Requires [Bun](https://bun.sh) 1.2+ and an [E2B account](https://e2b.dev) (the free Hobby plan works for trying rig with `RIG_BOX_CPU=2` and `RIG_BOX_MEMORY_MB=4096`; bigger boxes need Pro).
 
 ```bash
-npm install -g @shadowwalker2014/rig     # or: bun add -g @shadowwalker2014/rig
+bun add -g github:ShadowWalker2014/rig    # npm release coming: npm install -g @shadowwalker2014/rig
 rig login                                # macOS: stores your E2B API key in the Keychain
 rig image build                          # once: Ubuntu 24.04, desktop, Chrome, bun, node, gh, vercel
 rig skill install                        # once: teaches Claude Code to use rig
