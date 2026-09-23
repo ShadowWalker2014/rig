@@ -32,7 +32,7 @@ rig gives every branch its own cloud desktop for that work:
 4. **`rig desktop`** lets you take over the box's screen.
 5. **`rig snap --promote`** saves a clean box's logins so every new box starts with them.
 
-## Quick start
+## Getting started
 
 You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account. The step-by-step version is in the [setup guide](docs/setup.md).
 
@@ -40,11 +40,21 @@ You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account. The s
 bun add -g github:ShadowWalker2014/rig   # npm release coming: npm install -g @shadowwalker2014/rig
 rig login           # stores your E2B API key in the macOS Keychain
 rig image build     # once, about 10 minutes: desktop, Chrome and the usual dev CLIs
-rig skill install   # once: teaches Claude Code to use rig
 rig doctor          # checks everything is set up
 ```
 
 Not on a Mac? Copy [.env.example](.env.example) to `~/.config/rig/.env`, run `chmod 600` on it, and put your key in it.
+
+### Give your coding agent the rig skill
+
+rig ships with an agent skill that tells your coding agent to run dev servers, tests and browser checks in its cloud desktop instead of on your laptop. Install it once:
+
+```bash
+rig skill install                        # Claude Code (links ~/.claude/skills/rig)
+npx skills add ShadowWalker2014/rig      # or: Claude Code, Cursor, Codex, opencode and more
+```
+
+Agents without skills can read the same instructions with `rig guide`; paste its output into their `AGENTS.md`.
 
 ### Sign in to your tools once
 

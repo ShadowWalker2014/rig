@@ -70,11 +70,14 @@ Every new cloud desktop now starts from this one, already signed in. To add a lo
 
 ## 6. Teach your coding agent
 
+rig ships with an agent skill: instructions that tell your coding agent to run dev servers, tests and browser checks in its cloud desktop, and how to hand the desktop to you for a login.
+
 ```bash
-rig skill install     # Claude Code: links the rig skill into ~/.claude/skills/rig
+rig skill install                      # Claude Code: links the skill into ~/.claude/skills/rig
+npx skills add ShadowWalker2014/rig    # or install it for Claude Code, Cursor, Codex, opencode and more
 ```
 
-The skill ships inside rig, so it always matches your rig version. For other agents (Codex, Cursor, opencode), paste the output of `rig guide` into their instructions file, such as `AGENTS.md`.
+`rig skill install` keeps the skill in step with your rig version. For an agent without skill support, paste the output of `rig guide` into its instructions file, such as `AGENTS.md`.
 
 ## 7. Check everything
 
