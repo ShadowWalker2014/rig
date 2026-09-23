@@ -183,6 +183,7 @@ export async function snap(a: Args): Promise<void> {
     await stopDev(sbx)
     await stopViewer(sbx)
     console.error('Saving this box as your default desktop. Every new box will start with its logins and files.')
+    console.error(`Any open desktop view of this box is now closed; reopen it with: rig desktop ${box.metadata.name ?? box.sandboxId}`)
   }
   console.log(await snapshotBox(box.sandboxId, Boolean(a.flags.default)))
 }
