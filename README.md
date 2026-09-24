@@ -6,6 +6,9 @@ Each cloud desktop is a Linux machine with your code, a running dev server, test
 
 [![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+<p align="center"><a href="https://youtu.be/GZUu_k3i5WM"><img src="assets/demo.gif" alt="rig demo: the agent runs rig up, checks the app in the cloud Chrome, takes over the Linux desktop with rig desktop, clicks and types with rig click and rig type, then pauses the box." width="100%"></a></p>
+<p align="center"><sub><b><a href="https://youtu.be/GZUu_k3i5WM">Watch the 1-minute demo</a></b>: real commands on a real cloud desktop.</sub></p>
+
 <p align="center"><img src="assets/hero.svg" alt="rig: open-source cloud desktops for AI agents. Agents run on your laptop; each git branch gets a cloud desktop with a dev server and a signed-in Chrome that pauses when idle." width="100%"></p>
 
 ## Contents
@@ -52,7 +55,7 @@ rig moves that work into a cloud desktop per branch. Your laptop runs only the a
 
 ## See it working
 
-These are real screenshots from a cloud desktop, taken with rig.
+[Watch the 1-minute demo on YouTube](https://youtu.be/GZUu_k3i5WM). These are real screenshots from a cloud desktop, taken with rig.
 
 <p align="center"><img src="assets/screenshot-desktop.png" alt="A rig cloud desktop: Ubuntu with Chrome open on the rig GitHub repository, and a terminal listing the installed tools — node 24, bun, pnpm, python, Claude Code, Codex, opencode, gh, vercel, wrangler, railway, fly, aws, gcloud, stripe, Playwright, ffmpeg and Homebrew." width="100%"></p>
 <p align="center"><sub><b>The cloud desktop's screen</b>, as you see it in any browser tab with <code>rig desktop</code>: Chrome, and the tools every cloud desktop comes with.</sub></p>
