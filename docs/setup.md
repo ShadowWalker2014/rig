@@ -7,7 +7,7 @@ About 20 minutes, most of it waiting for the image to build. At the end, every n
 You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account.
 
 ```bash
-bun add -g github:ShadowWalker2014/rig
+npm install -g @shadowwalker2014/rig     # or: bun add -g @shadowwalker2014/rig
 ```
 
 ## 2. Add your E2B key

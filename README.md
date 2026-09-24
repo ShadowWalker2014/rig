@@ -4,7 +4,7 @@
 
 Each cloud desktop is a Linux machine with your code, a running dev server, tests and a signed-in Chrome. It sleeps when nobody uses it and wakes in a second. Claude Code, Cursor or Codex keeps editing code on your laptop and does the heavy work in its cloud desktop.
 
-[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <p align="center"><img src="assets/hero.svg" alt="rig: open-source cloud desktops for AI agents. Agents run on your laptop; each git branch gets a cloud desktop with a dev server and a signed-in Chrome that pauses when idle." width="100%"></p>
 
@@ -81,7 +81,8 @@ You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account.
 **1. Install rig**
 
 ```bash
-bun add -g github:ShadowWalker2014/rig     # npm release coming: npm install -g @shadowwalker2014/rig
+npm install -g @shadowwalker2014/rig     # or: bun add -g @shadowwalker2014/rig
+rig help                                 # every command; `rig help <command>` for one
 ```
 
 **2. Add your E2B key**
