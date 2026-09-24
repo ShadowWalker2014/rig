@@ -319,7 +319,7 @@ rig ls [filters] [--limit 50] [--ids | --json]
 ```
 rig pause [box…] | rig pause <filters>
   Pauses boxes now. A paused box keeps its memory and costs nothing; any rig command
-  wakes it in about a second. Boxes also pause by themselves after RIG_IDLE_MIN
+  wakes it in about two seconds. Boxes also pause by themselves after RIG_IDLE_MIN
   (default 15) minutes without a rig command.
   Example:  rig pause --all
 ```

@@ -1,75 +1,85 @@
-# rig — open-source cloud desktops for AI agents
+<p align="center"><img src="assets/hero.svg" alt="rig: Give every AI agent its own cloud desktop. Five agents, each with its own cloud desktop running the app. Three are running and two are paused, costing nothing." width="100%"></p>
 
-**Give every AI agent its own cloud desktop. Your laptop stays fast, so you can run many agents at once.**
+<p align="center"><b>rig</b> gives each coding agent a Linux desktop in the cloud with your code, a running dev server, tests and a signed-in Chrome, so your laptop stays fast and you can run many agents at once.</p>
 
-Each cloud desktop is a Linux machine with your code, a running dev server, tests and a signed-in Chrome. It sleeps when nobody uses it and wakes in a second. Claude Code, Cursor or Codex keeps editing code on your laptop and does the heavy work in its cloud desktop.
+<p align="center">
+  <a href="https://www.npmjs.com/package/@shadowwalker2014/rig"><img src="https://img.shields.io/npm/v/@shadowwalker2014/rig?style=flat-square&color=8b8dff&labelColor=0e1018&label=npm" alt="npm version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8b8dff?style=flat-square&labelColor=0e1018" alt="MIT license"></a>
+  <a href="https://github.com/ShadowWalker2014/rig/stargazers"><img src="https://img.shields.io/github/stars/ShadowWalker2014/rig?style=flat-square&color=8b8dff&labelColor=0e1018" alt="GitHub stars"></a>
+</p>
 
-[![npm](https://img.shields.io/npm/v/@shadowwalker2014/rig)](https://www.npmjs.com/package/@shadowwalker2014/rig) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+<p align="center"><a href="https://youtu.be/n-CSBE_yFis"><img src="assets/demo.gif" alt="rig demo: five agents each get a cloud desktop. rig up starts the app, the agent checks its work with a screenshot, you step in through a browser tab, the agent clicks and types on the screen, and the desktop sleeps for free and wakes in about two seconds." width="100%"></a></p>
+<p align="center"><a href="https://youtu.be/n-CSBE_yFis"><b>Watch the 45-second demo (with sound)</b></a></p>
 
-<p align="center"><a href="https://youtu.be/GZUu_k3i5WM"><img src="assets/demo.gif" alt="rig demo: the agent runs rig up, checks the app in the cloud Chrome, takes over the Linux desktop with rig desktop, clicks and types with rig click and rig type, then pauses the box." width="100%"></a></p>
-<p align="center"><sub><b><a href="https://youtu.be/GZUu_k3i5WM">Watch the 1-minute demo</a></b>: real commands on a real cloud desktop.</sub></p>
+<p align="center">
+  <a href="#setup">Setup</a> ·
+  <a href="#bring-your-logins-from-your-browser">Logins</a> ·
+  <a href="#use-it-in-a-repo">Repos</a> ·
+  <a href="#saved-desktops">Saved desktops</a> ·
+  <a href="#computer-use">Computer use</a> ·
+  <a href="#quick-start-for-your-agent">Quick start</a> ·
+  <a href="#manage-and-clean-up">Manage</a> ·
+  <a href="#security">Security</a> ·
+  <a href="#faq">FAQ</a> ·
+  <a href="#docs">Docs</a>
+</p>
 
-<p align="center"><img src="assets/hero.svg" alt="rig: open-source cloud desktops for AI agents. Agents run on your laptop; each git branch gets a cloud desktop with a dev server and a signed-in Chrome that pauses when idle." width="100%"></p>
-
-## Contents
-
-- [Why rig](#why-rig)
-- [What you get](#what-you-get)
-- [See it working](#see-it-working)
-- [How it works](#how-it-works)
-- [Setup](#setup)
-- [Bring your logins from your browser](#bring-your-logins-from-your-browser)
-- [Use it in a repo](#use-it-in-a-repo)
-- [Take over the desktop](#take-over-the-desktop)
-- [Saved desktops](#saved-desktops)
-- [Computer use](#computer-use)
-- [Use it with your coding agent](#use-it-with-your-coding-agent)
-- [Quick start for your agent](#quick-start-for-your-agent)
-- [Manage and clean up](#manage-and-clean-up)
-- [What's inside a cloud desktop](#whats-inside-a-cloud-desktop)
-- [Settings](#settings)
-- [Security](#security)
-- [FAQ](#faq)
-- [Docs](#docs)
+Claude Code, Cursor or Codex keeps editing code on your laptop. The heavy work runs in its cloud desktop, which sleeps when nobody uses it and wakes in about two seconds.
 
 ## Why rig
 
-One coding agent barely uses your laptop. What freezes it is everything around the agent: a dev server per branch, a Chrome for checking the UI, and test runs. Two or three tasks in, a 16–24 GB laptop starts swapping.
+One coding agent barely uses your laptop. What freezes it is everything around the agent: a dev server per branch, a Chrome for checking the UI, and test runs. Two or three tasks in, a 16 to 24 GB laptop starts swapping.
 
-rig moves that work into a cloud desktop per branch. Your laptop runs only the agents.
+rig moves that work into one cloud desktop per branch. Your laptop runs only the agents.
 
-<p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, dev server, Chrome and tests for every task and runs out of memory. With rig, the laptop runs only the agents and each branch's dev server, Chrome and tests run in its own cloud desktop." width="100%"></p>
+<p align="center"><img src="assets/before-after.svg" alt="Without rig, the laptop runs an agent, a dev server, Chrome and tests for every task, and its memory is full. With rig, the laptop runs only the agents, and each branch's dev server, Chrome and tests run in its own cloud desktop." width="100%"></p>
 
 ## What you get
 
 | | |
 |---|---|
-| **Sleeps when idle** | A cloud desktop pauses after 15 quiet minutes with everything still running inside, costs nothing while paused, and wakes in about a second. |
-| **Starts signed in** | Copy your logins from Chrome, Arc, Edge, Brave, Firefox or Safari with one command. Every new cloud desktop starts with them. |
+| **Sleeps when idle** | A cloud desktop pauses after 15 quiet minutes with everything still running inside. It costs nothing while paused and wakes in about two seconds. |
+| **Starts signed in** | One command copies your logins from Chrome, Arc, Edge, Brave, Firefox or Safari. Every new cloud desktop starts with them. |
 | **Computer use and MCP** | Your agent can see the whole screen and click, type and press keys, like Claude's computer use. `rig mcp` gives Claude Code these as native tools that return screenshots. |
-| **You can take over** | Open the desktop's screen in any browser tab to finish a login or a 2FA code. It is the same Chrome the agent drives. |
-| **No push needed** | Your local edits — committed or not — reach the cloud desktop with `rig sync`. |
+| **You can take over** | Open the desktop's screen in any browser tab to finish a login or type a 2FA code. It is the same Chrome the agent drives. |
+| **No push needed** | `rig sync` sends your local edits, committed or not. |
 | **Your whole toolbelt** | Node, Bun, Python, Playwright, Puppeteer, the Vercel, Cloudflare, Railway, Fly, AWS, Google Cloud, GitHub and Stripe CLIs, Claude Code, Codex and more. |
 | **Private by default** | Ports are never public, your API key never touches the repo you work in, and cookie values are never printed. |
 | **Built for many** | Filters and bulk actions work across thousands of cloud desktops, and one command cleans up the stale ones. |
 
 ## See it working
 
-[Watch the 1-minute demo on YouTube](https://youtu.be/GZUu_k3i5WM). These are real screenshots from a cloud desktop, taken with rig.
+Stills from the [demo video](https://youtu.be/n-CSBE_yFis). Every command in it ran for real on a real cloud desktop.
 
-<p align="center"><img src="assets/screenshot-desktop.png" alt="A rig cloud desktop: Ubuntu with Chrome open on the rig GitHub repository, and a terminal listing the installed tools — node 24, bun, pnpm, python, Claude Code, Codex, opencode, gh, vercel, wrangler, railway, fly, aws, gcloud, stripe, Playwright, ffmpeg and Homebrew." width="100%"></p>
-<p align="center"><sub><b>The cloud desktop's screen</b>, as you see it in any browser tab with <code>rig desktop</code>: Chrome, and the tools every cloud desktop comes with.</sub></p>
+<table>
+  <tr>
+    <td width="33%"><img src="assets/stills/parallel-agents.png" alt="Five agents, each with its own cloud desktop running the same app on a different branch."><br><sub><b>Every agent gets its own desktop.</b> Five branches run side by side.</sub></td>
+    <td width="33%"><img src="assets/stills/one-command.png" alt="A terminal running rig up: it creates a box, installs packages, starts the dev server and prints Box is ready."><br><sub><b>One command starts the app.</b> <code>rig up</code> copies the code, installs and runs it.</sub></td>
+    <td width="33%"><img src="assets/stills/checks-its-work.png" alt="The agent runs rig browser and rig shot, and the screenshot of the app appears next to the terminal."><br><sub><b>The agent checks its own work.</b> <code>rig shot</code> saves a screenshot to your laptop.</sub></td>
+  </tr>
+  <tr>
+    <td width="33%"><img src="assets/stills/step-in.png" alt="The cloud desktop's screen in a browser tab, showing a two-step verification form with a code being typed."><br><sub><b>You can step in.</b> <code>rig desktop</code> opens the screen for a 2FA code.</sub></td>
+    <td width="33%"><img src="assets/stills/uses-the-screen.png" alt="Claude Code, through rig mcp, takes a screenshot and clicks and types in the app on the cloud desktop."><br><sub><b>It uses the whole screen.</b> Claude Code clicks and types through <code>rig mcp</code>.</sub></td>
+    <td width="33%"><img src="assets/stills/sleeps-costs-0.png" alt="rig pause, then five minutes later rig exec wakes the box in 1.9 seconds with the same dev server process still running."><br><sub><b>It sleeps for free.</b> It woke in 1.9 seconds with the same dev server still running.</sub></td>
+  </tr>
+</table>
 
-<p align="center"><img src="assets/screenshot-agent-view.png" alt="A screenshot taken with rig shot: the cloud desktop's Chrome showing the rig documentation page on GitHub." width="100%"></p>
-<p align="center"><sub><b>What your agent sees</b> with <code>rig shot</code>: a screenshot of the cloud desktop's Chrome, saved to your laptop. This one is a fresh desktop, not yet signed in.</sub></p>
+Two real screenshots, taken with rig:
+
+<table>
+  <tr>
+    <td width="50%"><img src="assets/screenshot-desktop.png" alt="A rig cloud desktop: Ubuntu with Chrome open on the rig GitHub repository, and a terminal listing the installed tools, including node 24, bun, pnpm, python, Claude Code, Codex, opencode, gh, vercel, wrangler, railway, fly, aws, gcloud, stripe, Playwright, ffmpeg and Homebrew."><br><sub><b>The cloud desktop's screen</b>, as you see it in a browser tab with <code>rig desktop</code>: Chrome, and the tools every cloud desktop comes with.</sub></td>
+    <td width="50%"><img src="assets/screenshot-agent-view.png" alt="A screenshot taken with rig shot: the cloud desktop's Chrome showing the rig documentation page on GitHub."><br><sub><b>What your agent sees</b> with <code>rig shot</code>: the cloud desktop's Chrome, saved to your laptop. This fresh desktop is not signed in yet.</sub></td>
+  </tr>
+</table>
 
 ## How it works
 
-<p align="center"><img src="assets/how-it-works.svg" alt="The rig loop: rig up, rig sync, rig exec and rig browser, rig desktop, rig save" width="100%"></p>
+<p align="center"><img src="assets/how-it-works.svg" alt="The rig loop in five commands: rig up, rig sync, rig exec and rig browser, rig desktop, rig save. After every edit, run rig sync and test again." width="100%"></p>
 
-1. **`rig up`** gives this branch a cloud desktop: your code is copied in, packages are installed and the dev server starts.
+1. **`rig up`** gives this branch a cloud desktop. It copies your code in, installs packages and starts the dev server.
 2. **`rig sync`** sends your local edits to it.
-3. **`rig exec`** runs tests there; **`rig browser`** drives its signed-in Chrome.
+3. **`rig exec`** runs tests there, and **`rig browser`** drives its signed-in Chrome.
 4. **`rig desktop`** lets you see and control its screen.
 5. **`rig save`** makes a signed-in cloud desktop your default desktop, so every new one starts as a copy of it.
 
@@ -77,9 +87,7 @@ In the CLI, a cloud desktop is called a **box**.
 
 ## Setup
 
-About 20 minutes, most of it waiting for the image to build. The full walkthrough is in the [setup guide](docs/setup.md).
-
-You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account.
+Setup takes about 20 minutes, most of it waiting for the image to build. You need [Bun](https://bun.sh) 1.2+ and an [E2B](https://e2b.dev) account. The full walkthrough is in the [setup guide](docs/setup.md).
 
 **1. Install rig**
 
@@ -117,7 +125,7 @@ rig save <id>                # every new cloud desktop now starts signed in
 rig saved                    # your saved desktops; * is the one new boxes start from
 ```
 
-Keep 1Password signed out in a desktop you save — a saved desktop is stored with E2B, and a signed-in 1Password in it would put your vault session there too.
+Keep 1Password signed out in a desktop you save. A saved desktop is stored with E2B, and a signed-in 1Password in it would put your vault session there too.
 
 **5. Teach your coding agent**
 
@@ -137,7 +145,7 @@ Sign in to anything in the browser you already use, then copy those logins into 
 
 | Command | What it copies |
 |---|---|
-| `rig cookies push` | Every site **except** banking and payments — Google, GitHub, email and everything else go |
+| `rig cookies push` | Every site **except** banking and payments. Google, GitHub, email and everything else go. |
 | `rig cookies push --all` | Every site, banking and payments too. You confirm at the terminal first. |
 | `rig cookies push --site github.com,linear.app` | Only those sites |
 | `rig cookies push --skip notion.so` | The default set, minus the sites you list |
@@ -147,18 +155,21 @@ Sign in to anything in the browser you already use, then copy those logins into 
 | `--from arc` or `--from chrome:Work` | Use another browser or profile |
 | `-b <box>` | Update one cloud desktop instead of your default desktop |
 
-See what is there first — neither command reads a cookie value or asks for access:
+See what is there first. Neither command reads a cookie value or asks for access:
 
 ```bash
 rig cookies browsers             # Chrome, Edge, Brave, Arc, Comet, Chromium, Vivaldi, Opera, Firefox, Safari
 rig cookies sites --from chrome  # each site's cookie count, and which ones stay out by default
 ```
 
-**How it stays safe:** rig prints only site names and counts, never a value. Cookies are decrypted in memory and sent over E2B's encrypted connection straight into the cloud desktop's Chrome. For Chrome-family browsers, macOS asks you to approve access each time — click **Allow**, not Always Allow. `--all` refuses to run from an agent or script. Banking and payment sessions stay on your laptop unless you ask for them.
+**How it stays safe:**
 
-Some sites refuse a login copied from another computer — Google accounts do. For those, sign in once inside the cloud desktop with `rig desktop`, then `rig save`.
+- rig prints only site names and counts, never a value.
+- Cookies are decrypted in memory and sent over E2B's encrypted connection straight into the cloud desktop's Chrome.
+- For Chrome-family browsers, macOS asks you to approve access each time. Click **Allow**, not Always Allow.
+- `--all` refuses to run from an agent or script. Banking and payment sessions stay on your laptop unless you ask for them.
 
-Details: [docs/cookies.md](docs/cookies.md).
+Some sites refuse a login copied from another computer, and Google accounts do. For those, sign in once inside the cloud desktop with `rig desktop`, then run `rig save`. Details are in [docs/cookies.md](docs/cookies.md).
 
 ## Use it in a repo
 
@@ -167,11 +178,15 @@ cd my-repo
 rig up          # the first time, it works out how the repo runs and asks about env files
 ```
 
-The first `rig up` in a repo runs `rig init`: it detects the package manager, the dev command and its port, and asks before copying gitignored env files like `.env.local` into the box. The answers go in a small `rig.json`. If the box can't read a private repo, `rig up` stops before anything slow and prints the exact fix. Details: [using rig in a repo](docs/projects.md).
+The first `rig up` in a repo runs `rig init`. It detects the package manager, the dev command and its port, and asks before copying gitignored env files like `.env.local` into the box. The answers go in a small `rig.json`, and `rig status` shows the settings in use. If the box can't read a private repo, `rig up` stops before anything slow and prints the exact fix. Details are in [using rig in a repo](docs/projects.md).
+
+```json
+{ "setup": "bun install", "dev": "bun run dev", "port": 3000, "copy": [".env.local"], "submodules": true }
+```
 
 ### Every task
 
-<p align="center"><img src="assets/terminal.svg" alt="Example terminal session running rig up, rig exec and rig ls" width="100%"></p>
+<p align="center"><img src="assets/terminal.svg" alt="A terminal session: rig up creates a box, clones the repo, runs setup and starts the dev server. rig exec -- bun test runs the tests in the box. rig ls lists one running box and one paused box." width="100%"></p>
 
 ```bash
 cd my-repo
@@ -186,15 +201,7 @@ rig port 3000                                # open its app at http://localhost:
 rig logs                                     # the dev server's output
 ```
 
-Parallel agents on one branch? `rig up --new` gives each its own cloud desktop; pass `-b <id>` to the other commands.
-
-A repo's `rig.json`, written by `rig init`:
-
-```json
-{ "setup": "bun install", "dev": "bun run dev", "port": 3000, "copy": [".env.local"], "submodules": true }
-```
-
-`rig status` shows the settings in use.
+Running parallel agents on one branch? `rig up --new` gives each its own cloud desktop. Pass `-b <id>` to the other commands.
 
 ## Take over the desktop
 
@@ -205,17 +212,17 @@ rig desktop <box>       # or just `rig desktop` inside a repo
 rig prints a private link. Open it in any browser tab to see and control the cloud desktop's screen: finish a login, type a 2FA code, or watch the agent work.
 
 - **It stays awake while you use it.** The cloud desktop does not sleep while the tab is open, and sleeps 15 minutes after you close it.
-- **The link keeps working** after the terminal or agent that opened it has gone; `rig desktop` again prints the same link, and `rig desktop --stop` closes it.
+- **The link keeps working** after the terminal or agent that opened it has gone. `rig desktop` again prints the same link, and `rig desktop --stop` closes it.
 - **Copy and paste** go through the clipboard panel on the left edge of the view.
-- **It is private:** the link works only on your machine, and asks for a one-time password it already carries.
+- **It is private.** The link works only on your machine, and asks for a one-time password it already carries.
 
 ## Saved desktops
 
-Set up a cloud desktop once — sign in, install what you need — and save it. Every new cloud desktop starts as a copy of your **default** saved desktop: its files, its logins and its already-running Chrome.
+Set up a cloud desktop once, sign in and install what you need, then save it. Every new cloud desktop starts as a copy of your **default** saved desktop: its files, its logins and its already-running Chrome.
 
 | Command | Does |
 |---|---|
-| `rig save <box>` | Save this box as your default desktop (or update it) |
+| `rig save <box>` | Save this box as your default desktop, or update it |
 | `rig save <box> --as work` | Save it under another name; add `--use` to make it the default |
 | `rig saved` | List saved desktops; `*` marks the default |
 | `rig saved use work` | New boxes now start from `work` |
@@ -223,15 +230,15 @@ Set up a cloud desktop once — sign in, install what you need — and save it. 
 | `rig saved rm work` | Delete a saved desktop |
 | `rig status` | The default, running and paused boxes, and this branch's box |
 
-rig reminds you to save: closing `rig desktop` on a clean box prints the `rig save` command, and `rig doctor` flags a missing default.
+rig reminds you to save. Closing `rig desktop` on a clean box prints the `rig save` command, and `rig doctor` flags a missing default.
 
 Save a clean cloud desktop made with `rig new`. rig refuses to save one that ran a repo's code, because that code could have planted something that would spread to every cloud desktop started from it.
 
 ## Computer use
 
-Your agent can use the whole cloud desktop, not only its Chrome: take a screenshot, click, type, press keys, scroll and drag. These are the same actions as Claude's computer-use tool, for things outside a web page — a terminal window, a system dialog, a browser extension, a file picker.
+Your agent can use the whole cloud desktop, not only its Chrome. It can take a screenshot, click, type, press keys, scroll and drag. These are the same actions as Claude's computer-use tool, for things outside a web page: a terminal window, a system dialog, a browser extension or a file picker.
 
-<p align="center"><img src="assets/computer-use.svg" alt="The computer-use loop: Claude Code on your laptop uses rig mcp or rig commands to take a screenshot of the cloud desktop, decide where to click, act with click, type or key, and take another screenshot to check." width="100%"></p>
+<p align="center"><img src="assets/computer-use.svg" alt="Computer use: Claude Code on your laptop runs rig screen to look, rig click, rig type and rig key to act, and rig screen again to check. On the cloud desktop, the click lands on a checkbox in the app." width="100%"></p>
 
 ```bash
 rig screen                     # screenshot the desktop; prints the file path
@@ -247,11 +254,11 @@ For Claude Code, add rig as an MCP server. Claude then gets `computer`, `browser
 claude mcp add rig -- rig mcp
 ```
 
-Use `rig browser` for anything inside a web page — it reads the page's structure, so it is faster and more reliable than clicking pixels. More in [computer use](docs/computer-use.md).
+Use `rig browser` for anything inside a web page. It reads the page's structure, so it is faster and more reliable than clicking pixels. More in [computer use](docs/computer-use.md).
 
 ## Use it with your coding agent
 
-rig ships with an agent skill: instructions that tell your coding agent to run dev servers, tests and browser checks in its cloud desktop instead of on your laptop, and how to hand the screen to you for a login.
+rig ships with an agent skill. It tells your coding agent to run dev servers, tests and browser checks in its cloud desktop instead of on your laptop, and how to hand the screen to you for a login.
 
 ```bash
 rig skill install                        # Claude Code
@@ -271,7 +278,7 @@ instead of on my laptop. Keep editing code locally; run the heavy work in the cl
 
 1. Run `rig guide` and follow it. Run `rig help <command>` whenever you are unsure.
 2. Start this branch's cloud desktop with `rig up`. The first time in this repo it runs
-   `rig init` — ask me before copying any env file.
+   `rig init`. Ask me before copying any env file.
 3. After every edit, run `rig sync`. Run tests with `rig exec -- <command>`.
 4. Check the UI with `rig browser -- open http://localhost:<port>`, `rig browser -- snapshot -i`
    and `rig shot`. Read logs with `rig logs`.
@@ -297,11 +304,9 @@ rig kill --repo acme/web --state paused --yes
 rig doctor                               # key, image, default desktop and settings
 ```
 
-**Clean-up is automatic:** once a day, `rig up` and `rig new` delete rig's own boxes that have been paused and unused for 7 days (`RIG_AUTO_PRUNE_DAYS`, `0` turns it off).
-
-Filters (`--state`, `--older-than 7d`, `--repo`, `--branch`, `--here`, `--all`) run on E2B's side, so they stay fast with thousands of cloud desktops. A filtered delete previews first and only deletes with `--yes`.
-
-**Cost:** rig is free. You pay E2B for running time — about $0.33 an hour for 4 CPUs / 8 GB at [E2B's rates](https://e2b.dev/pricing). Paused cloud desktops cost nothing. More in [cleanup and scale](docs/cleanup-and-scale.md).
+- **Clean-up is automatic.** Once a day, `rig up` and `rig new` delete rig's own boxes that have been paused and unused for 7 days. Set `RIG_AUTO_PRUNE_DAYS` to change that, or `0` to turn it off.
+- **Filters stay fast.** `--state`, `--older-than 7d`, `--repo`, `--branch`, `--here` and `--all` run on E2B's side, so they stay fast with thousands of cloud desktops. A filtered delete previews first and only deletes with `--yes`.
+- **rig is free.** You pay E2B for running time: about $0.33 an hour for 4 CPUs / 8 GB at [E2B's rates](https://e2b.dev/pricing). Paused cloud desktops cost nothing. More in [cleanup and scale](docs/cleanup-and-scale.md).
 
 ## What's inside a cloud desktop
 
@@ -313,7 +318,7 @@ Ubuntu 24.04 with an Xfce desktop and Google Chrome, plus:
 | Deploy and cloud | vercel, wrangler, railway, fly, aws, gcloud, gh, stripe, e2b |
 | AI coding agents | claude, codex, opencode |
 | Browsers and testing | Chrome with the 1Password extension, Playwright with Chromium, Puppeteer, agent-browser |
-| Passwords | 1Password CLI (`op`) and Chrome extension — sign in through `rig desktop` when a task needs it; don't save a signed-in 1Password |
+| Passwords | 1Password CLI (`op`) and Chrome extension. Sign in through `rig desktop` when a task needs it, and don't save a signed-in 1Password. |
 | Python and media | python, pip, uv, whisper, ffmpeg, ImageMagick |
 | Databases and everyday | psql, redis-cli, sqlite3, git, git-lfs, jq, ripgrep, tmux, Homebrew |
 
@@ -328,7 +333,7 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 | `RIG_E2B_API_KEY` | Keychain, after `rig login` | Your E2B API key |
 | `RIG_E2B_DOMAIN` | `e2b.app` | Only for self-hosted E2B |
 | `RIG_IDLE_MIN` | `15` | Minutes without a rig command before a cloud desktop pauses |
-| `RIG_AUTO_PRUNE_DAYS` | `7` | Days a paused box may sit unused before `rig up`/`rig new` delete it; `0` turns it off |
+| `RIG_AUTO_PRUNE_DAYS` | `7` | Days a paused box may sit unused before `rig up` or `rig new` deletes it; `0` turns it off |
 | `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `8192` | Size, set when the image is built |
 | `RIG_DEFAULT_DESKTOP` / `RIG_BASE_TEMPLATE` | `rig-default` / `rig-base` | Names of your default desktop and image in E2B |
 
@@ -340,33 +345,57 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 - **Cookie values are never printed,** and banking and payment sessions stay out unless you ask.
 - **Your default desktop is shared by every new cloud desktop.** Keep money-moving and production-write accounts out of it.
 
-Full details: [docs/security.md](docs/security.md). Found a vulnerability? Please open a private [security advisory](https://github.com/ShadowWalker2014/rig/security/advisories/new).
+Full details are in [docs/security.md](docs/security.md). Found a vulnerability? Please open a private [security advisory](https://github.com/ShadowWalker2014/rig/security/advisories/new).
 
 ## FAQ
 
-### What is rig?
+<details>
+<summary><b>What is rig?</b></summary>
+
 rig is open-source cloud desktops for AI agents. Each git branch gets a Linux desktop in the cloud with a dev server, tests and a signed-in Chrome, so AI agents can work in parallel without overloading your laptop. The agent still runs locally; rig moves only the heavy processes.
+</details>
 
-### Does rig work with Claude Code, Cursor, Codex and other agents?
+<details>
+<summary><b>Does rig work with Claude Code, Cursor, Codex and other agents?</b></summary>
+
 Yes. Any agent that can run shell commands can use rig. `rig skill install` adds a Claude Code skill, `npx skills add ShadowWalker2014/rig` installs it for other agents, and `rig guide` prints the instructions for anything else.
+</details>
 
-### How do I get my existing logins into a cloud desktop?
-Run `rig cookies push`. It copies your browser's logins — except banking and payment sites — into your default desktop, so every new cloud desktop starts signed in. Use `--site` to pick sites or `--all` to include everything.
+<details>
+<summary><b>How do I get my existing logins into a cloud desktop?</b></summary>
 
-### How is rig different from Claude Code on the web, GitHub Codespaces or Daytona?
+Run `rig cookies push`. It copies your browser's logins, except banking and payment sites, into your default desktop, so every new cloud desktop starts signed in. Use `--site` to pick sites or `--all` to include everything.
+</details>
+
+<details>
+<summary><b>How is rig different from Claude Code on the web, GitHub Codespaces or Daytona?</b></summary>
+
 Claude Code on the web runs the whole agent in the cloud and starts every session without your logins. Codespaces loses running processes when it stops. rig keeps the agent on your laptop, keeps each cloud desktop's memory while paused, starts every one already signed in, and lets you take over the browser.
+</details>
 
-### How much does it cost?
+<details>
+<summary><b>How much does it cost?</b></summary>
+
 rig is free and MIT licensed. You pay E2B for running time: about $0.33 an hour for a 4 CPU / 8 GB cloud desktop at E2B's [published rates](https://e2b.dev/pricing). Paused ones cost nothing.
+</details>
 
-### Does the dev server think it is running on localhost?
+<details>
+<summary><b>Does the dev server think it is running on localhost?</b></summary>
+
 Yes. It sees `Host: localhost:<port>`, so dev-origin checks and OAuth redirect callbacks behave as on a laptop. Providers that POST back from their own site (like Sign in with Apple's `form_post`) are blocked by rig's cross-site protection; finish those through `rig desktop`.
+</details>
 
-### Does rig work on Linux or Windows?
+<details>
+<summary><b>Does rig work on Linux or Windows?</b></summary>
+
 The CLI runs anywhere Bun runs; use `~/.config/rig/.env` for your key on Linux. Copying browser logins works on macOS. Windows is untested.
+</details>
 
-### Why E2B?
+<details>
+<summary><b>Why E2B?</b></summary>
+
 E2B combines what rig needs: pausing with memory kept, waking on traffic, snapshots of a running machine that start many new ones, private ports, and machines big enough for a real dev server.
+</details>
 
 ## Docs
 

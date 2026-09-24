@@ -9,7 +9,7 @@ rig gives AI agents cloud desktops. Each one is an E2B sandbox with a Linux desk
 | `rig up` in a repo | rig looks for a box tagged with this repo and branch. If there is none, it creates one from your default desktop (or from the base image if you have not saved one yet). |
 | Every rig command | Connecting wakes a paused box and pushes its idle deadline 15 minutes out (`RIG_IDLE_MIN`). A long command gets its own deadline plus 15 minutes. |
 | 15 minutes without a rig command | E2B pauses the box with its memory kept. The dev server, Chrome and your open tabs are frozen, not stopped. |
-| A request to a paused box | E2B wakes it (auto-resume), in about a second. |
+| A request to a paused box | E2B wakes it (auto-resume), in about two seconds. |
 | A `rig desktop` tab open | A background helper renews the deadline every minute while a viewer is connected, so the box never sleeps under you. It stops when you close the tab, and exits after 30 minutes without a viewer. |
 | `rig port` running | rig renews the deadline every minute while the command runs. |
 | `rig kill` or `rig prune` | The box is deleted. |

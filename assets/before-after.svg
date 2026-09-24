@@ -1,67 +1,154 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560" role="img" aria-label="Without rig the laptop runs every dev server and browser; with rig they run in cloud desktops">
-<title>Without rig the laptop runs every dev server and browser; with rig they run in cloud desktops</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 664" width="1280" height="664" role="img" aria-labelledby="t d">
+<title id="t">Without rig, the laptop runs out of memory. With rig, it runs only the agents.</title>
+<desc id="d">Left: without rig, the laptop runs an agent, a dev server, Chrome and tests for every task, and memory is full. Right: with rig, the laptop runs only the agents and each branch gets a cloud desktop with its dev server, Chrome and tests.</desc>
 <style>
-  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
-  }
-  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
-  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
-  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
-  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
-  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
-  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
-  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
-  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
-</style>
+@font-face{font-family:RigInter;font-weight:500;src:url(data:font/woff;base64,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) format('woff')}
+@font-face{font-family:RigInter;font-weight:600;src:url(data:font/woff;base64,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) format('woff')}
+@font-face{font-family:RigInter;font-weight:700;src:url(data:font/woff;base64,d09GRk9UVE8AAATgAAwAAAAABWAAAwTdAAAAAAAAAAAAAAAAAAAAAAAAAABDRkYgAAACLAAAAeoAAAJJyhDH6kdERUYAAAQYAAAAFgAAABYAEQAGR1BPUwAABDAAAABmAAAAoCtvJEZHU1VCAAAEmAAAACkAAAAquPq49E9TLzIAAAF8AAAATgAAAGB9JYAuY21hcAAAAdQAAABEAAAAXAFkATFoZWFkAAABHAAAADYAAAA2LfZknmhoZWEAAAFUAAAAHwAAACQVoQkTaG10eAAABMQAAAAcAAAAHC6NBGltYXhwAAABdAAAAAYAAAAGAAdQAG5hbWUAAAHMAAAABgAAAAYABgAAcG9zdAAAAhgAAAATAAAAIP5QAQ0AAQAAAAME3dXDDxVfDzz1ABsLAAAAAADc8rsiAAAAAObaVKQAjv2ACmkKgAABAAYAAgAAAAAAAHicY2BkYOBa8TeCgYG7h6GPQZ0rkwEoggLYAWTnA9AAAABQAAAHAAB4nGNgYQ9n2sPAysDArsY2i4GB4TKEZr7FyMsMpJkYOJgZQBQLkGRkQAJBwb7BDAsYFBhKuVb8jWBg4FrBtAKmho2BA0QpMPAAAD4mC0cAAAAAAAAABgAAeJxjYGBgYmBgYAZiESDJCKZZGDyANB8DB1COjUGBwY3Bm8GfIYeh9P9/oDgK//+z/7v/b/+/5f+M/xPAupEAAEnuEol4nGNgZgCDf76MvAxYAAAgXwFdAHiclZC/b9NQEMefW9sJTeSKKM5AHqmbloFWaX7QFMEQqY1qiFhAKgNSF5ckJEDjykkGBFKRGJCaSF0aBCkLM2NRkdgZGGhZKgEDAxP8A9zZ7zngOpU6M32+9z3d6b4nEHGECIIQKjVaFSu1ZD4sH5eLOEkwKeBUmOD0CF4YxajIr4VH4U1YTORv0e1O5wThACTdKB2r07GnErwY38ZvEeifJSFBCI7Hzk/Ppu90ev12o57JzC8MsTSE7mOh6ONy3kcuc2kue8W/Rbtd0oxGWRsW9aZmaC3LKFfWDeuBZlY1q7nenCuaG4+s+r1aSztVOW+LtlKrnEzetMz7lbstbbHdqplWc2ge5/QV8dI+l0jAewIpklWyRb6S38KMkKIiwHs3qtIzOu7QPx9kWBH/SysV0GO4bP+0j8B2j/CJkwabOu9kBXp+B7/LUIeX+NH9IWFfdnvOX7vrXJT4ruy2B3Fpw4nzZVnBVzQYdnZUO8fnMcL3+D7P8oibc9OY5Sru4x56vp1L8BsxrrM1tskO2CEzYBN11MEjHMIBeD7XE8pgFn/RIFF5gSLBgqx8puIzO6mytS6bZISl4iw/BRKUtiacc7wwqAYY60KVmfApDo/hKoTg+peJXfYWU1Qm3FsweK1Quaf+AxYZ+dsAAAABAAAADAAAAAAAAAACAAEAAQAFAAEAAHicY2BkYGDgYlBhMGJgcnHzCWHgy0ksyWPgY2ABijP8/88AkmfMTi3KY+AAscCYhYEJyGMEYiYGC7BKJ4YgBlaIHlzgf+//BVDWAqA+RiBkBZvGCNbJDBSD8EB8EAlSwwwA/ZAM/AAAeJxjYGRgYOBiUGPQYGBycfMJYeDLSSzJY5BgYAGKM/z/zwAHAG2XBV0AAAALjAEjBm8AsgeWALIImgCOAv4AqgbXAKoCjQAA) format('woff')}
+@font-face{font-family:RigInter;font-weight:800;src:url(data:font/woff;base64,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) format('woff')}
+@font-face{font-family:RigMono;font-weight:700;src:url(data:font/woff;base64,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) format('woff')}
 
-<rect class="bg" width="1280" height="560" rx="16"/>
-<text x="330" y="52" class="t warn" font-size="24" font-weight="700" text-anchor="middle" >Without rig</text>
-<text x="950" y="52" class="t ok" font-size="24" font-weight="700" text-anchor="middle" >With rig</text>
-<rect x="40" y="72" width="580" height="450" rx="14" class="panel"/>
-<text x="64" y="108" class="t" font-size="17" font-weight="700" text-anchor="start" >Your laptop runs everything, for every task</text>
-<rect x="64" y="132" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<rect x="196" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="332" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="468" y="132" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="158.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<rect x="64" y="196" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<rect x="196" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="332" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="468" y="196" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="222.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<rect x="64" y="260" width="120" height="44" rx="8" class="idle-bg"/><text x="124.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<rect x="196" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="258.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="332" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="394.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="468" y="260" width="124" height="44" rx="8" class="warn-bg"/><text x="530.0" y="286.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<text x="64" y="360" class="m" font-size="15" font-weight="600" text-anchor="start" >Laptop memory</text>
-<rect x="64" y="374" width="532" height="26" rx="13" class="idle-bg"/>
-<rect x="64" y="374" width="532" height="26" rx="13" class="warn"/>
-<text x="64" y="432" class="t" font-size="17" font-weight="600" text-anchor="start" >Full after two or three tasks.</text>
-<text x="64" y="460" class="m" font-size="16" font-weight="400" text-anchor="start" >The Mac swaps, then freezes.</text>
-<rect x="660" y="72" width="580" height="450" rx="14" class="panel"/>
-<text x="684" y="108" class="t" font-size="17" font-weight="700" text-anchor="start" >Your laptop runs only the agents</text>
-<rect x="684" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="744.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<rect x="816" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="876.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<rect x="948" y="126" width="120" height="40" rx="8" class="idle-bg"/><text x="1008.0" y="150.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >agent</text>
-<text x="684" y="196" class="m" font-size="15" font-weight="600" text-anchor="start" >Laptop memory</text>
-<rect x="684" y="208" width="532" height="18" rx="9" class="idle-bg"/>
-<rect x="684" y="208" width="90" height="18" rx="9" class="ok"/>
-<text x="684" y="262" class="t" font-size="17" font-weight="700" text-anchor="start" >The heavy work runs in one cloud desktop per branch</text>
-<rect x="684" y="276" width="168" height="190" rx="12" class="panel"/>
-<text x="768" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >feat/login</text>
-<rect x="698" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="698" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="698" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="768.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<rect x="864" y="276" width="168" height="190" rx="12" class="panel"/>
-<text x="948" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >fix/cart</text>
-<rect x="878" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="878" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="878" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="948.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<rect x="1044" y="276" width="168" height="190" rx="12" class="panel"/>
-<text x="1128" y="300" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >main</text>
-<rect x="1058" y="312" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="335.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >dev server</text>
-<rect x="1058" y="360" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="383.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >Chrome</text>
-<rect x="1058" y="408" width="140" height="38" rx="8" class="acc-bg"/><text x="1128.0" y="431.9" class="t" font-size="14" font-weight="500" text-anchor="middle" >tests</text>
-<text x="684" y="500" class="m" font-size="16" font-weight="400" text-anchor="start" >Idle boxes pause with their memory kept and cost nothing.</text>
+svg{--bg:#f7f7fb;--edge:rgba(20,22,50,.10);--dot:rgba(24,26,64,.16);--o1:#8b8dff;--o1a:.34;--o2:#b4a8ff;--o2a:.26;
+--ink:#0b0c14;--mute:#565c74;--faint:#8a8fa6;--win:#ffffff;--bar:#eef0f6;--ring:rgba(20,22,50,.10);
+--sh:#1c1e44;--sha:.16;--glow:#8b8dff;--glowa:.14;--acc:#5553d8;--acc2:#6f63ee;--accbg:rgba(85,83,216,.09);--accline:rgba(85,83,216,.38);
+--h0:#0b0c14;--h1:#4d4bd2;--h2:#7a6ff0;--ok:#15803d;--okbg:rgba(21,128,61,.09);--okline:rgba(21,128,61,.35);
+--bad:#dc2626;--badbg:rgba(220,38,38,.07);--badline:rgba(220,38,38,.35);--chip:rgba(20,22,50,.035);--chipline:rgba(20,22,50,.12);
+--track:rgba(20,22,50,.08);--app:#ffffff;--appedge:rgba(20,22,50,.10);--pause:rgba(247,247,251,.84);--cur:#fbbf24}
+@media (prefers-color-scheme: dark){svg{--bg:#06070b;--edge:rgba(255,255,255,.08);--dot:rgba(255,255,255,.075);--o1:#8b8dff;--o1a:.26;--o2:#786eff;--o2a:.18;
+--ink:#f5f6fb;--mute:#9aa0b4;--faint:#6b7086;--win:#0e1018;--bar:#161924;--ring:rgba(255,255,255,.09);
+--sh:#000000;--sha:.8;--glow:#8b8dff;--glowa:.12;--acc:#8b8dff;--acc2:#b4a8ff;--accbg:rgba(139,141,255,.13);--accline:rgba(139,141,255,.5);
+--h0:#ffffff;--h1:#b4a8ff;--h2:#8b8dff;--ok:#86efac;--okbg:rgba(134,239,172,.11);--okline:rgba(134,239,172,.45);
+--bad:#f87171;--badbg:rgba(239,68,68,.12);--badline:rgba(239,68,68,.5);--chip:rgba(255,255,255,.04);--chipline:rgba(255,255,255,.11);
+--track:rgba(255,255,255,.08);--app:#eef0f7;--appedge:rgba(255,255,255,.12);--pause:rgba(8,9,14,.78);--cur:#fbbf24}}
+.bg{fill:var(--bg)}.edge{fill:none;stroke:var(--edge)}.dot{fill:var(--dot)}
+.ink{fill:var(--ink)}.mute{fill:var(--mute)}.faint{fill:var(--faint)}.acc{fill:var(--acc)}.acc2{fill:var(--acc2)}.ok{fill:var(--ok)}.bad{fill:var(--bad)}
+.win{fill:var(--win)}.bar{fill:var(--bar)}.ring{fill:none;stroke:var(--ring)}.track{fill:var(--track)}
+.c-n{fill:var(--chip);stroke:var(--chipline)}.c-a{fill:var(--accbg);stroke:var(--accline)}.c-ok{fill:var(--okbg);stroke:var(--okline)}.c-bad{fill:var(--badbg);stroke:var(--badline)}
+.app{fill:var(--app)}.appedge{fill:none;stroke:var(--appedge)}.pause{fill:var(--pause)}
+.aink{fill:#101426}.amute{fill:#8a93a8}.aline{fill:#e3e7ef}.abox{fill:#ffffff;stroke:#d5dae4}
+.orb1{animation:d1 22s ease-in-out infinite}.orb2{animation:d2 26s ease-in-out infinite}
+@keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(140px,50px)}}
+@keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-160px,-40px)}}
+@media (prefers-reduced-motion: reduce){.orb1,.orb2{animation:none}}
+
+.fI500{font-family:RigInter, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:500}
+.fI600{font-family:RigInter, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:600}
+.fI700{font-family:RigInter, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:700}
+.fI800{font-family:RigInter, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:800}
+.fM700{font-family:RigMono, 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;font-weight:700}
+</style>
+<defs>
+<clipPath id="card"><rect width="1280" height="664" rx="24"/></clipPath>
+<radialGradient id="og1"><stop offset="0" style="stop-color:var(--o1);stop-opacity:var(--o1a)"/><stop offset=".55" style="stop-color:var(--o1);stop-opacity:calc(var(--o1a) * .35)"/><stop offset="1" style="stop-color:var(--o1);stop-opacity:0"/></radialGradient>
+<radialGradient id="og2"><stop offset="0" style="stop-color:var(--o2);stop-opacity:var(--o2a)"/><stop offset=".55" style="stop-color:var(--o2);stop-opacity:calc(var(--o2a) * .35)"/><stop offset="1" style="stop-color:var(--o2);stop-opacity:0"/></radialGradient>
+<pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1.25" class="dot"/></pattern>
+<radialGradient id="dmg" cx="50%" cy="42%" r="62%"><stop offset=".15" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+<mask id="dm"><rect width="1280" height="664" fill="url(#dmg)"/></mask>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="22"/><feOffset dy="20" result="o"/><feFlood style="flood-color:var(--sh);flood-opacity:var(--sha)"/><feComposite in2="o" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="shg" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="22"/><feOffset dy="20" result="o"/><feFlood style="flood-color:var(--sh);flood-opacity:var(--sha)"/><feComposite in2="o" operator="in" result="s"/><feGaussianBlur in="SourceAlpha" stdDeviation="28" result="b2"/><feFlood style="flood-color:var(--glow);flood-opacity:var(--glowa)"/><feComposite in2="b2" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<linearGradient id="hg1" gradientUnits="userSpaceOnUse" x1="663" y1="0" x2="945" y2="18"><stop offset="0" style="stop-color:var(--h0)"/><stop offset=".45" style="stop-color:var(--h1)"/><stop offset="1" style="stop-color:var(--h2)"/></linearGradient>
+<clipPath id="wc2"><rect x="40" y="148" width="580" height="462" rx="16"/></clipPath>
+<clipPath id="wc3"><rect x="660" y="148" width="580" height="462" rx="16"/></clipPath>
+<clipPath id="wc4"><rect x="688" y="362" width="168" height="222" rx="12"/></clipPath>
+<clipPath id="wc5"><rect x="866" y="362" width="168" height="222" rx="12"/></clipPath>
+<clipPath id="wc6"><rect x="1044" y="362" width="168" height="222" rx="12"/></clipPath>
+</defs>
+<g clip-path="url(#card)"><rect class="bg" width="1280" height="664"/>
+<ellipse class="orb1" cx="282" cy="80" rx="538" ry="412" fill="url(#og1)"/>
+<ellipse class="orb2" cx="1101" cy="631" rx="512" ry="398" fill="url(#og2)"/>
+<rect width="1280" height="664" fill="url(#dots)" mask="url(#dm)"/></g>
+<rect class="edge" x=".5" y=".5" width="1279" height="663" rx="23.5"/>
+<text x="640.0" y="98.0" class="fI800 ink" font-size="60" text-anchor="middle" letter-spacing="-2.70" xml:space="preserve">Your laptop <tspan fill="url(#hg1)">stays fast.</tspan></text>
+<rect x="40" y="148" width="580" height="462" rx="16" class="win" filter="url(#shg)"/>
+<rect x="40" y="148" width="580" height="40" class="bar" clip-path="url(#wc2)"/>
+<circle cx="62" cy="168.0" r="6" fill="#ff5f57"/>
+<circle cx="82" cy="168.0" r="6" fill="#febc2e"/>
+<circle cx="102" cy="168.0" r="6" fill="#28c840"/>
+<text x="330.0" y="173.8" class="fI500 mute" font-size="16" text-anchor="middle" xml:space="preserve">Without rig · your laptop</text>
+<rect x="40" y="148" width="580" height="462" rx="16" class="ring"/>
+<rect x="660" y="148" width="580" height="462" rx="16" class="win" filter="url(#shg)"/>
+<rect x="660" y="148" width="580" height="40" class="bar" clip-path="url(#wc3)"/>
+<circle cx="682" cy="168.0" r="6" fill="#ff5f57"/>
+<circle cx="702" cy="168.0" r="6" fill="#febc2e"/>
+<circle cx="722" cy="168.0" r="6" fill="#28c840"/>
+<text x="950.0" y="173.8" class="fI500 mute" font-size="16" text-anchor="middle" xml:space="preserve">With rig · your laptop and the cloud</text>
+<rect x="660" y="148" width="580" height="462" rx="16" class="ring"/>
+<text x="68.0" y="228.0" class="fI600 ink" font-size="20" text-anchor="start" xml:space="preserve">Every task runs everything here.</text>
+<rect x="68.0" y="252.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="120.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 1</text>
+<rect x="182.0" y="252.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="246.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="320.0" y="252.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="384.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="458.0" y="252.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="522.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">tests</text>
+<rect x="68.0" y="312.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="120.0" y="340.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 2</text>
+<rect x="182.0" y="312.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="246.0" y="340.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="320.0" y="312.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="384.0" y="340.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="458.0" y="312.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="522.0" y="340.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">tests</text>
+<rect x="68.0" y="372.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="120.0" y="400.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 3</text>
+<rect x="182.0" y="372.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="246.0" y="400.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="320.0" y="372.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="384.0" y="400.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="458.0" y="372.0" width="128.0" height="46.0" rx="23.0" class="c-bad" stroke-width="1.2"/>
+<text x="522.0" y="400.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">tests</text>
+<text x="68.0" y="460.0" class="fI600 mute" font-size="16" text-anchor="start" xml:space="preserve">Memory</text>
+<text x="592.0" y="460.0" class="fI700 bad" font-size="16" text-anchor="end" xml:space="preserve">Full</text>
+<rect x="68.0" y="474.0" width="524.0" height="16.0" rx="8" class="track"/>
+<rect x="68.0" y="474.0" width="524.0" height="16.0" rx="8" class="bad"/>
+<text x="68.0" y="540.0" class="fI500 mute" font-size="18" text-anchor="start" xml:space="preserve">Two or three tasks in, the laptop swaps and freezes.</text>
+<text x="688.0" y="228.0" class="fI600 ink" font-size="20" text-anchor="start" xml:space="preserve">Your laptop runs only the agents.</text>
+<rect x="688.0" y="252.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="740.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 1</text>
+<rect x="802.0" y="252.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="854.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 2</text>
+<rect x="916.0" y="252.0" width="104.0" height="46.0" rx="23.0" class="c-n" stroke-width="1.2"/>
+<text x="968.0" y="280.8" class="fI600 ink" font-size="16" text-anchor="middle" xml:space="preserve">agent 3</text>
+<text x="1042.0" y="270.0" class="fI600 mute" font-size="15" text-anchor="start" xml:space="preserve">Memory</text>
+<text x="1212.0" y="270.0" class="fI700 ok" font-size="15" text-anchor="end" xml:space="preserve">OK</text>
+<rect x="1042.0" y="282.0" width="170.0" height="12.0" rx="6" class="track"/>
+<rect x="1042.0" y="282.0" width="30.0" height="12.0" rx="6" class="ok"/>
+<text x="688.0" y="342.0" class="fI600 ink" font-size="18" text-anchor="start" xml:space="preserve">The heavy work runs in one cloud desktop per branch.</text>
+<rect x="688" y="362" width="168" height="222" rx="12" class="win" filter="url(#sh)"/>
+<rect x="688" y="362" width="168" height="34" class="bar" clip-path="url(#wc4)"/>
+<rect x="688" y="362" width="168" height="222" rx="12" class="ring"/>
+<text x="702.0" y="384.0" class="fM700 ink" font-size="14" text-anchor="start" xml:space="preserve">feat/login</text>
+<circle cx="840" cy="379" r="4.5" class="ok"/>
+<rect x="700.0" y="408.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="772.0" y="431.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="700.0" y="454.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="772.0" y="477.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="700.0" y="500.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="772.0" y="523.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">tests</text>
+<text x="772.0" y="568.0" class="fI600 ok" font-size="14" text-anchor="middle" xml:space="preserve">running</text>
+<rect x="866" y="362" width="168" height="222" rx="12" class="win" filter="url(#sh)"/>
+<rect x="866" y="362" width="168" height="34" class="bar" clip-path="url(#wc5)"/>
+<rect x="866" y="362" width="168" height="222" rx="12" class="ring"/>
+<text x="880.0" y="384.0" class="fM700 ink" font-size="14" text-anchor="start" xml:space="preserve">fix/cart</text>
+<circle cx="1018" cy="379" r="4.5" class="faint"/>
+<rect x="878.0" y="408.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="950.0" y="431.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="878.0" y="454.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="950.0" y="477.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="878.0" y="500.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="950.0" y="523.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">tests</text>
+<text x="950.0" y="568.0" class="fI600 mute" font-size="14" text-anchor="middle" xml:space="preserve">paused, costs $0</text>
+<rect x="1044" y="362" width="168" height="222" rx="12" class="win" filter="url(#sh)"/>
+<rect x="1044" y="362" width="168" height="34" class="bar" clip-path="url(#wc6)"/>
+<rect x="1044" y="362" width="168" height="222" rx="12" class="ring"/>
+<text x="1058.0" y="384.0" class="fM700 ink" font-size="14" text-anchor="start" xml:space="preserve">main</text>
+<circle cx="1196" cy="379" r="4.5" class="faint"/>
+<rect x="1056.0" y="408.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="1128.0" y="431.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">dev server</text>
+<rect x="1056.0" y="454.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="1128.0" y="477.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">Chrome</text>
+<rect x="1056.0" y="500.0" width="144.0" height="36.0" rx="10" class="c-a" stroke-width="1.2"/>
+<text x="1128.0" y="523.4" class="fI600 ink" font-size="15" text-anchor="middle" xml:space="preserve">tests</text>
+<text x="1128.0" y="568.0" class="fI600 mute" font-size="14" text-anchor="middle" xml:space="preserve">paused, costs $0</text>
 </svg>
