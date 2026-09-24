@@ -193,7 +193,12 @@ A repo's `rig.json`, written by `rig init`:
 rig desktop <box>       # or just `rig desktop` inside a repo
 ```
 
-rig prints a private link. Open it in any browser tab to see and control the cloud desktop's screen: finish a login, type a 2FA code, or watch the agent work. The link works only on your machine and only while the command runs; Ctrl-C closes it.
+rig prints a private link. Open it in any browser tab to see and control the cloud desktop's screen: finish a login, type a 2FA code, or watch the agent work.
+
+- **It stays awake while you use it.** The cloud desktop does not sleep while the tab is open, and sleeps 15 minutes after you close it.
+- **The link keeps working** after the terminal or agent that opened it has gone; `rig desktop` again prints the same link, and `rig desktop --stop` closes it.
+- **Copy and paste** go through the clipboard panel on the left edge of the view.
+- **It is private:** the link works only on your machine, and asks for a one-time password it already carries.
 
 ## Saved desktops
 

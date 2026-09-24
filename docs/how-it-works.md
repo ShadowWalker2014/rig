@@ -10,10 +10,11 @@ rig gives AI agents cloud desktops. Each one is an E2B sandbox with a Linux desk
 | Every rig command | Connecting wakes a paused box and pushes its idle deadline 15 minutes out (`RIG_IDLE_MIN`). A long command gets its own deadline plus 15 minutes. |
 | 15 minutes without a rig command | E2B pauses the box with its memory kept. The dev server, Chrome and your open tabs are frozen, not stopped. |
 | A request to a paused box | E2B wakes it (auto-resume), in about a second. |
-| `rig port` or `rig desktop` open | rig renews the deadline every 5 minutes, so the box stays awake while you use it. |
+| A `rig desktop` tab open | A background helper renews the deadline every minute while a viewer is connected, so the box never sleeps under you. It stops when you close the tab, and exits after 30 minutes without a viewer. |
+| `rig port` running | rig renews the deadline every minute while the command runs. |
 | `rig kill` or `rig prune` | The box is deleted. |
 
-A paused box costs nothing. A running 4 CPU / 8 GB box costs about $0.33 an hour on E2B.
+E2B counts only API calls as activity, not traffic, which is why rig renews the deadline itself while you use a box. A paused box costs nothing. A running 4 CPU / 8 GB box costs about $0.33 an hour on E2B.
 
 ## Syncing code without a push
 
@@ -71,6 +72,7 @@ The full tool list is in [image.md](image.md).
 | `src/sync.ts` | Making the box match your working tree |
 | `src/services.ts` | Dev server, desktop and viewer inside the box |
 | `src/proxy.ts` | The local port proxy |
+| `src/viewer.ts` | The background helper behind `rig desktop`, and its keep-awake |
 | `src/sanitize.ts` | Cleaning box output before it reaches your terminal |
 | `src/cookies/` | Reading browser cookies on your laptop and handing them to the box's Chrome |
 | `src/image.ts` | The box image definition |

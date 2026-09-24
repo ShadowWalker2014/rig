@@ -62,9 +62,14 @@ export const COMMAND_HELP: Record<string, string> = {
   Serves a box port on this machine at http://localhost:<port> (127.0.0.1 only).
   Stays open until Ctrl-C.
   Example:  rig port 3000`,
-  desktop: `rig desktop [box] [--local <port>]
-  Prints a link to watch and control the box's desktop in any browser tab. Use it to
-  sign in to sites, or to finish a login or 2FA step for the agent. Ctrl-C closes it.`,
+  desktop: `rig desktop [box] [--local <port>] | rig desktop [box] --stop
+  Prints a private link to see and control the box's screen in any browser tab — to
+  sign in to sites, or finish a login or 2FA step for an agent. It returns at once:
+  a small background helper serves the link, so it keeps working after the terminal
+  or agent session closes, and running it again prints the same link.
+  The box stays awake while the tab is open and sleeps 15 minutes after you close it.
+  Copy and paste: use the clipboard panel on the left edge of the view.
+  --stop   close the link now`,
   logs: `rig logs [box] [-n <lines>]
   Shows the last lines of the dev server's output (default 80).`,
   pull: `rig pull <path in box> [local path] [-b box]

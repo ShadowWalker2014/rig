@@ -2,6 +2,9 @@ import type { Server, ServerWebSocket } from 'bun'
 
 const TOKEN_HEADER = 'e2b-traffic-access-token'
 
+// Who is using the tunnel, so a helper can keep the box awake while someone is.
+export type Activity = { viewers: number; lastSeen: number }
+
 type Pipe = { path: string; protocols: string[]; up?: WebSocket; queue: (string | Buffer)[] }
 
 // A private box port, served on 127.0.0.1 of this machine. The proxy adds the
@@ -9,12 +12,13 @@ type Pipe = { path: string; protocols: string[]; up?: WebSocket; queue: (string 
 // this machine can reach it.
 // `navigations` lets other sites send you here with a plain link or redirect, which
 // OAuth callbacks need. The desktop viewer never needs it, so it stays off there.
-export function forward(origin: string, token: string, localPort: number, navigations = false): Server<Pipe> {
+export function forward(origin: string, token: string, localPort: number, navigations = false, activity?: Activity): Server<Pipe> {
   return Bun.serve<Pipe>({
     hostname: '127.0.0.1',
     port: localPort,
     fetch(req, server) {
       if (!fromThisMachine(req, server.port, navigations)) return new Response('Forbidden', { status: 403 })
+      if (activity) activity.lastSeen = Date.now()
       const url = new URL(req.url)
       const path = url.pathname + url.search
       if (req.headers.get('upgrade')?.toLowerCase() === 'websocket') {
@@ -25,12 +29,18 @@ export function forward(origin: string, token: string, localPort: number, naviga
       return relay(req, `${origin}${path}`, token)
     },
     websocket: {
-      open: (ws) => openUpstream(ws, origin.replace(/^http/, 'ws'), token),
+      open: (ws) => {
+        if (activity) activity.viewers++
+        openUpstream(ws, origin.replace(/^http/, 'ws'), token)
+      },
       message: (ws, msg) => {
         if (ws.data.up?.readyState === WebSocket.OPEN) ws.data.up.send(msg)
         else ws.data.queue.push(msg)
       },
-      close: (ws) => ws.data.up?.close(),
+      close: (ws) => {
+        if (activity) [activity.viewers, activity.lastSeen] = [Math.max(0, activity.viewers - 1), Date.now()]
+        ws.data.up?.close()
+      },
     },
   })
 }

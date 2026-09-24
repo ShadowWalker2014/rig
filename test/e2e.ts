@@ -95,17 +95,20 @@ async function main() {
     must(out.out.trim() === '2', `matching cookies in box: ${out.out} ${out.err}`)
     return '2 cookies verified by hash'
   })
-  await step('rig desktop: private link works, rebinding refused', async () => {
-    const d = await background(['desktop', toolsBox])
+  await step('rig desktop: returns at once, link works, rebinding refused, --stop closes it', async () => {
+    const d = await rig(['desktop', toolsBox])
+    must(d.code === 0 && d.out.includes('/vnc.html'), d.err)
+    const again = await rig(['desktop', toolsBox])
+    must(again.out === d.out, 'a second call did not reuse the running link')
     try {
-      const base = d.url.split('/vnc.html')[0]!
+      const base = d.out.split('/vnc.html')[0]!
       must((await fetch(`${base}/vnc.html`)).status === 200, 'vnc.html did not load')
       const rebound = await fetch(`${base}/vnc.html`, { headers: { host: 'evil.example' } })
       must(rebound.status === 403, `rebound host got ${rebound.status}`)
       const host = new URL(base).host
-      return `desktop at ${host}`
+      return `desktop at ${host}, reused on a second call`
     } finally {
-      d.stop()
+      await rig(['desktop', toolsBox, '--stop'])
     }
   })
 

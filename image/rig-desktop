@@ -9,6 +9,11 @@ fi
 if ! pgrep -x xfce4-session >/dev/null; then
   setsid dbus-launch startxfce4 >/tmp/xfce.log 2>&1 </dev/null &
 fi
+# Keep the X clipboard and selection in step, so copy and paste work through the viewer.
+if ! pgrep -x autocutsel >/dev/null; then
+  setsid autocutsel -fork >/dev/null 2>&1
+  setsid autocutsel -selection PRIMARY -fork >/dev/null 2>&1
+fi
 if ! curl -sf localhost:9222/json/version >/dev/null; then
   setsid google-chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/rig-chrome" \
     --no-first-run --no-default-browser-check --password-store=basic --start-maximized \

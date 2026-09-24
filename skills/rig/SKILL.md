@@ -59,9 +59,9 @@ follow these steps in order. Do not try to type passwords, and do not guess.
    to confirm you are signed in.
 4. **If the site still refuses** — Google accounts do this, because they will not
    accept a session copied from another computer — hand over the screen: run
-   `rig desktop` in the background and give the user the printed
+   `rig desktop` (it returns at once) and give the user the printed
    `http://127.0.0.1:…/vnc.html…` link so they can sign in inside the box
-   themselves. Wait for them to say they're done.
+   themselves. The box stays awake while their tab is open. Wait for them to say they're done.
 5. **Offer to keep it for next time.** Tell the user they can run
    `rig cookies push` to refresh the logins every new box starts with.
 
@@ -71,7 +71,8 @@ Never name banking or payment sites unless the user asks for exactly that;
 ## Handing over to the user
 
 For anything else only a person can do (a CAPTCHA, a 2FA code, a consent screen),
-run `rig desktop` in the background and give the user the printed link. It shows
+run `rig desktop` (it returns at once) and give the user the printed link. The box stays
+awake while their tab is open; `rig desktop --stop` closes the link. It shows
 the same Chrome you drive. Wait for them to say they're done.
 
 ## Saving a setup

@@ -13,6 +13,7 @@ import { devRunning, ensureDesktop, startDev, startViewer, stopDev, stopViewer }
 import { clean, sanitizer } from './sanitize'
 import { q, sh } from './shell'
 import { RepoAccessError, syncRepo } from './sync'
+import { openDesktop, serveDesktop, stopDesktop } from './viewer'
 import { describe, settleConfig } from './init'
 import { hasConfigFile, writeConfig } from './project'
 
@@ -152,8 +153,9 @@ export async function logs(a: Args): Promise<void> {
 }
 
 // Long-running: keeps the box awake while the tunnel is open; Ctrl-C closes it.
+// E2B does not count traffic as activity, so the timer is renewed every minute.
 function holdOpen(sbx: Sandbox, stop: () => void): Promise<never> {
-  const beat = setInterval(() => sbx.setTimeout(idleMs()).catch((e) => console.error('Keep-alive failed:', e.message)), 300_000)
+  const beat = setInterval(() => sbx.setTimeout(idleMs()).catch((e) => console.error('Keep-alive failed:', e.message)), 60_000)
   const close = () => {
     clearInterval(beat)
     stop()
@@ -170,19 +172,20 @@ function trafficToken(sbx: Sandbox): string {
   return sbx.trafficAccessToken
 }
 
+// `rig desktop`: print a private link to the box's screen. A background helper
+// serves it and keeps the box awake while the tab is open, so the link survives
+// the terminal or agent session that asked for it.
 export async function desktop(a: Args): Promise<void> {
+  if (a.flags.serve) return serveDesktop(a.sub[0]!, Number(str(a.flags.local)))
   const box = await target(a)
-  const sbx = await openBox(box.sandboxId)
-  const password = await startViewer(sbx)
-  const server = forward(`https://${sbx.getHost(NOVNC_PORT)}`, trafficToken(sbx), Number(str(a.flags.local) ?? 0))
-  // The password rides in the #fragment, which browsers never send to a server.
-  console.log(`http://127.0.0.1:${server.port}/vnc.html?autoconnect=true&resize=scale#&password=${password}`)
-  console.error('Open that link to see and control the box. Press Ctrl-C to close it.')
-  await holdOpen(sbx, () => {
-    server.stop(true)
-    // A clean box someone just signed in to is exactly what should be saved.
-    if (!box.metadata.repo) console.error(`\nDone setting it up? Save it so every new box starts this way: rig save ${box.metadata.name ?? box.sandboxId}`)
-  })
+  const label = box.metadata.name ?? box.sandboxId
+  if (a.flags.stop) return void console.error(stopDesktop(box.sandboxId) ? `Closed the desktop view of ${label}.` : `No desktop view of ${label} was open.`)
+  const url = await openDesktop(box.sandboxId, Number(str(a.flags.local) ?? 0))
+  console.log(url)
+  console.error('Open that link to see and control the box. It stays awake while the tab is open,')
+  console.error(`and sleeps 15 minutes after you close it. Close the link now with: rig desktop ${label} --stop`)
+  // A clean box someone is setting up is exactly what should be saved afterwards.
+  if (!box.metadata.repo) console.error(`When you are done setting it up, save it so every new box starts this way: rig save ${label}`)
 }
 
 export async function port(a: Args): Promise<void> {
@@ -210,6 +213,7 @@ export async function save(a: Args): Promise<void> {
   }
   const sbx = await openBox(box.sandboxId, 900_000)
   await stopDev(sbx)
+  stopDesktop(box.sandboxId)
   await stopViewer(sbx)
   const hadDefault = await savedExists()
   await snapshotBox(box.sandboxId, name)

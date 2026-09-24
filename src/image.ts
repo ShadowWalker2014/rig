@@ -27,6 +27,8 @@ const UV_VERSION = '0.12.18'
 const APT_PACKAGES = [
   // desktop and remote viewing
   'dbus-x11', 'novnc', 'websockify', 'x11-utils', 'x11vnc', 'xdotool', 'xfce4', 'xfce4-terminal', 'xvfb',
+  // clipboard: CLI tools that copy codes (gh), and syncing the two X selections
+  'xclip', 'xsel', 'autocutsel',
   'fonts-liberation', 'fonts-noto-color-emoji', 'fonts-noto-cjk',
   // everyday dev tools
   'build-essential', 'ca-certificates', 'curl', 'wget', 'git', 'git-lfs', 'gnupg', 'jq', 'ripgrep', 'fd-find',

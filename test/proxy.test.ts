@@ -85,3 +85,18 @@ test('rig port lets an OAuth redirect back in; the desktop does not', async () =
   })
   expect(fromThisMachine(post, 3000, true)).toBe(false)
 })
+
+test('reports when a viewer is connected, so a helper can keep the box awake', async () => {
+  const { forward } = await import('../src/proxy')
+  const activity = { viewers: 0, lastSeen: 0 }
+  const watched = forward(`http://127.0.0.1:${box.port}`, 'secret', 0, false, activity)
+  const ws = new WebSocket(`ws://127.0.0.1:${watched.port}/websockify`)
+  await new Promise((r) => (ws.onopen = r))
+  await Bun.sleep(50)
+  expect(activity.viewers).toBe(1)
+  ws.close()
+  await Bun.sleep(100)
+  expect(activity.viewers).toBe(0)
+  expect(activity.lastSeen).toBeGreaterThan(0)
+  watched.stop(true)
+})

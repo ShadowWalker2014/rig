@@ -8,6 +8,7 @@ import { hasConfigFile, projectConfig } from './project'
 import { currentRepo, git } from './repo'
 import { defaultName, nameOf, pinnedBySetting, setDefaultName, templateOf } from './saved'
 import { forEachBox, hasSelection, lastUsed, parseAge, selectBoxes } from './select'
+import { stopDesktop } from './viewer'
 
 function age(d: Date): string {
   const min = Math.max(0, Math.round((Date.now() - d.getTime()) / 60_000))
@@ -61,7 +62,10 @@ export async function kill(a: Args): Promise<void> {
   const boxes = await pick(a)
   if (boxes.length === 0) return void console.error('No boxes match.')
   if (hasSelection(a) && !a.flags.yes) return preview(boxes, 'delete')
-  const { done, failed } = await forEachBox(boxes, 'delete', killBox)
+  const { done, failed } = await forEachBox(boxes, 'delete', async (id) => {
+    stopDesktop(id)
+    await killBox(id)
+  })
   console.error(`Deleted ${done} box${done === 1 ? '' : 'es'}${failed ? `; ${failed} failed` : ''}.`)
   if (failed) process.exitCode = 1
 }

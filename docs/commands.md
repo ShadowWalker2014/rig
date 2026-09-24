@@ -42,9 +42,14 @@ rig new [--name <name>] [--from <saved desktop>]
 ### rig desktop
 
 ```
-rig desktop [box] [--local <port>]
-  Prints a link to watch and control the box's desktop in any browser tab. Use it to
-  sign in to sites, or to finish a login or 2FA step for the agent. Ctrl-C closes it.
+rig desktop [box] [--local <port>] | rig desktop [box] --stop
+  Prints a private link to see and control the box's screen in any browser tab — to
+  sign in to sites, or finish a login or 2FA step for an agent. It returns at once:
+  a small background helper serves the link, so it keeps working after the terminal
+  or agent session closes, and running it again prints the same link.
+  The box stays awake while the tab is open and sleeps 15 minutes after you close it.
+  Copy and paste: use the clipboard panel on the left edge of the view.
+  --stop   close the link now
 ```
 
 ### rig save
