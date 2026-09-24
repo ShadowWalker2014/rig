@@ -6,7 +6,7 @@ import { baseTemplate, boxCpu, boxMemoryMb, defaultDesktop, idleMs } from './con
 import { connection, setting } from './key'
 import { hasConfigFile, projectConfig } from './project'
 import { currentRepo, git } from './repo'
-import { defaultName, nameOf, pinnedBySetting, setDefaultName, templateOf } from './saved'
+import { defaultName, lastAutoPrune, markAutoPrune, nameOf, pinnedBySetting, setDefaultName, templateOf } from './saved'
 import { forEachBox, hasSelection, lastUsed, parseAge, selectBoxes } from './select'
 import { stopDesktop } from './viewer'
 
@@ -86,6 +86,27 @@ export async function prune(a: Args): Promise<void> {
   if (!a.flags.yes) return preview(boxes, 'delete')
   const { done, failed } = await forEachBox(boxes, 'delete', killBox)
   console.error(`Pruned ${done} box${done === 1 ? '' : 'es'}${failed ? `; ${failed} failed` : ''}.`)
+}
+
+// Once a day, `rig up` and `rig new` delete rig's own boxes that have been paused
+// and unused for RIG_AUTO_PRUNE_DAYS (default 7; 0 turns it off). Running boxes
+// are never touched, and a failure never stops the command that triggered it.
+export async function autoPrune(): Promise<void> {
+  const days = Number(setting('RIG_AUTO_PRUNE_DAYS') ?? 7)
+  if (!(days > 0) || Date.now() - lastAutoPrune() < 86_400_000) return
+  markAutoPrune()
+  try {
+    const cutoff = Date.now() - days * 86_400_000
+    const stale = (await listBoxes({ state: ['paused'] })).filter((b) => lastUsed(b).getTime() < cutoff)
+    if (stale.length === 0) return
+    const { done } = await forEachBox(stale, 'delete', async (id) => {
+      stopDesktop(id)
+      await killBox(id)
+    })
+    console.error(`Cleaned up ${done} box${done === 1 ? '' : 'es'} unused for ${days}+ days (RIG_AUTO_PRUNE_DAYS=0 turns this off).`)
+  } catch (err) {
+    console.error(`Automatic clean-up skipped: ${(err as Error).message}`)
+  }
 }
 
 async function boxesForDeletedBranches(): Promise<SandboxInfo[]> {

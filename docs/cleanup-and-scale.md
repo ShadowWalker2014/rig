@@ -12,7 +12,9 @@ Boxes pause themselves after 15 minutes without a rig command, so an idle box co
 
 ## Cleaning up
 
-Paused boxes are free, but they pile up. Clean up with one command:
+**It happens automatically.** Once a day, `rig up` and `rig new` delete rig's own boxes that have been paused and unused for 7 days. Change the window with `RIG_AUTO_PRUNE_DAYS` (`0` turns it off). Running boxes are never touched, and nothing outside rig is — `rig ls` and every clean-up command only see boxes rig created.
+
+To clean up now, or with a different window:
 
 ```bash
 rig prune                        # preview: paused boxes not used for 7 days

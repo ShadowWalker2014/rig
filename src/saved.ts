@@ -15,7 +15,7 @@ export function isValidName(name: string): boolean {
   return /^[a-z0-9][a-z0-9-]{0,40}$/.test(name) && name !== 'base'
 }
 
-type State = { default?: string }
+type State = { default?: string; lastAutoPrune?: number }
 
 function readState(): State {
   try {
@@ -33,10 +33,14 @@ export function defaultName(): string {
 
 export const pinnedBySetting = () => Boolean(setting('RIG_DEFAULT_DESKTOP') ?? setting('RIG_GOLDEN'))
 
-export function setDefaultName(name: string): void {
+export const setDefaultName = (name: string) => updateState({ default: name })
+export const lastAutoPrune = () => readState().lastAutoPrune ?? 0
+export const markAutoPrune = () => updateState({ lastAutoPrune: Date.now() })
+
+function updateState(change: State): void {
   mkdirSync(dirname(STATE), { recursive: true })
   chmodSync(dirname(STATE), 0o700)
   const tmp = `${STATE}.tmp`
-  writeFileSync(tmp, JSON.stringify({ ...readState(), default: name }, null, 2))
+  writeFileSync(tmp, JSON.stringify({ ...readState(), ...change }, null, 2))
   renameSync(tmp, STATE)
 }
