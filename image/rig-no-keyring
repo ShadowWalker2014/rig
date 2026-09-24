@@ -1,0 +1,11 @@
+#!/bin/bash
+# Turns off the desktop password keyring. It starts locked with a password nobody
+# set, so it would block every CLI login with an unlock prompt. Without it, gh and
+# other tools keep their logins in their own config files in the box. Run as root.
+rm -f /etc/xdg/autostart/gnome-keyring-*.desktop
+for f in /usr/share/dbus-1/services/org.freedesktop.secrets.service /usr/share/dbus-1/services/org.gnome.keyring.service \
+  /usr/share/dbus-1/services/org.freedesktop.impl.portal.Secret.service; do
+  [ -f "$f" ] && mv "$f" "$f.disabled-by-rig"
+done
+# -f: the process name is cut to 15 characters, so match the full command line.
+pkill -f "[g]nome-keyring-daemon" || true
