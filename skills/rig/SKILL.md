@@ -33,8 +33,26 @@ branch. Every `rig` command below, run from inside the repo, targets that box.
    - `rig browser -- click @e3` / `fill @e5 "text"` / `console` / `errors`
    - `rig shot` — screenshot to a local PNG; the path is printed, so Read it to see the page.
    - `rig browser -- skills get core --full` prints the full agent-browser guide.
-6. When the task is done, leave the box: it pauses by itself after 15 idle minutes
-   and costs nothing paused. `rig kill` only if the branch is finished for good.
+6. When the task is done, run `rig pause` (or leave it: it pauses by itself after 15
+   idle minutes) — a paused box costs nothing. `rig kill` only if the branch is finished for good.
+
+## Computer use: the whole screen
+
+For anything outside a web page — a terminal window, a system dialog, a browser
+extension such as 1Password, a file picker — use the whole desktop. Always look, act,
+then look again:
+
+- `rig screen` — screenshot the desktop (1440×900); Read the printed PNG path.
+- `rig click <x> <y>` (`--right`, `--double`, `--triple`), `rig move <x> <y>`, `rig drag <x0> <y0> <x1> <y1>`.
+- `rig type "text"` types into whatever has focus; `rig key Enter` / `ctrl+l` / `ctrl+shift+t`.
+- `rig scroll <x> <y> down 5`; `rig zoom <x0> <y0> <x1> <y1>` for a 2× close-up of small text.
+
+Coordinates are pixels in the latest `rig screen` image. Prefer `rig browser` inside a
+web page: it reads the page's structure and is more reliable than clicking pixels.
+
+If the user added rig as an MCP server (`claude mcp add rig -- rig mcp`), the
+`computer`, `browser`, `shell` and `boxes` tools do the same things and return
+screenshots as images.
 
 ## When a site needs a login
 
@@ -90,7 +108,8 @@ Saved desktops work like contexts:
 
 1Password (the Chrome extension and the `op` CLI) is installed in every box. If the
 user needs a password filled, ask them to use the 1Password extension on `rig desktop`;
-never ask for passwords yourself.
+never ask for passwords yourself. Never save a box while 1Password is signed in: ask
+the user to sign out of it first, or every future box would carry their vault session.
 
 ## Rules
 

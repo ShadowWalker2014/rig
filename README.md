@@ -19,7 +19,9 @@ Each cloud desktop is a Linux machine with your code, a running dev server, test
 - [Use it in a repo](#use-it-in-a-repo)
 - [Take over the desktop](#take-over-the-desktop)
 - [Saved desktops](#saved-desktops)
+- [Computer use](#computer-use)
 - [Use it with your coding agent](#use-it-with-your-coding-agent)
+- [Quick start for your agent](#quick-start-for-your-agent)
 - [Manage and clean up](#manage-and-clean-up)
 - [What's inside a cloud desktop](#whats-inside-a-cloud-desktop)
 - [Settings](#settings)
@@ -41,6 +43,7 @@ rig moves that work into a cloud desktop per branch. Your laptop runs only the a
 |---|---|
 | **Sleeps when idle** | A cloud desktop pauses after 15 quiet minutes with everything still running inside, costs nothing while paused, and wakes in about a second. |
 | **Starts signed in** | Copy your logins from Chrome, Arc, Edge, Brave, Firefox or Safari with one command. Every new cloud desktop starts with them. |
+| **Computer use and MCP** | Your agent can see the whole screen and click, type and press keys, like Claude's computer use. `rig mcp` gives Claude Code these as native tools that return screenshots. |
 | **You can take over** | Open the desktop's screen in any browser tab to finish a login or a 2FA code. It is the same Chrome the agent drives. |
 | **No push needed** | Your local edits — committed or not — reach the cloud desktop with `rig sync`. |
 | **Your whole toolbelt** | Node, Bun, Python, Playwright, Puppeteer, the Vercel, Cloudflare, Railway, Fly, AWS, Google Cloud, GitHub and Stripe CLIs, Claude Code, Codex and more. |
@@ -105,10 +108,12 @@ For command-line tools, sign in inside a cloud desktop, then save it:
 
 ```bash
 rig new                      # an empty cloud desktop; prints its id
-rig desktop <id>             # open the link; sign in to 1Password, Google, `gh auth login`, `vercel login`…
+rig desktop <id>             # open the link; sign in to Google, `gh auth login`, `vercel login`…
 rig save <id>                # every new cloud desktop now starts signed in
 rig saved                    # your saved desktops; * is the one new boxes start from
 ```
+
+Keep 1Password signed out in a desktop you save — a saved desktop is stored with E2B, and a signed-in 1Password in it would put your vault session there too.
 
 **5. Teach your coding agent**
 
@@ -218,6 +223,28 @@ rig reminds you to save: closing `rig desktop` on a clean box prints the `rig sa
 
 Save a clean cloud desktop made with `rig new`. rig refuses to save one that ran a repo's code, because that code could have planted something that would spread to every cloud desktop started from it.
 
+## Computer use
+
+Your agent can use the whole cloud desktop, not only its Chrome: take a screenshot, click, type, press keys, scroll and drag. These are the same actions as Claude's computer-use tool, for things outside a web page — a terminal window, a system dialog, a browser extension, a file picker.
+
+<p align="center"><img src="assets/computer-use.svg" alt="The computer-use loop: Claude Code on your laptop uses rig mcp or rig commands to take a screenshot of the cloud desktop, decide where to click, act with click, type or key, and take another screenshot to check." width="100%"></p>
+
+```bash
+rig screen                     # screenshot the desktop; prints the file path
+rig click 640 88               # click at a point in that screenshot
+rig type "hello"               # type into whatever has focus
+rig key ctrl+l                 # press keys: Enter, Tab, ctrl+shift+t, cmd+a…
+rig zoom 0 0 400 200           # a 2x close-up, for small text
+```
+
+For Claude Code, add rig as an MCP server. Claude then gets `computer`, `browser`, `shell` and `boxes` tools and sees screenshots directly as images:
+
+```bash
+claude mcp add rig -- rig mcp
+```
+
+Use `rig browser` for anything inside a web page — it reads the page's structure, so it is faster and more reliable than clicking pixels. More in [computer use](docs/computer-use.md).
+
 ## Use it with your coding agent
 
 rig ships with an agent skill: instructions that tell your coding agent to run dev servers, tests and browser checks in its cloud desktop instead of on your laptop, and how to hand the screen to you for a login.
@@ -230,6 +257,30 @@ rig guide                                # the same instructions, for any other 
 
 Every command also explains itself: `rig help <command>`.
 
+## Quick start for your agent
+
+Paste this into a fresh Claude Code (or any agent) session, inside the repo you want to work on:
+
+```text
+Use rig (https://github.com/ShadowWalker2014/rig) to run this repo in a cloud desktop
+instead of on my laptop. Keep editing code locally; run the heavy work in the cloud.
+
+1. Run `rig guide` and follow it. Run `rig help <command>` whenever you are unsure.
+2. Start this branch's cloud desktop with `rig up`. The first time in this repo it runs
+   `rig init` — ask me before copying any env file.
+3. After every edit, run `rig sync`. Run tests with `rig exec -- <command>`.
+4. Check the UI with `rig browser -- open http://localhost:<port>`, `rig browser -- snapshot -i`
+   and `rig shot`. Read logs with `rig logs`.
+5. If a site needs a login or a 2FA code, run `rig desktop` and give me the link.
+   If a site rejects the cloud login, ask me to sign in to Chrome on my laptop,
+   then run `rig cookies push --site <site>`.
+6. For anything outside a web page, use `rig screen`, `rig click`, `rig type` and `rig key`.
+7. Never run `rig save`, `rig kill` or `rig cookies push --all` without asking me first.
+8. When you finish, run `rig pause`.
+```
+
+The same instructions ship with rig: `rig skill install` adds them as a Claude Code skill, and `rig guide` prints them.
+
 ## Manage and clean up
 
 ```bash
@@ -241,6 +292,8 @@ rig prune --merged --yes                 # delete those, plus ones whose branch 
 rig kill --repo acme/web --state paused --yes
 rig doctor                               # key, image, default desktop and settings
 ```
+
+**Clean-up is automatic:** once a day, `rig up` and `rig new` delete rig's own boxes that have been paused and unused for 7 days (`RIG_AUTO_PRUNE_DAYS`, `0` turns it off).
 
 Filters (`--state`, `--older-than 7d`, `--repo`, `--branch`, `--here`, `--all`) run on E2B's side, so they stay fast with thousands of cloud desktops. A filtered delete previews first and only deletes with `--yes`.
 
@@ -256,7 +309,7 @@ Ubuntu 24.04 with an Xfce desktop and Google Chrome, plus:
 | Deploy and cloud | vercel, wrangler, railway, fly, aws, gcloud, gh, stripe, e2b |
 | AI coding agents | claude, codex, opencode |
 | Browsers and testing | Chrome with the 1Password extension, Playwright with Chromium, Puppeteer, agent-browser |
-| Passwords | 1Password CLI (`op`) and Chrome extension — sign in once, then `rig save` |
+| Passwords | 1Password CLI (`op`) and Chrome extension — sign in through `rig desktop` when a task needs it; don't save a signed-in 1Password |
 | Python and media | python, pip, uv, whisper, ffmpeg, ImageMagick |
 | Databases and everyday | psql, redis-cli, sqlite3, git, git-lfs, jq, ripgrep, tmux, Homebrew |
 
@@ -271,6 +324,7 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 | `RIG_E2B_API_KEY` | Keychain, after `rig login` | Your E2B API key |
 | `RIG_E2B_DOMAIN` | `e2b.app` | Only for self-hosted E2B |
 | `RIG_IDLE_MIN` | `15` | Minutes without a rig command before a cloud desktop pauses |
+| `RIG_AUTO_PRUNE_DAYS` | `7` | Days a paused box may sit unused before `rig up`/`rig new` delete it; `0` turns it off |
 | `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `8192` | Size, set when the image is built |
 | `RIG_DEFAULT_DESKTOP` / `RIG_BASE_TEMPLATE` | `rig-default` / `rig-base` | Names of your default desktop and image in E2B |
 
@@ -318,6 +372,7 @@ E2B combines what rig needs: pausing with memory kept, waking on traffic, snapsh
 | [Using rig in a repo](docs/projects.md) | `rig up`, `rig init`, `rig.json`, env files, private repos |
 | [Bring your logins](docs/cookies.md) | Copying sign-ins from your browser, and how it stays safe |
 | [Command reference](docs/commands.md) | Every command, flag and example |
+| [Computer use](docs/computer-use.md) | `rig screen`, `click`, `type`, `key` and the `rig mcp` server for Claude Code |
 | [How it works](docs/how-it-works.md) | Lifecycle, syncing, the default desktop, the proxy, the code map |
 | [Cleanup and scale](docs/cleanup-and-scale.md) | Costs, auto-pause, `prune`, bulk actions |
 | [The box image](docs/image.md) | Installed tools, adding your own, size |

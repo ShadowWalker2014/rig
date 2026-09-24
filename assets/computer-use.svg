@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="Computer use: Claude takes a screenshot of the cloud desktop, decides where to click, acts with click, type or key, and takes another screenshot to check.">
+<title>Computer use: Claude takes a screenshot of the cloud desktop, decides where to click, acts with click, type or key, and takes another screenshot to check.</title>
+<style>
+  :root { --bg:#ffffff; --panel:#f6f8fa; --line:#d0d7de; --text:#1f2328; --muted:#59636e; --accent:#0969da; --accent-bg:#ddf4ff; --ok:#1a7f37; --ok-bg:#dafbe1; --warn:#cf222e; --warn-bg:#ffebe9; --idle:#6e7781; --idle-bg:#eaeef2; --gold:#9a6700; --gold-bg:#fff8c5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9198a1; --accent:#4493f8; --accent-bg:#0f2a4a; --ok:#3fb950; --ok-bg:#0f2d18; --warn:#f85149; --warn-bg:#3a1418; --idle:#8b949e; --idle-bg:#21262d; --gold:#d29922; --gold-bg:#2e2410; }
+  }
+  .bg { fill: var(--bg); } .panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+  .t { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .m { fill: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+  .line { stroke: var(--line); } .arrow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .acc { fill: var(--accent); } .acc-bg { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 1.5; }
+  .ok { fill: var(--ok); } .ok-bg { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 1.5; }
+  .warn { fill: var(--warn); } .warn-bg { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.5; }
+  .idle { fill: var(--idle); } .idle-bg { fill: var(--idle-bg); stroke: var(--idle); stroke-width: 1.5; }
+  .gold { fill: var(--gold); } .gold-bg { fill: var(--gold-bg); stroke: var(--gold); stroke-width: 1.5; }
+</style>
+
+<rect class="bg" width="1280" height="400" rx="16"/>
+<text x="640" y="48" class="t" font-size="26" font-weight="700" text-anchor="middle" >Computer use: look, act, look again</text>
+<rect x="40" y="84" width="300" height="290" rx="14" class="panel"/>
+<text x="190" y="120" class="t" font-size="17" font-weight="700" text-anchor="middle" >Your laptop</text>
+<rect x="70" y="144" width="240" height="40" rx="20.0" class="idle-bg"/><text x="190.0" y="169.25" class="t" font-size="15" font-weight="600" text-anchor="middle" >Claude Code</text>
+<text x="190" y="214" class="m" font-size="14" font-weight="400" text-anchor="middle" >uses rig through</text>
+<rect x="70" y="228" width="240" height="36" rx="18.0" class="acc-bg"/><text x="190.0" y="250.9" class="t mono" font-size="14" font-weight="600" text-anchor="middle" >rig mcp</text>
+<text x="190" y="286" class="m" font-size="14" font-weight="400" text-anchor="middle" >or plain commands</text>
+<rect x="70" y="300" width="240" height="36" rx="18.0" class="acc-bg"/><text x="190.0" y="322.55" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >rig screen · click · type</text>
+<rect x="410" y="110" width="200" height="74" rx="12" class="acc-bg"/>
+<text x="510" y="142" class="t" font-size="17" font-weight="700" text-anchor="middle" >1  Look</text>
+<text x="510" y="166" class="t mono" font-size="13" font-weight="500" text-anchor="middle" >rig screen</text>
+<rect x="650" y="110" width="200" height="74" rx="12" class="gold-bg"/>
+<text x="750" y="142" class="t" font-size="17" font-weight="700" text-anchor="middle" >2  Decide</text>
+<text x="750" y="166" class="t mono" font-size="13" font-weight="500" text-anchor="middle" >where to click</text>
+<rect x="650" y="280" width="200" height="74" rx="12" class="acc-bg"/>
+<text x="750" y="312" class="t" font-size="17" font-weight="700" text-anchor="middle" >3  Act</text>
+<text x="750" y="336" class="t mono" font-size="13" font-weight="500" text-anchor="middle" >click · type · key</text>
+<rect x="410" y="280" width="200" height="74" rx="12" class="acc-bg"/>
+<text x="510" y="312" class="t" font-size="17" font-weight="700" text-anchor="middle" >4  Check</text>
+<text x="510" y="336" class="t mono" font-size="13" font-weight="500" text-anchor="middle" >screenshot again</text>
+<line x1="612" y1="147" x2="646" y2="147" class="arrow"/><path d="M637,141 L646,147 L637,153" class="arrow"/>
+<line x1="750" y1="186" x2="750" y2="276" class="arrow"/><path d="M744,267 L750,276 L756,267" class="arrow"/>
+<line x1="648" y1="317" x2="614" y2="317" class="arrow"/><path d="M623,311 L614,317 L623,323" class="arrow"/>
+<line x1="510" y1="276" x2="510" y2="188" class="arrow"/><path d="M504,197 L510,188 L516,197" class="arrow"/>
+<line x1="342" y1="229" x2="404" y2="229" class="arrow"/><path d="M395,223 L404,229 L395,235" class="arrow"/>
+<rect x="900" y="84" width="340" height="290" rx="14" class="panel"/>
+<text x="1070" y="120" class="t" font-size="17" font-weight="700" text-anchor="middle" >Cloud desktop</text>
+<rect x="926" y="140" width="288" height="180" rx="8" class="idle-bg"/>
+<rect x="926" y="140" width="288" height="20" rx="8" class="line" style="fill: var(--line)"/>
+<rect x="940" y="172" width="170" height="14" rx="7" class="acc-bg"/>
+<rect x="940" y="196" width="120" height="10" rx="5" class="panel"/>
+<rect x="940" y="214" width="150" height="10" rx="5" class="panel"/>
+<rect x="1120" y="200" width="80" height="100" rx="6" style="fill: var(--bg); stroke: var(--line)"/>
+<text x="1160" y="254" class="t mono" font-size="13" font-weight="600" text-anchor="middle" >$ _</text>
+<path d="M1050,236 l0,26 l7,-7 l5,11 l5,-2 l-5,-11 l10,0 z" style="fill: var(--text); stroke: var(--bg); stroke-width: 1.5"/>
+<text x="1070" y="350" class="m" font-size="13" font-weight="400" text-anchor="middle" >Chrome, terminals, dialogs, extensions</text>
+<line x1="864" y1="229" x2="896" y2="229" class="arrow"/><path d="M887,223 L896,229 L887,235" class="arrow"/>
+</svg>

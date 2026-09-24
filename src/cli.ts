@@ -4,6 +4,8 @@ import * as c from './commands'
 import * as m from './manage'
 import { cookies } from './cookies/command'
 import { init } from './init'
+import * as cu from './computer-commands'
+import { mcp } from './mcp'
 import { commandHelp, guide } from './help'
 import { buildImage } from './image'
 import { login, logout } from './key'
@@ -44,6 +46,15 @@ Every task (inside a git repo)
   rig logs [-n 80]               The dev server's output
   rig pull <path> [local]        Copy a file out of the box
 
+Computer use (the whole desktop, not just Chrome)
+  rig screen [out.png]           Screenshot the whole desktop
+  rig click <x> <y>              Click (--right, --middle, --double, --triple)
+  rig type "text" · rig key ctrl+l   Type text, press keys
+  rig scroll <x> <y> down [3] · rig drag <x0> <y0> <x1> <y1> · rig move <x> <y>
+  rig zoom <x0> <y0> <x1> <y1>   Enlarged close-up of one region
+  rig mcp                        MCP server: computer, browser and shell tools for Claude Code
+                                 (add once: claude mcp add rig -- rig mcp)
+
 Managing boxes
   rig status                     Default desktop, running and paused boxes, this branch's box
   rig ls [filters]               List boxes; --ids or --json for scripts
@@ -68,6 +79,16 @@ const COMMANDS: Record<string, Handler> = {
   guide: () => console.log(guide()),
   new: c.newBox,
   init,
+  screen: cu.screen,
+  zoom: cu.zoom,
+  click: cu.click,
+  move: cu.move,
+  drag: cu.drag,
+  scroll: cu.scroll,
+  type: cu.type,
+  key: cu.key,
+  cursor: cu.cursor,
+  mcp,
   up: c.up,
   sync: c.sync,
   exec: c.exec,
@@ -99,6 +120,7 @@ async function main(): Promise<void> {
   const handler = COMMANDS[a.cmd]
   if (!handler) return void console.log(HELP)
   if (a.flags.help) return void console.log(commandHelp(a.cmd) ?? HELP)
+  if (a.cmd === 'up' || a.cmd === 'new') await m.autoPrune()
   const result = await handler(a)
   if (typeof result === 'number') process.exit(result)
 }

@@ -209,6 +209,88 @@ rig guide
   drive Chrome, and when to hand the desktop to a human.
 ```
 
+## Computer use
+
+### rig screen
+
+```
+rig screen [out.png] [-b box]
+  Screenshots the box's whole desktop (1440x900) and prints the saved file's path.
+  Use it before clicking: coordinates are pixels in this image.
+```
+
+### rig click
+
+```
+rig click <x> <y> [--right | --middle] [--double | --triple] [-b box]
+  Clicks at a point on the desktop. Take a `rig screen` first to find the point.
+  Example:  rig click 640 88
+```
+
+### rig type
+
+```
+rig type "text" [-b box]
+  Types text into whatever has focus on the desktop.
+```
+
+### rig key
+
+```
+rig key <keys> [-b box]
+  Presses keys: Enter, Tab, Escape, ctrl+l, ctrl+shift+t, cmd+a (cmd is the Linux
+  super key), F5, Up, PageDown. Several at once: rig key ctrl+a Delete
+```
+
+### rig scroll
+
+```
+rig scroll <x> <y> [up|down|left|right] [amount] [-b box]
+  Moves the mouse to a point and scrolls there (default: down, 3 steps).
+```
+
+### rig move
+
+```
+rig move <x> <y> [-b box]
+  Moves the mouse, for example to show a hover menu.
+```
+
+### rig drag
+
+```
+rig drag <x0> <y0> <x1> <y1> [-b box]
+  Presses at the first point, moves to the second, and releases.
+```
+
+### rig zoom
+
+```
+rig zoom <x0> <y0> <x1> <y1> [out.png] [-b box]
+  Saves an enlarged (2x) close-up of one region of the desktop, for small text.
+```
+
+### rig cursor
+
+```
+rig cursor [-b box]
+  Prints where the mouse is: x y.
+```
+
+### rig mcp
+
+```
+rig mcp [-b box]
+  Runs an MCP server on stdin/stdout so Claude Code, or any MCP client, can use a
+  cloud desktop with native tools and see screenshots as images:
+    computer   screenshot, click, type, key, scroll, drag, zoom (Claude's computer-use actions)
+    browser    agent-browser commands in the signed-in Chrome
+    shell      run a command in the box
+    boxes      list your cloud desktops
+  Add it to Claude Code once:   claude mcp add rig -- rig mcp
+  Tools act on the box named in the call, else -b, else this repo + branch's box.
+```
+
 ## Managing boxes
 
 ### rig status

@@ -95,6 +95,49 @@ async function main() {
     must(out.out.trim() === '2', `matching cookies in box: ${out.out} ${out.err}`)
     return '2 cookies verified by hash'
   })
+  await step('computer use: screen, key, type, click, zoom, cursor', async () => {
+    await rig(['browser', '-b', toolsBox, '--', 'open', 'https://example.com'])
+    const shot = await rig(['screen', '-b', toolsBox, join(tmpdir(), 'rig-e2e-screen.png')])
+    must(shot.code === 0 && shot.err.includes('1440x900'), shot.err)
+    await rig(['key', '-b', toolsBox, 'ctrl+l'])
+    await rig(['type', '-b', toolsBox, 'https://example.org'])
+    await rig(['key', '-b', toolsBox, 'Enter'])
+    await Bun.sleep(3000)
+    must((await rig(['browser', '-b', toolsBox, '--', 'get', 'url'])).out.includes('example.org'), 'typing a URL did not navigate')
+    await rig(['click', '-b', toolsBox, '328', '319'])
+    await Bun.sleep(3000)
+    must((await rig(['browser', '-b', toolsBox, '--', 'get', 'url'])).out.includes('iana.org'), 'clicking the link did not navigate')
+    await rig(['move', '-b', toolsBox, '700', '450'])
+    must((await rig(['cursor', '-b', toolsBox])).out === '700 450', 'cursor is not where it was moved')
+    const zoomed = await rig(['zoom', '-b', toolsBox, '0', '60', '720', '120', join(tmpdir(), 'rig-e2e-zoom.png')])
+    must(zoomed.code === 0, zoomed.err)
+    return 'typed a URL, clicked a link, moved, zoomed'
+  })
+  await step('rig mcp: computer, browser and shell tools over stdio', async () => {
+    const p = Bun.spawn([RIG, 'mcp', '-b', toolsBox], { stdin: 'pipe', stdout: 'pipe', stderr: 'pipe' })
+    const reader = p.stdout.getReader()
+    let buf = ''
+    const next = async () => {
+      while (!buf.includes('\n')) buf += new TextDecoder().decode((await reader.read()).value)
+      const i = buf.indexOf('\n'); const m = JSON.parse(buf.slice(0, i)); buf = buf.slice(i + 1); return m
+    }
+    let id = 0
+    const call = async (method: string, params: object) => { p.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: ++id, method, params })}\n`); return next() }
+    try {
+      await call('initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'e2e', version: '1' } })
+      const shot = await call('tools/call', { name: 'computer', arguments: { action: 'screenshot' } })
+      must(shot.result.content[0].type === 'image' && shot.result.content[0].data.length > 10_000, 'no screenshot image')
+      const nav = await call('tools/call', { name: 'browser', arguments: { args: ['get', 'title'] } })
+      must(!nav.result.isError, JSON.stringify(nav.result))
+      const sh = await call('tools/call', { name: 'shell', arguments: { command: 'echo rig-mcp-ok' } })
+      must(sh.result.content[0].text.includes('rig-mcp-ok'), sh.result.content[0].text)
+      const bad = await call('tools/call', { name: 'computer', arguments: { action: 'left_click' } })
+      must(bad.result.isError === true, 'a bad call was not reported as an error')
+      return 'screenshot image, browser, shell and error reporting'
+    } finally {
+      p.kill()
+    }
+  })
   await step('rig desktop: returns at once, link works, rebinding refused, --stop closes it', async () => {
     const d = await rig(['desktop', toolsBox])
     must(d.code === 0 && d.out.includes('/vnc.html'), d.err)

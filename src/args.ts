@@ -6,7 +6,7 @@ export type Args = {
 }
 
 const SHORT: Record<string, string> = { b: 'box', t: 'timeout', n: 'lines', h: 'help' }
-const BOOLEAN = new Set(['promote', 'default', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help', 'ids', 'merged', 'here', 'golden', 'include-sensitive', 'use', 'serve', 'stop'])
+const BOOLEAN = new Set(['promote', 'default', 'force', 'new', 'no-dev', 'all', 'yes', 'json', 'help', 'ids', 'merged', 'here', 'golden', 'include-sensitive', 'use', 'serve', 'stop', 'right', 'middle', 'double', 'triple'])
 // Older names that still work.
 const ALIASES: Record<string, string> = { golden: 'default', promote: 'default' }
 

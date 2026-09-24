@@ -5,6 +5,7 @@ import { COMMAND_HELP } from '../src/help'
 const ORDER = [
   ['Setup', ['login', 'logout', 'image', 'new', 'desktop', 'save', 'saved', 'cookies', 'skill', 'doctor']],
   ['Every task', ['init', 'up', 'sync', 'exec', 'browser', 'shot', 'port', 'logs', 'pull', 'guide']],
+  ['Computer use', ['screen', 'click', 'type', 'key', 'scroll', 'move', 'drag', 'zoom', 'cursor', 'mcp']],
   ['Managing boxes', ['status', 'ls', 'pause', 'kill', 'prune', 'snap']],
 ] as const
 

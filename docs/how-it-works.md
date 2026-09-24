@@ -73,6 +73,9 @@ The full tool list is in [image.md](image.md).
 | `src/services.ts` | Dev server, desktop and viewer inside the box |
 | `src/proxy.ts` | The local port proxy |
 | `src/viewer.ts` | The background helper behind `rig desktop`, and its keep-awake |
+| `src/computer.ts` | Computer use in the box: screenshot, click, type, key, scroll, drag, zoom (xdotool, ImageMagick) |
+| `src/computer-commands.ts` | `rig screen`, `click`, `type`, `key` and the other computer-use commands |
+| `src/mcp.ts` | `rig mcp`: the MCP server over stdio with the computer, browser, shell and boxes tools |
 | `src/sanitize.ts` | Cleaning box output before it reaches your terminal |
 | `src/cookies/` | Reading browser cookies on your laptop and handing them to the box's Chrome |
 | `src/image.ts` | The box image definition |

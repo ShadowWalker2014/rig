@@ -52,7 +52,7 @@ You now see the cloud desktop's screen. Sign in to the things every task will ne
 
 **In its Chrome:** GitHub, Vercel, Google, and your app's test accounts.
 
-**1Password** is already installed — sign in to its Chrome extension (the key icon in the toolbar) and it fills everything else. The `op` CLI is there too.
+**1Password** is already installed (the Chrome extension and the `op` CLI). Sign in to it only for a single session, and sign out before `rig save` — see [security](security.md#the-default-desktop).
 
 **In its terminal** (Applications → Terminal), run the ones you use:
 
