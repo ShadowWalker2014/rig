@@ -1,0 +1,5 @@
+#!/bin/bash
+# Opens links in the desktop's signed-in Chrome — the one you and the agent share —
+# instead of a second, empty Chrome. A running Chrome with the same profile takes the
+# link and this exits at once; Chrome's own log output is kept out of your terminal.
+exec google-chrome --user-data-dir="$HOME/.config/rig-chrome" "$@" >/dev/null 2>&1

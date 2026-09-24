@@ -20,6 +20,8 @@
 
 Chrome, Node, gh, gcloud and stripe come from their vendors' signed apt repositories. npm tools, flyctl and uv are pinned to exact versions in `src/image.ts`.
 
+Links opened by command-line tools (`gh auth login`, `vercel login`, `gcloud auth login`) and by the desktop open as a tab in the box's one signed-in Chrome, not a second empty one. Copy and paste work through `xclip`, `xsel` and `autocutsel`. Chrome renders WebGL in software, so sites that need it work.
+
 In a box, `PLAYWRIGHT_BROWSERS_PATH` and `PUPPETEER_EXECUTABLE_PATH` are already set, so `npx playwright test` and Puppeteer scripts work without downloading browsers.
 
 ## Adding your own tools

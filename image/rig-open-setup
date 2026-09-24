@@ -1,0 +1,33 @@
+#!/bin/bash
+# Makes rig-open the default browser for everything that opens links: xdg-open,
+# sensible-browser, x-www-browser and $BROWSER (gh, vercel, gcloud, wrangler…). Run as root.
+set -e
+cat > /usr/share/applications/rig-open.desktop <<'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=Chrome (signed in)
+Exec=/usr/local/bin/rig-open %U
+MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;
+NoDisplay=true
+DESKTOP
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/rig-open 300
+update-alternatives --set x-www-browser /usr/local/bin/rig-open
+update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/local/bin/rig-open 300
+update-alternatives --set gnome-www-browser /usr/local/bin/rig-open
+printf '[Default Applications]\nx-scheme-handler/http=rig-open.desktop\nx-scheme-handler/https=rig-open.desktop\ntext/html=rig-open.desktop\n' > /usr/share/applications/mimeapps.list
+grep -q 'BROWSER=' /etc/profile.d/rig.sh 2>/dev/null || echo 'export BROWSER=/usr/local/bin/rig-open' >> /etc/profile.d/rig.sh
+# Xfce opens links through its own "preferred web browser" setting, not xdg's.
+mkdir -p /usr/share/xfce4/helpers /etc/xdg/xfce4
+cat > /usr/share/xfce4/helpers/rig-open.desktop <<'HELPER'
+[Desktop Entry]
+NoDisplay=true
+Version=1.0
+Encoding=UTF-8
+Type=X-XFCE-Helper
+X-XFCE-Category=WebBrowser
+X-XFCE-CommandsWithParameter=/usr/local/bin/rig-open "%s"
+Icon=google-chrome
+Name=Chrome (signed in)
+X-XFCE-Commands=/usr/local/bin/rig-open
+HELPER
+printf 'WebBrowser=rig-open\n' > /etc/xdg/xfce4/helpers.rc

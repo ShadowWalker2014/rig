@@ -17,6 +17,7 @@ fi
 if ! curl -sf localhost:9222/json/version >/dev/null; then
   setsid google-chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/rig-chrome" \
     --no-first-run --no-default-browser-check --password-store=basic --start-maximized \
+    --use-angle=swiftshader --enable-unsafe-swiftshader \
     >/tmp/chrome.log 2>&1 </dev/null &
   for _ in $(seq 150); do curl -sf localhost:9222/json/version >/dev/null && exit 0; sleep 0.2; done
   echo "Chrome did not open its debugging port. See /tmp/chrome.log" >&2
