@@ -33,6 +33,8 @@ export async function zoom(a: Args): Promise<void> {
 }
 
 export async function click(a: Args): Promise<void> {
+  if (a.flags.right && a.flags.middle) throw new Error('Use --right or --middle, not both.')
+  if (a.flags.double && a.flags.triple) throw new Error('Use --double or --triple, not both.')
   const button: computer.Button = a.flags.right ? 'right' : a.flags.middle ? 'middle' : 'left'
   const count = a.flags.triple ? 3 : a.flags.double ? 2 : 1
   await computer.click(await box(a), num(a, 0, 'x'), num(a, 1, 'y'), button, count)

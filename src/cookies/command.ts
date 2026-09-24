@@ -1,6 +1,7 @@
 import type { SandboxInfo } from 'e2b'
 import { str, type Args } from '../args'
 import { createBox, killBox, openBox, resolveBox, snapshotBox } from '../box'
+import { boxRef } from '../commands'
 import { onInterrupt } from '../cleanup'
 import { clean } from '../sanitize'
 import { defaultName } from '../saved'
@@ -41,11 +42,13 @@ const csv = (v: string | true | undefined) => (str(v) ?? '').split(',').map((s) 
 // authenticated connection, into the box's Chrome. rig prints only site names and counts.
 async function push(a: Args): Promise<void> {
   const choice: Choice = { sites: csv(a.flags.site), skip: csv(a.flags.skip), all: Boolean(a.flags.all || a.flags['include-sensitive']) }
+  if (choice.sites.length && (choice.all || choice.skip.length)) throw new Error('--site names exactly what to copy, so it cannot be combined with --all or --skip.')
   // Banking and payment sessions only move with a person at the terminal.
   if (choice.all && !process.stdin.isTTY) {
     throw new Error('--all includes banking and payment sessions, so it needs a person at a terminal to confirm. Name sites with --site instead.')
   }
-  const box = (str(a.flags.box) ?? a.sub[1]) ? await pickBox(a) : undefined
+  const ref = boxRef({ ...a, sub: a.sub.slice(1) })
+  const box = ref ? await pickBox(ref, a) : undefined
   const profile = findProfile(str(a.flags.from) ?? 'chrome')
   if (!(await confirm(profile, choice, a))) return void console.error('Nothing sent.')
   console.error(`Reading ${profile.browserName} (${clean(profile.profileName)}). If macOS asks for access, click Allow, not Always Allow.`)
@@ -59,10 +62,10 @@ async function push(a: Args): Promise<void> {
 
 // A box that ran a repo's install or dev scripts could read the cookies and send
 // them anywhere, so it needs --force. Clean boxes from `rig new` do not.
-async function pickBox(a: Args): Promise<SandboxInfo> {
-  const box = await resolveBox((str(a.flags.box) ?? a.sub[1])!)
+async function pickBox(ref: string, a: Args): Promise<SandboxInfo> {
+  const box = await resolveBox(ref)
   if (box.metadata.repo && !a.flags.force) {
-    throw new Error(`Box ${box.sandboxId} has run code from ${box.metadata.repo}, which could read these cookies. Use a box from \`rig new\`, --default, or add --force if you trust that repo.`)
+    throw new Error(`Box ${box.sandboxId} has run code from ${box.metadata.repo}, which could read these cookies. Use a box from \`rig new\`, leave out -b to use your default desktop, or add --force if you trust that repo.`)
   }
   return box
 }

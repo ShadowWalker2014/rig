@@ -79,13 +79,13 @@ rig saved | rig saved use <name> | rig saved rm <name> [--force]
 
 ```
 rig cookies push [--site a.com,b.com | --all] [--skip c.com] [--from chrome] [-b box]
-rig cookies sites [--from chrome]
+rig cookies sites [--from chrome] [--limit 100]
 rig cookies browsers
   Copies your sign-ins from a browser on this machine into cloud desktops, so they
   are signed in wherever you are. Run it again any time to bring the latest.
   rig cookies push            every site EXCEPT banking and payments (Google, GitHub,
                               email and the rest all go), into your default desktop
-  rig cookies push --all      banking and payments too (asks you to confirm)
+  rig cookies push --all      banking and payments too (asks you to confirm; --yes skips it)
   rig cookies push --site github.com,linear.app    only those sites
   --skip a.com,b.com   leave more sites out      --from arc:Work   another browser or profile
   -b <box>             one box instead of your default desktop (a box that ran a
@@ -131,12 +131,15 @@ rig init [--yes] [--copy .env.local] [--dev <cmd>] [--port <n>] [--setup <cmd>]
 ### rig up
 
 ```
-rig up [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
+rig up [box | -b <box>] [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
   Run inside a git repo. The first time, it settles the repo's settings (see
   `rig init`). Finds this repo + branch's box (or creates one from the
   default desktop), copies your working tree to it, installs packages if the
   lockfile changed, and starts the dev server. Prints the box id.
+  -b        Use this box. It must belong to this repo and branch.
   --new     Always make a separate box (for parallel agents on one branch).
+  --name, --from   only apply when a new box is made (with --new, or the first time).
+  --yes, --copy, --dev, --port, --setup   passed to `rig init` the first time in a repo.
   --from    Start a new box from that saved desktop instead of the default.
   --no-dev  Do not start the dev server.
 ```

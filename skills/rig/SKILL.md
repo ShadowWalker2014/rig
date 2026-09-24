@@ -126,7 +126,7 @@ every future box.
 Saved desktops work like contexts:
 - `rig saved` lists them (`*` is the default); `rig status` shows the default and boxes.
 - `rig save <box> --as <name>` keeps another setup; `rig saved use <name>` switches the default.
-- `rig new --from <name>` / `rig up --from <name>` starts one box from a specific setup.
+- `rig new --from <name>` starts one box from a specific setup; in a repo, `rig up --new --from <name>` (or the first `rig up` on a branch).
 
 1Password (the Chrome extension and the `op` CLI) is installed in every box. If the
 user needs a password filled, ask them to use the 1Password extension on `rig desktop`;

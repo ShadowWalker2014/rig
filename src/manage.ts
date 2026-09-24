@@ -46,8 +46,14 @@ export async function ls(a: Args): Promise<void> {
 
 // Explicit ids or names, a filter, or else this repo + branch's box.
 async function pick(a: Args): Promise<SandboxInfo[]> {
+  if (hasSelection(a) && (a.sub.length > 0 || a.flags.box !== undefined)) {
+    throw new Error('Name boxes or use a filter, not both: with both, the filter would widen what is affected.')
+  }
   if (hasSelection(a)) return selectBoxes(a)
-  if (a.sub.length > 0) return Promise.all(a.sub.map(resolveBox))
+  if (a.sub.length > 0) {
+    if (a.flags.box !== undefined) throw new Error('Name boxes as words or with -b, not both.')
+    return Promise.all(a.sub.map(resolveBox))
+  }
   return [await target(a)]
 }
 

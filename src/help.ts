@@ -1,6 +1,24 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+const FILTERS = ['state', 'older-than', 'repo', 'branch', 'here', 'all']
+// Flags a command takes beyond its help text: old names that still work, and internal ones.
+const EXTRA: Record<string, string[]> = { snap: ['default', 'as', 'use', 'force'], cookies: ['include-sensitive'], desktop: ['serve'] }
+
+// The flags a command accepts, read from its own help, so the help and the parser
+// cannot disagree. A flag that isn't here is refused instead of silently ignored.
+export function allowedFlags(cmd: string): Set<string> | undefined {
+  const text = COMMAND_HELP[cmd === 'snaps' ? 'saved' : cmd]
+  if (text === undefined) return undefined
+  const out = new Set(['help', ...(EXTRA[cmd] ?? [])])
+  const own = text.replace(/ -- .*$/gm, '') // flags after " -- " belong to the command run in the box
+  for (const m of own.matchAll(/--([a-z][a-z-]*)(?![A-Za-z-])/g)) out.add(m[1]!)
+  if (/-b\b|\[box|<box>|box…/.test(own)) out.add('box')
+  if (/(^|[\s[])-n\b/.test(own)) out.add('lines')
+  if (/filters/i.test(own)) FILTERS.forEach((f) => out.add(f))
+  return out
+}
+
 // One entry per command: what it does, its usage, and a real example.
 export const COMMAND_HELP: Record<string, string> = {
   login: `rig login
@@ -33,12 +51,15 @@ export const COMMAND_HELP: Record<string, string> = {
   The first \`rig up\` in a repo runs this for you when you are at a terminal.
   Examples: rig init
             rig init --yes --copy .env.local`,
-  up: `rig up [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
+  up: `rig up [box | -b <box>] [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
   Run inside a git repo. The first time, it settles the repo's settings (see
   \`rig init\`). Finds this repo + branch's box (or creates one from the
   default desktop), copies your working tree to it, installs packages if the
   lockfile changed, and starts the dev server. Prints the box id.
+  -b        Use this box. It must belong to this repo and branch.
   --new     Always make a separate box (for parallel agents on one branch).
+  --name, --from   only apply when a new box is made (with --new, or the first time).
+  --yes, --copy, --dev, --port, --setup   passed to \`rig init\` the first time in a repo.
   --from    Start a new box from that saved desktop instead of the default.
   --no-dev  Do not start the dev server.`,
   sync: `rig sync [box]
@@ -128,13 +149,13 @@ export const COMMAND_HELP: Record<string, string> = {
   the list first; --yes deletes. Running boxes are only pruned by --merged.
   Example:  rig prune --merged --yes`,
   cookies: `rig cookies push [--site a.com,b.com | --all] [--skip c.com] [--from chrome] [-b box]
-rig cookies sites [--from chrome]
+rig cookies sites [--from chrome] [--limit 100]
 rig cookies browsers
   Copies your sign-ins from a browser on this machine into cloud desktops, so they
   are signed in wherever you are. Run it again any time to bring the latest.
   rig cookies push            every site EXCEPT banking and payments (Google, GitHub,
                               email and the rest all go), into your default desktop
-  rig cookies push --all      banking and payments too (asks you to confirm)
+  rig cookies push --all      banking and payments too (asks you to confirm; --yes skips it)
   rig cookies push --site github.com,linear.app    only those sites
   --skip a.com,b.com   leave more sites out      --from arc:Work   another browser or profile
   -b <box>             one box instead of your default desktop (a box that ran a

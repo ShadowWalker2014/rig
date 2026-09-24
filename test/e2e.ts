@@ -207,6 +207,24 @@ async function main() {
     const r = await rig(['logs', '-n', '5'], { cwd: repo })
     must(r.out.includes('GET'), r.out)
   })
+  await step('rig up -b picks the named box when a branch has two', async () => {
+    const second = await rig(['up', '--new', '--no-dev', '--name', 'e2e-repo-par'], { cwd: repo })
+    must(second.code === 0, second.err)
+    const secondBox = second.out.split('\n').pop()!
+    try {
+      for (const want of [repoBox, secondBox, repoBox]) {
+        const r = await rig(['up', '-b', want, '--no-dev'], { cwd: repo })
+        must(r.code === 0 && r.out.split('\n').pop() === want && r.err.includes(`Reusing box ${want}`), `wanted ${want}: ${r.out} ${r.err}`)
+      }
+      const both = await rig(['up', '-b', repoBox, '--new'], { cwd: repo })
+      must(both.code !== 0 && both.err.includes('not both'), both.err)
+      const other = await rig(['up', '-b', toolsBox, '--no-dev'], { cwd: repo })
+      must(other.code !== 0 && other.err.includes('is not a'), other.err)
+    } finally {
+      await rig(['kill', secondBox])
+    }
+    return `reused each named box; refused -b with --new and a box from outside the repo`
+  })
 
   await step('rig init --yes detects settings and copies only named env files', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'rig-e2e-init-'))

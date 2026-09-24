@@ -19,12 +19,20 @@ import { hasConfigFile, writeConfig } from './project'
 
 // The box named by `-b`/positional, or else the one for this repo and branch.
 export async function target(a: Args, positionalIsBox = true): Promise<SandboxInfo> {
-  const ref = str(a.flags.box) ?? (positionalIsBox ? a.sub[0] : undefined)
+  const ref = boxRef(a, positionalIsBox)
   if (ref) return resolveBox(ref)
   const repo = currentRepo()
   const [box] = await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } })
   if (!box) throw new Error(`No box for ${repo.slug} on ${repo.branch}. Run \`rig up\` first.`)
   return box
+}
+
+// The box a command names, by -b or as its first word; naming two different ones is an error.
+export function boxRef(a: Args, positionalIsBox = true): string | undefined {
+  const flag = str(a.flags.box)
+  const word = positionalIsBox ? a.sub[0] : undefined
+  if (flag && word && flag !== word) throw new Error(`Two boxes named: ${word} and -b ${flag}. Name one.`)
+  return flag || word
 }
 
 const shortId = () => crypto.randomUUID().slice(0, 4)
@@ -35,12 +43,32 @@ function repoTags(repo: Repo, a: Args): Tags {
   return { name: a.flags.new ? `${base}-${shortId()}` : base, repo: repo.slug, branch: repo.branch, dir: repo.boxDir }
 }
 
+// Why a box can't take this repo and branch's code, or undefined if it can.
+export function repoBoxProblem(box: Pick<SandboxInfo, 'sandboxId' | 'metadata'>, repo: Pick<Repo, 'slug' | 'branch'>): string | undefined {
+  const { repo: boxRepo, branch } = box.metadata
+  if (boxRepo !== repo.slug) return `Box ${box.sandboxId} is not a ${repo.slug} box${boxRepo ? ` (it holds ${boxRepo})` : ''}. Run \`rig up\` without -b to get one.`
+  if (branch !== repo.branch) return `Box ${box.sandboxId} is for branch ${branch}, and you are on ${repo.branch}. Run \`rig up\` without -b to get this branch's box.`
+}
+
+// -b names the box to use; otherwise this repo and branch's box, unless --new.
+async function boxForUp(a: Args, repo: Repo): Promise<SandboxInfo | undefined> {
+  const ref = boxRef(a)
+  if (ref && a.flags.new) throw new Error('Use either -b <box> or --new, not both.')
+  const box = ref ? await resolveBox(ref) : a.flags.new ? undefined : (await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } }))[0]
+  if (!box) return undefined
+  const problem = repoBoxProblem(box, repo)
+  if (problem) throw new Error(problem)
+  const setup = ['from', 'name'].filter((f) => a.flags[f] !== undefined)
+  if (setup.length) throw new Error(`--${setup.join(' and --')} only apply to a new box, and ${box.sandboxId} already exists. Add --new for a separate box.`)
+  return box
+}
+
 export async function up(a: Args): Promise<void> {
   const repo = currentRepo()
+  const existing = await boxForUp(a, repo) // before setup, so a wrong box is refused before any questions
   const cfg = await settingsFor(repo, a)
   const missing = cfg.copy.filter((f) => !existsSync(join(repo.root, f)))
   if (missing.length) throw new Error(`rig.json copies ${missing.join(', ')}, but ${missing.length === 1 ? 'it is' : 'they are'} not in this repo on this machine. Add ${missing.length === 1 ? 'it' : 'them'}, or run \`rig init\`.`)
-  const existing = a.flags.new ? undefined : (await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } }))[0]
   const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a), str(a.flags.from))
   console.error(`${existing ? 'Reusing' : 'Created'} box ${sbx.sandboxId}`)
   await sbx.setTimeout(idleMs() + 1_800_000)
@@ -83,10 +111,10 @@ function nextSteps(port: number): string {
 export async function sync(a: Args): Promise<void> {
   const repo = currentRepo()
   const box = await target(a)
-  // A box only ever holds one repo's code, so a clean `rig new` box stays promotable.
-  if (box.metadata.repo !== repo.slug) {
-    throw new Error(`Box ${box.sandboxId} is not a ${repo.slug} box. Use \`rig up\` to get one.`)
-  }
+  // A box only ever holds one repo and branch's code, so a clean `rig new` box stays promotable
+  // and a parallel agent's box is never overwritten with another branch.
+  const problem = repoBoxProblem(box, repo)
+  if (problem) throw new Error(problem)
   const sbx = await openBox(box.sandboxId, 1_800_000)
   const { installed } = await syncRepo(sbx, repo)
   if (installed) await startDev(sbx, repo, projectConfig(repo.root))

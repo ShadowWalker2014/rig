@@ -6,7 +6,7 @@ import { cookies } from './cookies/command'
 import { init } from './init'
 import * as cu from './computer-commands'
 import { mcp } from './mcp'
-import { commandHelp, guide } from './help'
+import { commandHelp, guide, allowedFlags } from './help'
 import { buildImage } from './image'
 import { login, logout } from './key'
 import { clean } from './sanitize'
@@ -36,7 +36,7 @@ Logins from your own browser
 
 Every task (inside a git repo)
   rig init                       Once per repo: detect how it runs, choose env files, write rig.json
-  rig up [--new] [--from name]   This branch's box: sync code, install, start the dev server
+  rig up [box] [--new]           This branch's box: sync code, install, start the dev server
   rig sync                       Send local edits (committed or not) to the box
   rig exec -- <cmd>              Run a command in the box's repo folder
   rig browser -- <args>          Drive the box's signed-in Chrome
@@ -120,6 +120,9 @@ async function main(): Promise<void> {
   const handler = COMMANDS[a.cmd]
   if (!handler) return void console.log(HELP)
   if (a.flags.help) return void console.log(commandHelp(a.cmd) ?? HELP)
+  const allowed = allowedFlags(a.cmd)
+  const unknown = allowed && Object.keys(a.flags).find((k) => !allowed.has(k))
+  if (unknown) fail(`rig ${a.cmd} does not take --${a.typed?.[unknown] ?? unknown}. See \`rig help ${a.cmd}\`.`)
   if (a.cmd === 'up' || a.cmd === 'new') await m.autoPrune()
   const result = await handler(a)
   if (typeof result === 'number') process.exit(result)
