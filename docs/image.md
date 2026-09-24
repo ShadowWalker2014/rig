@@ -44,7 +44,9 @@ RIG_BOX_CPU=8
 RIG_BOX_MEMORY_MB=8192
 ```
 
-E2B's free plan allows 2 CPUs and 4 GB; Pro allows 8 and 8 GB by default, and more on request.
+E2B's free plan allows 2 CPUs and 4 GB; Pro allows 8 and 8 GB by default, and more on request from support@e2b.dev.
+
+`rig up` and `rig new` also give every box swap as large as its RAM, leaving at least 4 GB of disk free. A dev server that outgrows memory then slows down instead of being killed. Swap is a safety net, not extra memory: if a build needs it for long, give the box more RAM.
 
 ## After rebuilding
 

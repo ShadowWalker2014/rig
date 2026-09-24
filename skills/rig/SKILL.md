@@ -36,6 +36,28 @@ branch. Every `rig` command below, run from inside the repo, targets that box.
 6. When the task is done, run `rig pause` (or leave it: it pauses by itself after 15
    idle minutes) — a paused box costs nothing. `rig kill` only if the branch is finished for good.
 
+## When the dev server dies
+
+If the app stops responding, `rig logs` ends suddenly, or a page gives "connection
+refused", check for an out-of-memory kill before debugging the app:
+
+```bash
+rig exec -- 'free -m; dmesg | grep -i -E "killed process|out of memory" | tail -5'
+```
+
+Every box has swap as large as its RAM, so an app that outgrows memory usually slows
+down instead of dying. If it is still killed:
+
+1. **Cap the app's own memory**, behind an environment variable so production is
+   unchanged: Node's `NODE_OPTIONS=--max-old-space-size=<MB>`, Next.js's
+   `experimental.turbopackMemoryLimit`, and fewer build workers
+   (`experimental.cpus` in Next.js). Keep caps well under the box's RAM: the process
+   uses 1–2 GB more than a cache limit. Then `rig sync` and restart with `rig up`.
+2. **If a production build needs more than the box's RAM**, stop and tell the user.
+   A build that runs on swap takes far longer. The fix is a bigger box: they set
+   `RIG_BOX_MEMORY_MB` in `~/.config/rig/.env` and run `rig image build`, and E2B may
+   need to raise their plan's limit first.
+
 ## Computer use: the whole screen
 
 For anything outside a web page — a terminal window, a system dialog, a browser

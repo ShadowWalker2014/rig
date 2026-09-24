@@ -31,6 +31,26 @@ async function waitForPort(sbx: Sandbox, port: number): Promise<void> {
   throw new Error(`Dev server did not open port ${port}. Last log lines:\n${tail}`)
 }
 
+// Swap the size of the box's RAM, leaving 4 GB of disk free. Without it a dev server
+// that outgrows RAM is killed and the agent only sees "connection refused"; with it,
+// the box slows down instead. Idempotent, and skipped if the kernel refuses swap.
+export const SWAP_SCRIPT = [
+  'swapon --show=NAME --noheadings | grep -q . && exit 0',
+  "ram=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)",
+  "disk=$(df -m --output=avail / | tail -1 | tr -d ' ')",
+  'size=$(( ram < disk - 4096 ? ram : disk - 4096 ))',
+  '[ "$size" -ge 1024 ] || exit 0',
+  'fallocate -l ${size}M /swapfile && chmod 600 /swapfile && mkswap /swapfile >/dev/null && swapon /swapfile || { rm -f /swapfile; exit 3; }',
+].join('\n')
+
+export async function ensureSwap(sbx: Sandbox): Promise<void> {
+  try {
+    await sbx.commands.run(SWAP_SCRIPT, { user: 'root', timeoutMs: 60_000 })
+  } catch {
+    console.error('Could not add swap to this box, so a dev server that outgrows its memory will be stopped. rig works otherwise.')
+  }
+}
+
 // Desktop, Chrome (with the logged-in profile) and CDP on :9222. Idempotent.
 export async function ensureDesktop(sbx: Sandbox): Promise<void> {
   await sh(sbx, 'rig-desktop', { timeoutMs: 90_000 })

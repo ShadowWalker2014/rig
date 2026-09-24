@@ -9,7 +9,7 @@ import { DEV_LOG, HOME, idleMs, NOVNC_PORT } from './config'
 import { forward } from './proxy'
 import { projectConfig } from './project'
 import { currentRepo, type Repo } from './repo'
-import { devRunning, ensureDesktop, startDev, startViewer, stopDev, stopViewer } from './services'
+import { devRunning, ensureDesktop, ensureSwap, startDev, startViewer, stopDev, stopViewer } from './services'
 import { clean, sanitizer } from './sanitize'
 import { q, sh } from './shell'
 import { RepoAccessError, syncRepo } from './sync'
@@ -44,6 +44,7 @@ export async function up(a: Args): Promise<void> {
   const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a), str(a.flags.from))
   console.error(`${existing ? 'Reusing' : 'Created'} box ${sbx.sandboxId}`)
   await sbx.setTimeout(idleMs() + 1_800_000)
+  await ensureSwap(sbx)
   const { installed } = await syncRepo(sbx, repo).catch(async (err) => {
     // A box that could not reach the repo is useless; do not leave it to be reused.
     if (err instanceof RepoAccessError && !existing) await killBox(sbx.sandboxId)
@@ -233,6 +234,7 @@ export async function snap(a: Args): Promise<void> {
 export async function newBox(a: Args): Promise<void> {
   const sbx = await createBox({ name: str(a.flags.name) ?? `rig-${shortId()}` }, str(a.flags.from))
   await ensureDesktop(sbx)
+  await ensureSwap(sbx)
   console.log(sbx.sandboxId)
   console.error(`Box ready. Sign in to things with: rig desktop ${sbx.sandboxId}\nThen save it, so every new box starts signed in: rig save ${sbx.sandboxId}`)
 }

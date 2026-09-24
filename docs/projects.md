@@ -69,7 +69,8 @@ The box it had just started is deleted, so the next `rig up` starts fresh from y
 
 ## When the dev server needs more
 
-- **More memory or CPU:** set `RIG_BOX_CPU` and `RIG_BOX_MEMORY_MB` and run `rig image build` ([the box image](image.md#box-size)).
+- **The dev server keeps dying:** check `rig exec -- 'dmesg | grep -i oom'`. Every box has swap as large as its RAM, so an app that outgrows memory slows down first. If it is still killed, cap the app's own memory, such as Node's `--max-old-space-size` or Next.js's `turbopackMemoryLimit`.
+- **More memory or CPU:** set `RIG_BOX_CPU` and `RIG_BOX_MEMORY_MB` and run `rig image build` ([the box image](image.md#box-size)). A production build that needs more than the box's RAM is too slow on swap; give it a bigger box.
 - **Extra tools:** add them to `~/.config/rig/image.sh` and rebuild ([adding your own tools](image.md#adding-your-own-tools)).
 - **Several services:** point `dev` at a script that starts them all, and use `rig port` for each port.
 - **Parallel agents on one branch:** `rig up --new` gives each its own box; pass `-b <id>` to the other commands.
