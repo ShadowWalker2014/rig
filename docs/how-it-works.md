@@ -14,7 +14,7 @@ rig gives AI agents cloud desktops. Each one is an E2B sandbox with a Linux desk
 | `rig port` running | rig renews the deadline every minute while the command runs. |
 | `rig kill` or `rig prune` | The box is deleted. |
 
-E2B counts only API calls as activity, not traffic, which is why rig renews the deadline itself while you use a box. A paused box costs nothing. A running 4 CPU / 8 GB box costs about $0.33 an hour on E2B.
+E2B counts only API calls as activity, not traffic, which is why rig renews the deadline itself while you use a box. A paused box costs nothing. A running 4 CPU / 16 GB box costs about $0.46 an hour on E2B.
 
 ## Syncing code without a push
 

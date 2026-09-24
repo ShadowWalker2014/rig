@@ -4,7 +4,7 @@
 
 | Box state | Cost on E2B |
 |---|---|
-| Running | About $0.33 an hour for 4 CPUs / 8 GB ([E2B pricing](https://e2b.dev/pricing)) |
+| Running | About $0.46 an hour for 4 CPUs / 16 GB ([E2B pricing](https://e2b.dev/pricing)) |
 | Paused | Nothing. Memory and disk are kept. |
 | Deleted | Nothing. Gone for good. |
 

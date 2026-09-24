@@ -9,9 +9,9 @@ export const defaultDesktop = () => templateOf(defaultName())
 // A box pauses after this long without a rig command, keeping its RAM.
 export const idleMs = () => Number(setting('RIG_IDLE_MIN') ?? 15) * 60_000
 
-// Box size is fixed when the image is built. E2B's free Hobby plan allows 2 CPUs / 4 GB.
+// Box size is fixed when the image is built. E2B allows 2 CPUs / 4 GB on Hobby and 8 GB on Pro unless support raises it.
 export const boxCpu = () => Number(setting('RIG_BOX_CPU') ?? 4)
-export const boxMemoryMb = () => Number(setting('RIG_BOX_MEMORY_MB') ?? 8192)
+export const boxMemoryMb = () => Number(setting('RIG_BOX_MEMORY_MB') ?? 16384)
 
 // Every box rig creates carries this tag, so `rig ls` never shows other sandboxes.
 export const OWNER_TAG = { rig: '1' }

@@ -30,7 +30,8 @@ export const COMMAND_HELP: Record<string, string> = {
   image: `rig image build
   Builds the base box image once: Ubuntu 24.04, an Xfce desktop, Google Chrome, bun,
   node 22, gh, vercel, pnpm and agent-browser. Takes a few minutes. Box size comes
-  from RIG_BOX_CPU / RIG_BOX_MEMORY_MB (default 4 CPUs, 8 GB; the free E2B plan allows 2 / 4096).`,
+  from RIG_BOX_CPU / RIG_BOX_MEMORY_MB (default 4 CPUs, 16 GB). E2B allows 2 / 4096 on
+  the free plan and 8192 MB on Pro unless support@e2b.dev raises it.`,
   skill: `rig skill install
   Links rig's Claude Code skill into ~/.claude/skills/rig, so agents use rig for dev
   servers, tests and browser checks instead of running them on your laptop.`,

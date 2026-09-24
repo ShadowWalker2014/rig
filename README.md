@@ -306,7 +306,7 @@ rig doctor                               # key, image, default desktop and setti
 
 - **Clean-up is automatic.** Once a day, `rig up` and `rig new` delete Rig's own boxes that have been paused and unused for 7 days. Set `RIG_AUTO_PRUNE_DAYS` to change that, or `0` to turn it off.
 - **Filters stay fast.** `--state`, `--older-than 7d`, `--repo`, `--branch`, `--here` and `--all` run on E2B's side, so they stay fast with thousands of cloud desktops. A filtered delete previews first and only deletes with `--yes`.
-- **Rig is free.** You pay E2B for running time: about $0.33 an hour for 4 CPUs / 8 GB at [E2B's rates](https://e2b.dev/pricing). Paused cloud desktops cost nothing. More in [cleanup and scale](docs/cleanup-and-scale.md).
+- **Rig is free.** You pay E2B for running time: about $0.46 an hour for 4 CPUs / 16 GB at [E2B's rates](https://e2b.dev/pricing). Paused cloud desktops cost nothing. More in [cleanup and scale](docs/cleanup-and-scale.md).
 
 ## What's inside a cloud desktop
 
@@ -334,7 +334,7 @@ Set these in your shell or in `~/.config/rig/.env` (see [.env.example](.env.exam
 | `RIG_E2B_DOMAIN` | `e2b.app` | Only for self-hosted E2B |
 | `RIG_IDLE_MIN` | `15` | Minutes without a Rig command before a cloud desktop pauses |
 | `RIG_AUTO_PRUNE_DAYS` | `7` | Days a paused box may sit unused before `rig up` or `rig new` deletes it; `0` turns it off |
-| `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `8192` | Size, set when the image is built |
+| `RIG_BOX_CPU` / `RIG_BOX_MEMORY_MB` | `4` / `16384` | Size, set when the image is built |
 | `RIG_DEFAULT_DESKTOP` / `RIG_BASE_TEMPLATE` | `rig-default` / `rig-base` | Names of your default desktop and image in E2B |
 
 ## Security
@@ -376,7 +376,7 @@ Claude Code on the web runs the whole agent in the cloud and starts every sessio
 <details>
 <summary><b>How much does it cost?</b></summary>
 
-Rig is free and MIT licensed. You pay E2B for running time: about $0.33 an hour for a 4 CPU / 8 GB cloud desktop at E2B's [published rates](https://e2b.dev/pricing). Paused ones cost nothing.
+Rig is free and MIT licensed. You pay E2B for running time: about $0.46 an hour for a 4 CPU / 16 GB cloud desktop at E2B's [published rates](https://e2b.dev/pricing). Paused ones cost nothing.
 </details>
 
 <details>
