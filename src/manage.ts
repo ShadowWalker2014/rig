@@ -4,6 +4,7 @@ import { deleteSnapshot, defaultDesktopExists, killBox, listBoxes, listSnapshots
 import { target } from './commands'
 import { baseTemplate, boxCpu, boxMemoryMb, defaultDesktop, idleMs } from './config'
 import { connection, setting } from './key'
+import { hasConfigFile, projectConfig } from './project'
 import { currentRepo, git } from './repo'
 import { defaultName, nameOf, pinnedBySetting, setDefaultName, templateOf } from './saved'
 import { forEachBox, hasSelection, lastUsed, parseAge, selectBoxes } from './select'
@@ -136,6 +137,9 @@ export async function status(): Promise<void> {
   if (!repo) return
   const mine = boxes.filter((b) => b.metadata.repo === repo.slug && b.metadata.branch === repo.branch)
   console.log(`This branch:      ${mine.length ? mine.map((b) => `${b.metadata.name ?? b.sandboxId} (${b.state})`).join(', ') : 'no box yet — rig up'}`)
+  const cfg = projectConfig(repo.root)
+  console.log(`Repo settings:    ${hasConfigFile(repo.root) ? 'rig.json' : 'detected (run `rig init` to review and save them)'}`)
+  console.log(`  setup ${cfg.setup ?? '(none)'} · dev ${cfg.dev ? `${cfg.dev} on port ${cfg.port}` : '(none)'} · copy ${cfg.copy.join(', ') || '(nothing)'}`)
 }
 
 // One screen that answers "is rig set up right?" without printing any secret.

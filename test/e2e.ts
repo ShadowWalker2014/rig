@@ -156,6 +156,28 @@ async function main() {
     must(r.out.includes('GET'), r.out)
   })
 
+  await step('rig init --yes detects settings and copies only named env files', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'rig-e2e-init-'))
+    Bun.spawnSync(['git', 'clone', '-q', 'https://github.com/ShadowWalker2014/rig.git', dir])
+    writeFileSync(join(dir, '.env.local'), 'SECRET=1')
+    Bun.spawnSync(['sh', '-c', 'echo .env.local >> .git/info/exclude'], { cwd: dir })
+    const plain = await rig(['init', '--yes'], { cwd: dir })
+    must(plain.err.includes('Not copying .env.local'), plain.err)
+    const withCopy = await rig(['init', '--yes', '--copy', '.env.local'], { cwd: dir })
+    must(withCopy.code === 0, withCopy.err)
+    const cfg = JSON.parse(await Bun.file(join(dir, 'rig.json')).text())
+    must(cfg.setup === 'bun install' && cfg.copy.includes('.env.local'), JSON.stringify(cfg))
+    return JSON.stringify(cfg)
+  })
+  await step('rig up stops early with the fix when the box cannot read the repo', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'rig-e2e-private-'))
+    Bun.spawnSync(['sh', '-c', 'git init -q && git commit -q --allow-empty -m x && git remote add origin https://github.com/ShadowWalker2014/rig-e2e-no-such-private-repo.git'], { cwd: dir })
+    const r = await rig(['up'], { cwd: dir })
+    must(r.code !== 0 && r.err.includes('gh auth login'), r.err)
+    const left = await rig(['ls', '--repo', 'ShadowWalker2014/rig-e2e-no-such-private-repo', '--ids'])
+    must(left.out.trim() === '', 'the useless box was left behind')
+    return 'clear fix shown; no box left behind'
+  })
   await step('bulk: filters preview, then --yes deletes', async () => {
     const names = ['e2e-bulk-1', 'e2e-bulk-2', 'e2e-bulk-3']
     await Promise.all(names.map((n) => rig(['new', '--name', n])))

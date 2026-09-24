@@ -65,7 +65,9 @@ The full tool list is in [image.md](image.md).
 | `src/commands.ts` | Per-box commands: up, sync, exec, browser, shot, port, desktop, snap, new |
 | `src/manage.ts` | Many-box commands: status, ls, pause, kill, prune, saved, doctor |
 | `src/saved.ts` | Saved-desktop names and which one is the default |
-| `src/repo.ts` | Local git, run safely, and `rig.json` |
+| `src/repo.ts` | Local git, run safely |
+| `src/project.ts` | A repo's settings: detection and `rig.json` |
+| `src/init.ts` | `rig init`, and the first-run questions in `rig up` |
 | `src/sync.ts` | Making the box match your working tree |
 | `src/services.ts` | Dev server, desktop and viewer inside the box |
 | `src/proxy.ts` | The local port proxy |

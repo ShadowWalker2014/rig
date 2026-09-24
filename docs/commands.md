@@ -109,11 +109,26 @@ rig doctor
 
 ## Every task
 
+### rig init
+
+```
+rig init [--yes] [--copy .env.local] [--dev <cmd>] [--port <n>] [--setup <cmd>]
+  Run once in a repo. Works out how it runs — package manager, setup command, dev
+  command and port (from package.json and the framework), submodules — and asks
+  about gitignored env files like .env.local: the box will not have them unless
+  they are copied, and they usually hold secrets. Writes rig.json.
+  --yes     accept what was detected; copy only files named with --copy (for agents)
+  The first `rig up` in a repo runs this for you when you are at a terminal.
+  Examples: rig init
+            rig init --yes --copy .env.local
+```
+
 ### rig up
 
 ```
 rig up [--new] [--name <name>] [--from <saved desktop>] [--no-dev]
-  Run inside a git repo. Finds this repo + branch's box (or creates one from the
+  Run inside a git repo. The first time, it settles the repo's settings (see
+  `rig init`). Finds this repo + branch's box (or creates one from the
   default desktop), copies your working tree to it, installs packages if the
   lockfile changed, and starts the dev server. Prints the box id.
   --new     Always make a separate box (for parallel agents on one branch).

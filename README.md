@@ -16,7 +16,7 @@ Each cloud desktop is a Linux machine with your code, a running dev server, test
 - [How it works](#how-it-works)
 - [Setup](#setup)
 - [Bring your logins from your browser](#bring-your-logins-from-your-browser)
-- [Every task](#every-task)
+- [Use it in a repo](#use-it-in-a-repo)
 - [Take over the desktop](#take-over-the-desktop)
 - [Saved desktops](#saved-desktops)
 - [Use it with your coding agent](#use-it-with-your-coding-agent)
@@ -151,7 +151,16 @@ Some sites refuse a login copied from another computer — Google accounts do. F
 
 Details: [docs/cookies.md](docs/cookies.md).
 
-## Every task
+## Use it in a repo
+
+```bash
+cd my-repo
+rig up          # the first time, it works out how the repo runs and asks about env files
+```
+
+The first `rig up` in a repo runs `rig init`: it detects the package manager, the dev command and its port, and asks before copying gitignored env files like `.env.local` into the box. The answers go in a small `rig.json`. If the box can't read a private repo, `rig up` stops before anything slow and prints the exact fix. Details: [using rig in a repo](docs/projects.md).
+
+### Every task
 
 <p align="center"><img src="assets/terminal.svg" alt="Example terminal session running rig up, rig exec and rig ls" width="100%"></p>
 
@@ -170,13 +179,13 @@ rig logs                                     # the dev server's output
 
 Parallel agents on one branch? `rig up --new` gives each its own cloud desktop; pass `-b <id>` to the other commands.
 
-Per-repo settings live in an optional `rig.json` at the repo root:
+A repo's `rig.json`, written by `rig init`:
 
 ```json
 { "setup": "bun install", "dev": "bun run dev", "port": 3000, "copy": [".env.local"], "submodules": true }
 ```
 
-Every field has a default based on your lockfile and `package.json`. `copy` lists gitignored files, like `.env.local`, to send on every sync.
+`rig status` shows the settings in use.
 
 ## Take over the desktop
 
@@ -301,6 +310,7 @@ E2B combines what rig needs: pausing with memory kept, waking on traffic, snapsh
 | Read | For |
 |---|---|
 | [Setup guide](docs/setup.md) | First-time setup, step by step |
+| [Using rig in a repo](docs/projects.md) | `rig up`, `rig init`, `rig.json`, env files, private repos |
 | [Bring your logins](docs/cookies.md) | Copying sign-ins from your browser, and how it stays safe |
 | [Command reference](docs/commands.md) | Every command, flag and example |
 | [How it works](docs/how-it-works.md) | Lifecycle, syncing, the default desktop, the proxy, the code map |

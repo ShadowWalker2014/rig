@@ -1,5 +1,3 @@
-import { existsSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
 import { WORK_DIR } from './config'
 
 export type Repo = {
@@ -10,14 +8,6 @@ export type Repo = {
   branch: string
   head: string
   boxDir: string
-}
-
-export type ProjectConfig = {
-  setup?: string
-  dev?: string
-  port: number
-  copy: string[]
-  submodules: boolean
 }
 
 // A repo's own .git/config can name programs for git to run: fsmonitor, hooks,
@@ -73,34 +63,7 @@ export function currentRepo(cwd = process.cwd()): Repo {
   }
 }
 
-// Per-repo settings live in `rig.json` at the repo root; everything has a default.
-export function projectConfig(root: string): ProjectConfig {
-  const file = join(root, 'rig.json')
-  const raw = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {}
-  const pm = packageManager(root)
-  return {
-    setup: raw.setup ?? (pm ? `${pm} install` : undefined),
-    dev: raw.dev ?? (pm && hasDevScript(root) ? `${pm} run dev` : undefined),
-    port: raw.port ?? 3000,
-    copy: raw.copy ?? [],
-    submodules: raw.submodules ?? existsSync(join(root, '.gitmodules')),
-  }
-}
-
-export function lockfile(root: string): string | undefined {
-  return ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json'].find((f) => existsSync(join(root, f)))
-}
-
-function packageManager(root: string): string | undefined {
-  const lock = lockfile(root)
-  if (lock?.startsWith('bun')) return 'bun'
-  if (lock === 'pnpm-lock.yaml') return 'pnpm'
-  if (lock === 'yarn.lock') return 'yarn'
-  if (lock === 'package-lock.json' || existsSync(join(root, 'package.json'))) return 'npm'
-  return undefined
-}
-
-function hasDevScript(root: string): boolean {
-  const pkg = join(root, 'package.json')
-  return existsSync(pkg) && Boolean(JSON.parse(readFileSync(pkg, 'utf8')).scripts?.dev)
+// Whether git ignores a path in this repo, so a clone in the box will not have it.
+export function isIgnored(root: string, file: string): boolean {
+  return Bun.spawnSync(['git', ...SAFE_GIT, 'check-ignore', '-q', '--', file], { cwd: root, env: SAFE_ENV }).exitCode === 0
 }

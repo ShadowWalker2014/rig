@@ -3,15 +3,18 @@ import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { CommandExitError, type Sandbox, type SandboxInfo } from 'e2b'
 import { str, type Args } from './args'
-import { createBox, listBoxes, openBox, resolveBox, savedExists, snapshotBox, type Tags } from './box'
+import { createBox, killBox, listBoxes, openBox, resolveBox, savedExists, snapshotBox, type Tags } from './box'
 import { defaultName, isValidName, setDefaultName } from './saved'
 import { DEV_LOG, HOME, idleMs, NOVNC_PORT } from './config'
 import { forward } from './proxy'
-import { currentRepo, projectConfig, type Repo } from './repo'
+import { projectConfig } from './project'
+import { currentRepo, type Repo } from './repo'
 import { devRunning, ensureDesktop, startDev, startViewer, stopDev, stopViewer } from './services'
 import { clean, sanitizer } from './sanitize'
 import { q, sh } from './shell'
-import { syncRepo } from './sync'
+import { RepoAccessError, syncRepo } from './sync'
+import { describe, settleConfig } from './init'
+import { hasConfigFile, writeConfig } from './project'
 
 // The box named by `-b`/positional, or else the one for this repo and branch.
 export async function target(a: Args, positionalIsBox = true): Promise<SandboxInfo> {
@@ -33,16 +36,37 @@ function repoTags(repo: Repo, a: Args): Tags {
 
 export async function up(a: Args): Promise<void> {
   const repo = currentRepo()
-  const cfg = projectConfig(repo.root)
+  const cfg = await settingsFor(repo, a)
+  const missing = cfg.copy.filter((f) => !existsSync(join(repo.root, f)))
+  if (missing.length) throw new Error(`rig.json copies ${missing.join(', ')}, but ${missing.length === 1 ? 'it is' : 'they are'} not in this repo on this machine. Add ${missing.length === 1 ? 'it' : 'them'}, or run \`rig init\`.`)
   const existing = a.flags.new ? undefined : (await listBoxes({ tags: { repo: repo.slug, branch: repo.branch } }))[0]
   const sbx = existing ? await openBox(existing.sandboxId) : await createBox(repoTags(repo, a), str(a.flags.from))
   console.error(`${existing ? 'Reusing' : 'Created'} box ${sbx.sandboxId}`)
   await sbx.setTimeout(idleMs() + 1_800_000)
-  const { installed } = await syncRepo(sbx, repo)
+  const { installed } = await syncRepo(sbx, repo).catch(async (err) => {
+    // A box that could not reach the repo is useless; do not leave it to be reused.
+    if (err instanceof RepoAccessError && !existing) await killBox(sbx.sandboxId)
+    throw err
+  })
   if (!a.flags['no-dev'] && (installed || !(await devRunning(sbx)))) await startDev(sbx, repo, cfg)
   await sbx.setTimeout(idleMs())
   console.log(sbx.sandboxId)
   console.error(nextSteps(cfg.port))
+}
+
+// The first `rig up` in a repo settles its settings: with a person at the terminal
+// it runs `rig init`; for an agent it uses what it detects and says what it skipped.
+async function settingsFor(repo: Repo, a: Args) {
+  if (hasConfigFile(repo.root)) return projectConfig(repo.root)
+  if (process.stdin.isTTY && !a.flags.yes) {
+    console.error('First time in this repo: rig init will work out how it runs.')
+    const cfg = await settleConfig(repo.root, a, true)
+    writeConfig(repo.root, cfg)
+    describe(repo.slug, cfg)
+    console.error('Saved rig.json.\n')
+    return cfg
+  }
+  return settleConfig(repo.root, a, false)
 }
 
 function nextSteps(port: number): string {

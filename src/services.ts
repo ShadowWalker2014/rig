@@ -1,6 +1,7 @@
 import type { Sandbox } from 'e2b'
 import { DEV_LOG, DEV_PID } from './config'
-import type { ProjectConfig, Repo } from './repo'
+import type { ProjectConfig } from './project'
+import type { Repo } from './repo'
 import { clean } from './sanitize'
 import { q, sh, test } from './shell'
 

@@ -108,11 +108,11 @@ Every line should start with ✓. Then try a real repo:
 
 ```bash
 cd my-repo
-rig up
+rig up              # the first time, it asks how the repo runs and which env files to copy
 rig port 3000       # open http://localhost:3000
 ```
 
-If the dev server needs gitignored files like `.env.local`, add a `rig.json` to the repo: `{ "copy": [".env.local"] }`.
+More in [using rig in a repo](projects.md).
 
 ## Next
 

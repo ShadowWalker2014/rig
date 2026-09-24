@@ -3,6 +3,7 @@ import { parseArgs, type Args } from './args'
 import * as c from './commands'
 import * as m from './manage'
 import { cookies } from './cookies/command'
+import { init } from './init'
 import { commandHelp, guide } from './help'
 import { buildImage } from './image'
 import { login, logout } from './key'
@@ -32,6 +33,7 @@ Logins from your own browser
   rig cookies push --site a.com  Only some sites (--skip, --from arc, -b <box>, --all: see rig help cookies)
 
 Every task (inside a git repo)
+  rig init                       Once per repo: detect how it runs, choose env files, write rig.json
   rig up [--new] [--from name]   This branch's box: sync code, install, start the dev server
   rig sync                       Send local edits (committed or not) to the box
   rig exec -- <cmd>              Run a command in the box's repo folder
@@ -65,6 +67,7 @@ const COMMANDS: Record<string, Handler> = {
   help: (a) => console.log((a.sub[0] && commandHelp(a.sub[0])) ?? HELP),
   guide: () => console.log(guide()),
   new: c.newBox,
+  init,
   up: c.up,
   sync: c.sync,
   exec: c.exec,

@@ -14,6 +14,12 @@ branch. Every `rig` command below, run from inside the repo, targets that box.
 1. `rig up` — creates (or reuses) this branch's box, copies your local tree to it,
    installs packages if the lockfile changed, and starts the dev server. It prints
    the box id on stdout. Takes seconds when reusing a box.
+   - **If it stops, do what it says.** Its errors end with the exact fix — for
+     example signing GitHub in once for a private repo, which is the user's step.
+   - In a repo without `rig.json`, run `rig init --yes` first. If the dev server
+     needs a gitignored file like `.env.local`, ask the user before adding
+     `--copy .env.local`: it usually holds secrets.
+   - `rig status` shows the repo's settings and its box.
 2. Edit files locally as usual.
 3. `rig sync` — sends your edits (committed or not) to the box. The dev server
    hot-reloads. Run it after every batch of edits, before testing.

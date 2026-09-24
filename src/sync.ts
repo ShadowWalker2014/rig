@@ -2,7 +2,8 @@ import { lstatSync, readFileSync, realpathSync, unlinkSync } from 'node:fs'
 import { basename, dirname, join, sep } from 'node:path'
 import { tmpdir } from 'node:os'
 import type { Sandbox } from 'e2b'
-import { git, gitBytes, lockfile, projectConfig, type Repo } from './repo'
+import { lockfile, projectConfig } from './project'
+import { git, gitBytes, type Repo } from './repo'
 import { clean } from './sanitize'
 import { q, sh, test } from './shell'
 
@@ -21,14 +22,22 @@ export async function syncRepo(sbx: Sandbox, repo: Repo): Promise<{ installed: b
   return { installed: await installIfLockChanged(sbx, repo) }
 }
 
+// The box clones with its own GitHub login. Checking access first turns a slow,
+// confusing clone failure into one clear instruction.
+export class RepoAccessError extends Error {}
+
 async function ensureClone(sbx: Sandbox, repo: Repo): Promise<void> {
   if (await test(sbx, `test -d ${q(repo.boxDir)}/.git`)) return
+  if (!(await test(sbx, `GIT_TERMINAL_PROMPT=0 git ls-remote ${q(repo.origin)} HEAD >/dev/null 2>&1`))) {
+    throw new RepoAccessError(
+      `The box cannot read ${repo.slug} from GitHub. If it is private, sign GitHub in once on your default desktop:\n` +
+        '  rig desktop logins        then, in its terminal: gh auth login  (answer Yes to "Authenticate Git")\n' +
+        '  rig save logins           every new box then has your GitHub login\n' +
+        'Then run `rig up` again.',
+    )
+  }
   console.error(`Cloning ${repo.slug} into the box…`)
-  await sh(sbx, `mkdir -p "$(dirname ${q(repo.boxDir)})" && git clone --quiet ${q(repo.origin)} ${q(repo.boxDir)}`, { timeoutMs: 900_000 }).catch(
-    (err) => {
-      throw new Error(`${err.message}\n\nThe box could not clone ${repo.slug}. Sign in to GitHub inside it: \`rig desktop\`, run \`gh auth login\`, then \`rig save <box>\`.`)
-    },
-  )
+  await sh(sbx, `mkdir -p "$(dirname ${q(repo.boxDir)})" && git clone --quiet ${q(repo.origin)} ${q(repo.boxDir)}`, { timeoutMs: 1_800_000 })
 }
 
 // Commits the box can't fetch (unpushed ones) travel as a git bundle.
