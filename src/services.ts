@@ -31,21 +31,42 @@ async function waitForPort(sbx: Sandbox, port: number): Promise<void> {
   throw new Error(`Dev server did not open port ${port}. Last log lines:\n${tail}`)
 }
 
-// Swap the size of the box's RAM, leaving 4 GB of disk free. Without it a dev server
-// that outgrows RAM is killed and the agent only sees "connection refused"; with it,
-// the box slows down instead. Idempotent, and skipped if the kernel refuses swap.
+// A swap file of up to 4 GB, leaving 8 GB of disk for the repo and its build caches. Without
+// it a dev server that outgrows RAM is killed and the agent only sees "connection refused";
+// with it, the box slows down instead. A RAM-sized file filled a 16 GB box's disk, so Next's
+// cache writes failed. Idempotent, and skipped if the kernel refuses swap.
 export const SWAP_SCRIPT = [
   'swapon --show=NAME --noheadings | grep -q . && exit 0',
   "ram=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)",
   "disk=$(df -m --output=avail / | tail -1 | tr -d ' ')",
-  'size=$(( ram < disk - 4096 ? ram : disk - 4096 ))',
+  'size=$(( ram < 4096 ? ram : 4096 ))',
+  'size=$(( size < disk - 8192 ? size : disk - 8192 ))',
   '[ "$size" -ge 1024 ] || exit 0',
   'fallocate -l ${size}M /swapfile && chmod 600 /swapfile && mkswap /swapfile >/dev/null && swapon /swapfile || { rm -f /swapfile; exit 3; }',
 ].join('\n')
 
+// zswap compresses pages in RAM before they reach the swap file: a dev server's cold heap
+// compresses about 2:1, so most swapping never touches the slow disk. E2B's kernel has zswap
+// but no zram. Kernel settings, so it runs on every `rig up`, not just when swap is created.
+export const ZSWAP_SCRIPT = [
+  'z=/sys/module/zswap/parameters',
+  '[ -w $z/enabled ] || exit 0',
+  'echo 1 > $z/enabled',
+  'for c in zstd lz4 lzo; do echo $c > $z/compressor 2>/dev/null && break; done',
+  'for p in zsmalloc z3fold zbud; do echo $p > $z/zpool 2>/dev/null && break; done',
+  'echo 40 > $z/max_pool_percent',
+  'sysctl -q -w vm.swappiness=150 vm.page-cluster=0 vm.watermark_scale_factor=125',
+].join('\n')
+
+// The kernel default (65,536 inotify watches, 128 instances) runs out on a large repo: the dev server then
+// silently stops seeing new folders, so newly added routes 404 until their files are touched.
+export const WATCH_LIMITS_SCRIPT = 'sysctl -q -w fs.inotify.max_user_watches=1048576 fs.inotify.max_user_instances=8192'
+
 export async function ensureSwap(sbx: Sandbox): Promise<void> {
   try {
+    await sbx.commands.run(WATCH_LIMITS_SCRIPT, { user: 'root', timeoutMs: 30_000 })
     await sbx.commands.run(SWAP_SCRIPT, { user: 'root', timeoutMs: 60_000 })
+    await sbx.commands.run(ZSWAP_SCRIPT, { user: 'root', timeoutMs: 30_000 })
   } catch {
     console.error('Could not add swap to this box, so a dev server that outgrows its memory will be stopped. rig works otherwise.')
   }

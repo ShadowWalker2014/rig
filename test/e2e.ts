@@ -53,7 +53,7 @@ async function main() {
     toolsBox = r.out.split('\n').pop()!
     return toolsBox
   })
-  await step('the box has swap as large as its RAM', async () => {
+  await step('the box has swap', async () => {
     const r = await rig(['exec', '-b', toolsBox, '--', "free -m | awk '/Mem:/ {m=$2} /Swap:/ {s=$2} END {print m, s}'"])
     const [mem, swap] = r.out.split(' ').map(Number)
     must(swap! >= Math.min(mem!, 1024), `RAM ${mem} MB, swap ${swap} MB`)
